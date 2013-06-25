@@ -15,8 +15,7 @@ var GameLayer = cc.Layer.extend({
             this.initStaticLayer(scene);
             this.initCloudLayer(scene);
             this.initPlayer();
-            this.setTouchEnabled(true);
-            this.setKeyboardEnabled(true);
+            this.enableEvents();
             this.scheduleUpdate();
             bRet = true;
 
@@ -75,6 +74,15 @@ var GameLayer = cc.Layer.extend({
 			KEYS[e] = false;
 		}
 	},
+
+    enableEvents: function(){
+        if( 'touches' in sys.capabilities )
+            this.setTouchEnabled(true);
+
+        if( 'keyboard' in sys.capabilities )
+            this.setKeyboardEnabled(true);
+    },
+
 	addEnemy:function (){
 		var enemyType = Math.floor((Math.random()*2)+1);
         var enemy = new Enemy(enemyType);
