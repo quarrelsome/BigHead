@@ -3,6 +3,8 @@ var Enemy = cc.Sprite.extend({
 	speed: 100,
 	fireSpeed: 900,
 	tag: 3,
+    isTarget: false,
+    playerHitLocationY: 0,
 	
 	ctor:function (enemyType) {
         this._super();

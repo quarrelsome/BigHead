@@ -4,6 +4,7 @@ STATE_GAMEOVER = 2;
 Z_SCROLL = 10;
 Z_MOUNTAINS = 0;
 MOVEMENT_SPEED = 0.05;
+LAYER_SPEED = 100;
 
 var GameLayer = cc.Layer.extend({
         _player: null,
@@ -77,7 +78,7 @@ var GameLayer = cc.Layer.extend({
                     var enemy = this._enemies[j];
                     var enemyRect = enemy.getBoundingBox();
                     if (cc.rectIntersectsRect(bulletRect, enemyRect)) {
-                        if (i == 0)
+                        if (enemy.isTarget)
                             this._isTargetDestroyed = true;
                         cc.ArrayRemoveObject(this._player.bullets, bullet);
                         bullet.removeFromParent();
@@ -98,13 +99,20 @@ var GameLayer = cc.Layer.extend({
 
             if (this._isTargetDestroyed) {
                 for (j = 0; j < this._enemies.length; j++) {
-                    if (this._enemies[j].getPositionX() + this._enemies[j].getContentSize().width / 2 <
+                    enemy = this._enemies[j];
+                    if (enemy.getPositionX() + enemy.getContentSize().width / 2 <
                         this._player.getPositionX() - this._player.getContentSize().width / 2) {
-                        this._enemies[j].removeFromParent();
-                        cc.ArrayRemoveObject(this._enemies, this._enemies[j]);
+                        enemy.removeFromParent();
+                        cc.ArrayRemoveObject(this._enemies, enemy);
                     }
                     else {
-                        this._enemies[j].setPositionX(this._enemies[j].getPositionX() - (500 * dt));
+                        enemy.playerHitLocationY = this._player.getPositionY();
+                        if (enemy.getPositionY() > enemy.playerHitLocationY) {
+                            enemy.setPositionY(enemy.getPositionY() - (enemy.getPositionY() - enemy.playerHitLocationY) * 0.02);
+                        } else {
+                            enemy.setPositionY(enemy.getPositionY() + (enemy.playerHitLocationY - enemy.getPositionY()) * 0.02);
+                        }
+                        enemy.setPositionX(enemy.getPositionX() - (20*LAYER_SPEED * dt));
                     }
 
                     if (this._enemies.length == 0) {
@@ -162,8 +170,8 @@ var GameLayer = cc.Layer.extend({
             }
 
             if (this._player.getPositionX() + winSize.width <= enemyLocation) {
-                this.setPositionX(this.getPositionX() - (100 * dt));
-                this._player.setPositionX(this._player.getPositionX() + (100 * dt));
+                this.setPositionX(this.getPositionX() - (LAYER_SPEED * dt));
+                this._player.setPositionX(this._player.getPositionX() + (LAYER_SPEED * dt));
             }
         },
 
@@ -179,6 +187,8 @@ var GameLayer = cc.Layer.extend({
                 var rangeY = maxY - minY;
                 var actualY = Math.floor((Math.random() * rangeY + 1) + minY);
                 enemy.setPosition(this._player.getPositionX() + (winSize.width * 1.25) + enemy.getContentSize().width / 2 + xDisplacement, actualY);
+                if (i == 0)
+                    enemy.isTarget = true;
                 this.addChild(enemy);
                 this._enemies.push(enemy);
             }
