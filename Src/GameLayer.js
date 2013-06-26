@@ -66,9 +66,9 @@ var GameLayer = cc.Layer.extend({
             if (this._time % 0.4 <= 0.15)
                 this.removeBlast();
 
-            this.updateBulletPosition();
+            this.updateBulletPosition(dt);
 
-            this.detectCollision();
+            this.detectCollision(dt);
         },
 
         onKeyDown: function (e) {
@@ -151,7 +151,7 @@ var GameLayer = cc.Layer.extend({
             }
         },
 
-        updateBulletPosition: function () {
+        updateBulletPosition: function (dt) {
             for (var i = 0; i < this._player.bullets.length; i++) {
                 var bullet = this._player.bullets[i];
                 if (bullet.getPositionX() - this._player.getPositionX() > winSize.width) {
@@ -162,7 +162,7 @@ var GameLayer = cc.Layer.extend({
             }
         },
 
-        detectCollision: function () {
+        detectCollision: function (dt) {
             var isTargetHitNow = false;
             for (var i = 0; i < this._player.bullets.length; i++) {
                 var bullet = this._player.bullets[i];
