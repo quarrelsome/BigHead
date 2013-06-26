@@ -14,7 +14,7 @@ var GameLayer = cc.Layer.extend({
         _enemiesDestroyed: 0,
         _isTargetDestroyed: false,
         _isEnemyPresent: false,
-        _isFireEnabled: true,
+        _isFireEnabled: false,
 
         _cloudParallax: null,
         _distanceTravelled:0,
@@ -106,7 +106,6 @@ var GameLayer = cc.Layer.extend({
             if (this._enemies.length == 0) {
                 this.addEnemy();
             }
-            else {
                 var enemyLocation = this._enemies[0].getPositionX() + this._enemies[0].getContentSize().width;
 
                 if (this._enemies.length > 1) {
@@ -116,11 +115,12 @@ var GameLayer = cc.Layer.extend({
                             enemyLocation = otherEnemyLocation;
                     }
                 }
-            }
 
-            if (this._player.getPositionX() + winSize.width <= enemyLocation) {
+            if (this._enemies.length == 0 || this._player.getPositionX() + winSize.width <= enemyLocation) {
                 this.setPositionX(this.getPositionX() - (LAYER_SPEED * dt));
                 this._player.setPositionX(this._player.getPositionX() + (LAYER_SPEED * dt));
+            } else {
+                this._isFireEnabled = true;
             }
         },
 
@@ -193,7 +193,7 @@ var GameLayer = cc.Layer.extend({
             }
 
             if (this._isTargetDestroyed) {
-
+                this._isFireEnabled = false;
                 if (isTargetHitNow) {
                     var closestEnemy = 0;
                     for (j = 0; j < this._enemies.length; j++) {
@@ -230,8 +230,8 @@ var GameLayer = cc.Layer.extend({
 
             }
         }
-    })
-    ;
+    }
+);
 
 GameLayer.create = function (scene) {
     var sg = new GameLayer();
