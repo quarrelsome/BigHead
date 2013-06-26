@@ -16,6 +16,10 @@ var GameLayer = cc.Layer.extend({
         _isFireEnabled: true,
 
         _cloudParallax: null,
+        _interchangeableParallax: null,
+        _horizon1Parallax:null,
+        _horizon2Parallax:null,
+        _trees1Parallax:null,
         _distanceTravelled:0,
 
 
@@ -23,7 +27,9 @@ var GameLayer = cc.Layer.extend({
             var bRet = false;
             if (this._super()) {
                 this.initStaticLayer(scene);
+                this.initInterchangeableLayer(scene);
                 this.initCloudLayer(scene);
+                this.initCommonLayer(scene);
                 this.initPlayer();
                 this.enableEvents();
                 this.scheduleUpdate();
@@ -37,16 +43,37 @@ var GameLayer = cc.Layer.extend({
 
         initStaticLayer: function (scene) {
             var staticParallaxLayer = cc.Layer.create();
-            var staticBackground = cc.Sprite.create(s_loading);
-            staticBackground.setAnchorPoint(cc.p(0, 0));
+            var staticBackground = cc.Sprite.create(s_backgeound);
+            staticBackground.setAnchorPoint(cc.p(0,0));
+            staticBackground.setPosition(winSize.width / 2, winSize.height / 2);
             staticParallaxLayer.addChild(staticBackground);
             scene.addChild(staticParallaxLayer);
+        },
+
+        initInterchangeableLayer: function(scene){
+            this._interchangeableParallax = InterchangeableParallaxLayer.create(g_sky);
+            this._interchangeableParallax.setAnchorPoint(cc.p(0,0));
+            scene.addChild(this._interchangeableParallax);
         },
 
         initCloudLayer: function (scene) {
             this._cloudParallax = CloudParallaxLayer.create(g_clouds, MOVEMENT_SPEED - 0.01);
             this._cloudParallax.setAnchorPoint(cc.p(0, 0));
             scene.addChild(this._cloudParallax);
+        },
+
+        initCommonLayer: function (scene) {
+            this._horizon1Parallax = CommonParallaxLayer.create(s_horizon1, MOVEMENT_SPEED - 0.035);
+            this._horizon1Parallax.setAnchorPoint(cc.p(0,0));
+            scene.addChild(this._horizon1Parallax);
+
+            this._horizon2Parallax = CommonParallaxLayer.create(s_horizon2, MOVEMENT_SPEED - 0.035);
+            this._horizon2Parallax.setAnchorPoint(cc.p(0,0));
+            scene.addChild(this._horizon2Parallax);
+
+            this._trees1Parallax = CommonParallaxLayer.create(s_tree1, MOVEMENT_SPEED - 0.03);
+            this._trees1Parallax.setAnchorPoint(cc.p(0,0));
+            scene.addChild(this._trees1Parallax);
         },
 
         initPlayer: function () {
@@ -57,11 +84,15 @@ var GameLayer = cc.Layer.extend({
         },
 
         update: function (dt) {
+            this._interchangeableParallax.update();
             this._cloudParallax.update();
+            this._horizon1Parallax.update();
+            this._horizon2Parallax.update();
+            this._trees1Parallax.update();
             this._player.update(dt);
 
             this.moveLayer(dt);
-            this.schedule(this.removeBlast, 0.75);
+            //this.schedule(this.removeBlast, 0.75);
 
             for (var i = 0; i < this._player.bullets.length; i++) {
                 var bullet = this._player.bullets[i];
@@ -188,8 +219,8 @@ var GameLayer = cc.Layer.extend({
             }
 
             if (this._player.getPositionX() + winSize.width <= enemyLocation) {
-                this.setPositionX(this.getPositionX() - (LAYER_SPEED * dt));
-                this._player.setPositionX(this._player.getPositionX() + (LAYER_SPEED * dt));
+                this.setPositionX(this.getPositionX() - (LAYER_SPEED * MOVEMENT_SPEED));
+                this._player.setPositionX(this._player.getPositionX() + (LAYER_SPEED * MOVEMENT_SPEED));
             }
         },
 
