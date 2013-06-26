@@ -17,6 +17,8 @@ var MW = MW || {};
         appFiles:[
 			'./Src/HomeLayer.js',
 			'./Src/CloudParallaxLayer.js',
+            './Src/InterchangeableParallaxLayer.js',
+            './Src/CommonParallaxLayer.js',
             './Src/BuildingParallaxLayer.js',
 			'./Src/ScoreLayer.js',
 			'./Src/GameLayer.js',
