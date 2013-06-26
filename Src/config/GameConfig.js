@@ -19,3 +19,5 @@ var BarSize = {
     topBar: { width: 960, height: 76 },
     bottomBar: { width: 960, height: 114 }
 };
+
+DISTANCELIMIT = 10000;

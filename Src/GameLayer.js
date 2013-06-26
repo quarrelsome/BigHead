@@ -16,6 +16,7 @@ var GameLayer = cc.Layer.extend({
         _isFireEnabled: true,
 
         _cloudParallax: null,
+        _distanceTravelled:0,
 
 
         init: function (scene) {
@@ -43,7 +44,7 @@ var GameLayer = cc.Layer.extend({
         },
 
         initCloudLayer: function (scene) {
-            this._cloudParallax = CustomParallaxLayer.create(g_clouds, MOVEMENT_SPEED - 0.01);
+            this._cloudParallax = CloudParallaxLayer.create(g_clouds, MOVEMENT_SPEED - 0.01);
             this._cloudParallax.setAnchorPoint(cc.p(0, 0));
             scene.addChild(this._cloudParallax);
         },
