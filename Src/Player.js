@@ -1,5 +1,5 @@
 var Player = cc.Sprite.extend({
-	speed: 200,
+	speed: 400,
 	bulletSpeed: 900,
 	tag: 1,
     bullets: [],
