@@ -8,12 +8,15 @@ MOVEMENT_SPEED = 0.05;
 var GameLayer = cc.Layer.extend({
 	_player: null,
     _cloudParallax: null,
+    _buildingParallax: null,
+    _distanceTravelled: 0,
 	
 	init:function(scene) {
         var bRet = false;
         if (this._super()) {
             this.initStaticLayer(scene);
             this.initCloudLayer(scene);
+            //this.initBuildingLayer(scene);
             this.initPlayer();
             this.enableEvents();
             this.scheduleUpdate();
@@ -34,9 +37,15 @@ var GameLayer = cc.Layer.extend({
     },
 
     initCloudLayer: function(scene){
-        this._cloudParallax = CustomParallaxLayer.create(g_clouds,MOVEMENT_SPEED-0.01);
+        this._cloudParallax = CloudParallaxLayer.create(g_clouds,MOVEMENT_SPEED-0.02);
         this._cloudParallax.setAnchorPoint(cc.p(0, 0));
         scene.addChild(this._cloudParallax);
+    },
+
+    initBuildingLayer: function(scene){
+        this._buildingParallax = BuildingParallaxLayer.create(g_buildings,MOVEMENT_SPEED-0.01);
+        this._buildingParallax.setAnchorPoint(cc.p(0, 0));
+        scene.addChild(this._buildingParallax);
     },
 
     initPlayer: function(){
@@ -51,7 +60,9 @@ var GameLayer = cc.Layer.extend({
         this._player.update(dt);
         //this.addEnemy();
         this.setPositionX(this.getPositionX()-(100*MOVEMENT_SPEED));
-        this._player.setPositionX(this._player.getPositionX()+(100*MOVEMENT_SPEED));
+        var playerMove =(100*MOVEMENT_SPEED);
+        this._distanceTravelled = this._distanceTravelled + playerMove;
+        this._player.setPositionX( this._player.getPositionX()+playerMove);
 	},
 	
 	onKeyDown:function(e){

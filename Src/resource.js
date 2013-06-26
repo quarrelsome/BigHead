@@ -21,6 +21,8 @@ var s_lives_text = dirArt + "lives-text.png";
 var s_explosion = dirArt + "explosion-particle.png";
 var s_fire_particle = dirArt + "ship-exhaust-fire-particle.png";
 var s_cloud = dirArt + "clouds.png";
+var s_location1Building1 = dirArt + "location1.png";
+var s_location1Building2 = dirArt + "location2.png";
 
 //effect
 var s_buttonEffect_mp3 = dirSounds + "buttonEffet.mp3";
@@ -73,8 +75,19 @@ var g_ressources = [
 ];
 
 var g_clouds = [
-    {type:"image", src:s_cloud},
-    {type:"image", src:s_cloud},
-    {type:"image", src:s_cloud},
-    {type:"image", src:s_cloud}
+    {src:s_cloud},
+    {src:s_cloud},
+    {src:s_cloud},
+    {src:s_cloud}
 ]
+
+var g_buildings = {
+    "location1":[
+        s_location1Building1,
+        s_location1Building2
+    ],
+    "location2":[
+        s_location1Building1,
+        s_location1Building2
+    ]
+}

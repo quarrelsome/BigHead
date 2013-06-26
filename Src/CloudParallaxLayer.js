@@ -1,4 +1,4 @@
-var CustomParallaxLayer = cc.Layer.extend({
+var CloudParallaxLayer = cc.Layer.extend({
     _movementSpeed:0,
 
     init:function(cloudImages, movementSpeed) {
@@ -14,6 +14,7 @@ var CustomParallaxLayer = cc.Layer.extend({
             bRet = true;
         }
 
+
         return bRet;
     },
     update : function()
@@ -26,8 +27,8 @@ var CustomParallaxLayer = cc.Layer.extend({
     }
 });
 
-CustomParallaxLayer.create = function (cloudImages, movementSpeed) {
-    var sg = new CustomParallaxLayer();
+CloudParallaxLayer.create = function (cloudImages, movementSpeed) {
+    var sg = new CloudParallaxLayer();
     if (sg && sg.init(cloudImages, movementSpeed)) {
         return sg;
     }

@@ -13,3 +13,5 @@ var EnemyType = [
         type:2,
         scoreValue:25
     }];
+
+DISTANCELIMIT = 10000;

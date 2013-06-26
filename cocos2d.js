@@ -16,7 +16,8 @@ var MW = MW || {};
         engineDir:'./Platform/HTML5/cocos2d/',
         appFiles:[
 			'./Src/HomeLayer.js',
-			'./Src/CustomParallaxLayer.js',
+			'./Src/CloudParallaxLayer.js',
+            './Src/BuildingParallaxLayer.js',
 			'./Src/ScoreLayer.js',
 			'./Src/GameLayer.js',
 			'./Src/Player.js',
