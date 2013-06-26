@@ -100,30 +100,6 @@ var GameLayer = cc.Layer.extend({
                 }
             }
 
-            /*if (this._isTargetDestroyed) {
-                var closestEnemy = 0;
-                for (j = 0; j < this._enemies.length; j++) {
-                    enemy = this._enemies[j];
-                    if (enemy.getPositionX() + enemy.getContentSize().width / 2 < this._player.getPositionX() - this._player.getContentSize().width / 2) {
-                        enemy.removeFromParent();
-                        cc.ArrayRemoveObject(this._enemies, enemy);
-                    }
-                    else {
-                        enemy.playerHitLocationY = this._player.getPositionY();
-                        if (enemy.getPositionY() > enemy.playerHitLocationY) {
-                            enemy.setPositionY(enemy.getPositionY() - (enemy.getPositionY() - enemy.playerHitLocationY) * 0.07);
-                        } else {
-                            enemy.setPositionY(enemy.getPositionY() + (enemy.playerHitLocationY - enemy.getPositionY()) * 0.07);
-                        }
-                        enemy.setPositionX(enemy.getPositionX() - (20*LAYER_SPEED * dt));
-                    }
-
-                    if (this._enemies.length == 0) {
-                        this._isTargetDestroyed = false;
-                    }
-                }
-            } */
-
             if (this._isTargetDestroyed) {
 
                 if (isTargetHitNow) {
