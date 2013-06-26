@@ -9,21 +9,15 @@ var s_b01 = dirArt + "b01.png";
 var s_menuTitle = dirArt + "menuTitle.png";
 var s_flare = dirArt + "flare.jpg";
 var s_textureTransparentPack = dirArt + "textureTransparentPack.png";
-
 var s_player = dirArt + "player.png";
 var s_enemy1 = dirArt + "enemy1.png";
 var s_enemy2 = dirArt + "enemy2.png";
-
-var s_player_bullet = dirArt + "bullet.png";
-var s_enemy_bullet = dirArt + "bullet-enemy.png";
-
 var s_static_background = dirArt + "bg-static.png";
 var s_star_background = dirArt + "bg-stars-paralex.png";
 var s_top_bar = dirArt + "top-bar.png";
 var s_bottom_bar = dirArt + "bottom-bar.png";
 var s_score_text = dirArt + "score-text.png";
 var s_lives_text = dirArt + "lives-text.png";
-
 var s_explosion = dirArt + "explosion-particle.png";
 var s_fire_particle = dirArt + "ship-exhaust-fire-particle.png";
 var s_cloud = dirArt + "clouds.png";
@@ -74,16 +68,24 @@ var g_ressources = [
 	{type:"image", src:s_score_text},
 	{type:"image", src:s_lives_text},
 
-    {type:"image", src:s_player_bullet},
-    {type:"image", src:s_enemy_bullet},
-
-    {type:"image", src:s_explosion},
+	{type:"image", src:s_explosion},
 	{type:"image", src:s_fire_particle}
 ];
 
 var g_clouds = [
-    {type:"image", src:s_cloud},
-    {type:"image", src:s_cloud},
-    {type:"image", src:s_cloud},
-    {type:"image", src:s_cloud}
-];
+    {src:s_cloud},
+    {src:s_cloud},
+    {src:s_cloud},
+    {src:s_cloud}
+]
+
+var g_buildings = {
+    "location1":[
+        s_location1Building1,
+        s_location1Building2
+    ],
+    "location2":[
+        s_location1Building1,
+        s_location1Building2
+    ]
+}
