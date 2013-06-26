@@ -71,6 +71,7 @@ var GameLayer = cc.Layer.extend({
                 bullet.setPositionX(bullet.getPositionX() + ((MOVEMENT_SPEED + this._player.bulletSpeed) * dt));
             }
 
+            var isTargetHitNow = false;
             for (i = 0; i < this._player.bullets.length; i++) {
                 bullet = this._player.bullets[i];
                 var bulletRect = bullet.getBoundingBox();
@@ -78,8 +79,10 @@ var GameLayer = cc.Layer.extend({
                     var enemy = this._enemies[j];
                     var enemyRect = enemy.getBoundingBox();
                     if (cc.rectIntersectsRect(bulletRect, enemyRect)) {
-                        if (enemy.isTarget)
+                        if (enemy.isTarget) {
                             this._isTargetDestroyed = true;
+                            isTargetHitNow = true;
+                        }
                         cc.ArrayRemoveObject(this._player.bullets, bullet);
                         bullet.removeFromParent();
                         var blast = cc.Sprite.create(s_explosion);
@@ -97,20 +100,20 @@ var GameLayer = cc.Layer.extend({
                 }
             }
 
-            if (this._isTargetDestroyed) {
+            /*if (this._isTargetDestroyed) {
+                var closestEnemy = 0;
                 for (j = 0; j < this._enemies.length; j++) {
                     enemy = this._enemies[j];
-                    if (enemy.getPositionX() + enemy.getContentSize().width / 2 <
-                        this._player.getPositionX() - this._player.getContentSize().width / 2) {
+                    if (enemy.getPositionX() + enemy.getContentSize().width / 2 < this._player.getPositionX() - this._player.getContentSize().width / 2) {
                         enemy.removeFromParent();
                         cc.ArrayRemoveObject(this._enemies, enemy);
                     }
                     else {
                         enemy.playerHitLocationY = this._player.getPositionY();
                         if (enemy.getPositionY() > enemy.playerHitLocationY) {
-                            enemy.setPositionY(enemy.getPositionY() - (enemy.getPositionY() - enemy.playerHitLocationY) * 0.02);
+                            enemy.setPositionY(enemy.getPositionY() - (enemy.getPositionY() - enemy.playerHitLocationY) * 0.07);
                         } else {
-                            enemy.setPositionY(enemy.getPositionY() + (enemy.playerHitLocationY - enemy.getPositionY()) * 0.02);
+                            enemy.setPositionY(enemy.getPositionY() + (enemy.playerHitLocationY - enemy.getPositionY()) * 0.07);
                         }
                         enemy.setPositionX(enemy.getPositionX() - (20*LAYER_SPEED * dt));
                     }
@@ -119,6 +122,44 @@ var GameLayer = cc.Layer.extend({
                         this._isTargetDestroyed = false;
                     }
                 }
+            } */
+
+            if (this._isTargetDestroyed) {
+
+                if (isTargetHitNow) {
+                    var closestEnemy = 0;
+                    for (j = 0; j < this._enemies.length; j++) {
+                        enemy = this._enemies[j];
+                        enemy.playerHitLocationY = this._player.getPositionY();
+                        enemy.runMoveRatioY = 0.05;
+                        if (Math.abs(this._enemies[closestEnemy].playerHitLocationY - this._enemies[closestEnemy].getPositionY()) >
+                            Math.abs(enemy.playerHitLocationY - enemy.getPositionY())) {
+                            closestEnemy = j;
+                        }
+                    }
+                    this._enemies[closestEnemy].runMoveRatioY = 0.08;
+                }
+
+                for (j = 0; j < this._enemies.length; j++) {
+                    enemy = this._enemies[j];
+                    if (enemy.getPositionX() + enemy.getContentSize().width / 2 < this._player.getPositionX() - this._player.getContentSize().width / 2) {
+                        enemy.removeFromParent();
+                        cc.ArrayRemoveObject(this._enemies, enemy);
+                    }
+                    else {
+                        if (enemy.getPositionY() > enemy.playerHitLocationY) {
+                            enemy.setPositionY(enemy.getPositionY() - (enemy.getPositionY() - enemy.playerHitLocationY) * enemy.runMoveRatioY);
+                        } else {
+                            enemy.setPositionY(enemy.getPositionY() + (enemy.playerHitLocationY - enemy.getPositionY()) * enemy.runMoveRatioY);
+                        }
+                        enemy.setPositionX(enemy.getPositionX() - (20*LAYER_SPEED * dt));
+                    }
+
+                    if (this._enemies.length == 0) {
+                        this._isTargetDestroyed = false;
+                    }
+                }
+
             }
         },
 
