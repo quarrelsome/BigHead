@@ -12,4 +12,10 @@ var EnemyType = [
 	{
         type:2,
         scoreValue:25
-    }];
+    }
+];
+
+var BarSize = {
+    topBar: { width: 960, height: 76 },
+    bottomBar: { width: 960, height: 114 }
+};
