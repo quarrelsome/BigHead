@@ -8,12 +8,13 @@ LAYER_SPEED = 100;
 
 var GameLayer = cc.Layer.extend({
         _player: null,
+        _time: 0,
         _enemies: [],
         _blasts: [],
         _enemiesDestroyed: 0,
         _isTargetDestroyed: false,
         _isEnemyPresent: false,
-        _isFireEnabled: true,
+        _isFireEnabled: false,
 
         _cloudParallax: null,
         _interchangeableParallax: null,
@@ -84,91 +85,22 @@ var GameLayer = cc.Layer.extend({
         },
 
         update: function (dt) {
+            this._time += dt;
+
             this._interchangeableParallax.update();
             this._cloudParallax.update();
             this._horizon1Parallax.update();
             this._horizon2Parallax.update();
             this._trees1Parallax.update();
+
             this._player.update(dt);
-
             this.moveLayer(dt);
-            //this.schedule(this.removeBlast, 0.75);
 
-            for (var i = 0; i < this._player.bullets.length; i++) {
-                var bullet = this._player.bullets[i];
-                if (bullet.getPositionX() - this._player.getPositionX() > winSize.width) {
-                    cc.ArrayRemoveObject(this._player.bullets, bullet);
-                    bullet.removeFromParent();
-                }
-                bullet.setPositionX(bullet.getPositionX() + ((MOVEMENT_SPEED + this._player.bulletSpeed) * dt));
-            }
+            if (this._time % 0.4 <= 0.15)
+                this.removeBlast();
 
-            var isTargetHitNow = false;
-            for (i = 0; i < this._player.bullets.length; i++) {
-                bullet = this._player.bullets[i];
-                var bulletRect = bullet.getBoundingBox();
-                for (var j = 0; j < this._enemies.length; j++) {
-                    var enemy = this._enemies[j];
-                    var enemyRect = enemy.getBoundingBox();
-                    if (cc.rectIntersectsRect(bulletRect, enemyRect)) {
-                        if (enemy.isTarget) {
-                            this._isTargetDestroyed = true;
-                            isTargetHitNow = true;
-                        }
-                        cc.ArrayRemoveObject(this._player.bullets, bullet);
-                        bullet.removeFromParent();
-                        var blast = cc.Sprite.create(s_explosion);
-                        blast.setPosition(enemy.getPositionX(), enemy.getPositionY());
-                        this.addChild(blast);
-                        this._blasts.push(blast);
-                        cc.ArrayRemoveObject(this._enemies, enemy);
-                        enemy.removeFromParent();
-
-                        this._enemiesDestroyed++;
-                        if (this._enemiesDestroyed >= 100) {
-
-                        }
-                    }
-                }
-            }
-
-            if (this._isTargetDestroyed) {
-
-                if (isTargetHitNow) {
-                    var closestEnemy = 0;
-                    for (j = 0; j < this._enemies.length; j++) {
-                        enemy = this._enemies[j];
-                        enemy.playerHitLocationY = this._player.getPositionY();
-                        enemy.runMoveRatioY = 0.05;
-                        if (Math.abs(this._enemies[closestEnemy].playerHitLocationY - this._enemies[closestEnemy].getPositionY()) >
-                            Math.abs(enemy.playerHitLocationY - enemy.getPositionY())) {
-                            closestEnemy = j;
-                        }
-                    }
-                    this._enemies[closestEnemy].runMoveRatioY = 0.08;
-                }
-
-                for (j = 0; j < this._enemies.length; j++) {
-                    enemy = this._enemies[j];
-                    if (enemy.getPositionX() + enemy.getContentSize().width / 2 < this._player.getPositionX() - this._player.getContentSize().width / 2) {
-                        enemy.removeFromParent();
-                        cc.ArrayRemoveObject(this._enemies, enemy);
-                    }
-                    else {
-                        if (enemy.getPositionY() > enemy.playerHitLocationY) {
-                            enemy.setPositionY(enemy.getPositionY() - (enemy.getPositionY() - enemy.playerHitLocationY) * enemy.runMoveRatioY);
-                        } else {
-                            enemy.setPositionY(enemy.getPositionY() + (enemy.playerHitLocationY - enemy.getPositionY()) * enemy.runMoveRatioY);
-                        }
-                        enemy.setPositionX(enemy.getPositionX() - (20*LAYER_SPEED * dt));
-                    }
-
-                    if (this._enemies.length == 0) {
-                        this._isTargetDestroyed = false;
-                    }
-                }
-
-            }
+            this.updateBulletPosition(dt);
+            this.detectCollision(dt);
         },
 
         onKeyDown: function (e) {
@@ -206,7 +138,6 @@ var GameLayer = cc.Layer.extend({
             if (this._enemies.length == 0) {
                 this.addEnemy();
             }
-            else {
                 var enemyLocation = this._enemies[0].getPositionX() + this._enemies[0].getContentSize().width;
 
                 if (this._enemies.length > 1) {
@@ -216,11 +147,12 @@ var GameLayer = cc.Layer.extend({
                             enemyLocation = otherEnemyLocation;
                     }
                 }
-            }
 
-            if (this._player.getPositionX() + winSize.width <= enemyLocation) {
-                this.setPositionX(this.getPositionX() - (LAYER_SPEED * MOVEMENT_SPEED));
-                this._player.setPositionX(this._player.getPositionX() + (LAYER_SPEED * MOVEMENT_SPEED));
+            if (this._enemies.length == 0 || this._player.getPositionX() + winSize.width <= enemyLocation) {
+                this.setPositionX(this.getPositionX() - (LAYER_SPEED * dt));
+                this._player.setPositionX(this._player.getPositionX() + (LAYER_SPEED * dt));
+            } else {
+                this._isFireEnabled = true;
             }
         },
 
@@ -249,9 +181,89 @@ var GameLayer = cc.Layer.extend({
                 cc.ArrayRemoveObject(this._blasts, blast);
                 blast.removeFromParent();
             }
+        },
+
+        updateBulletPosition: function (dt) {
+            for (var i = 0; i < this._player.bullets.length; i++) {
+                var bullet = this._player.bullets[i];
+                if (bullet.getPositionX() - this._player.getPositionX() > winSize.width) {
+                    cc.ArrayRemoveObject(this._player.bullets, bullet);
+                    bullet.removeFromParent();
+                }
+                bullet.setPositionX(bullet.getPositionX() + ((MOVEMENT_SPEED + this._player.bulletSpeed) * dt));
+            }
+        },
+
+        detectCollision: function (dt) {
+            var isTargetHitNow = false;
+            for (var i = 0; i < this._player.bullets.length; i++) {
+                var bullet = this._player.bullets[i];
+                var bulletRect = bullet.getBoundingBox();
+                for (var j = 0; j < this._enemies.length; j++) {
+                    var enemy = this._enemies[j];
+                    var enemyRect = enemy.getBoundingBox();
+                    if (cc.rectIntersectsRect(bulletRect, enemyRect)) {
+                        if (enemy.isTarget) {
+                            this._isTargetDestroyed = true;
+                            isTargetHitNow = true;
+                        }
+                        cc.ArrayRemoveObject(this._player.bullets, bullet);
+                        bullet.removeFromParent();
+                        var blast = cc.Sprite.create(s_explosion);
+                        blast.setPosition(enemy.getPositionX(), enemy.getPositionY());
+                        this.addChild(blast);
+                        this._blasts.push(blast);
+                        cc.ArrayRemoveObject(this._enemies, enemy);
+                        enemy.removeFromParent();
+
+                        this._enemiesDestroyed++;
+                        if (this._enemiesDestroyed >= 100) {
+
+                        }
+                    }
+                }
+            }
+
+            if (this._isTargetDestroyed) {
+                this._isFireEnabled = false;
+                if (isTargetHitNow) {
+                    var closestEnemy = 0;
+                    for (j = 0; j < this._enemies.length; j++) {
+                        enemy = this._enemies[j];
+                        enemy.playerHitLocationY = this._player.getPositionY();
+                        enemy.runMoveRatioY = 0.05;
+                        if (Math.abs(this._enemies[closestEnemy].playerHitLocationY - this._enemies[closestEnemy].getPositionY()) >
+                            Math.abs(enemy.playerHitLocationY - enemy.getPositionY())) {
+                            closestEnemy = j;
+                        }
+                    }
+                    this._enemies[closestEnemy].runMoveRatioY = 0.08;
+                }
+
+                for (j = 0; j < this._enemies.length; j++) {
+                    enemy = this._enemies[j];
+                    if (enemy.getPositionX() + enemy.getContentSize().width / 2 < this._player.getPositionX() - this._player.getContentSize().width / 2) {
+                        enemy.removeFromParent();
+                        cc.ArrayRemoveObject(this._enemies, enemy);
+                    }
+                    else {
+                        if (enemy.getPositionY() > enemy.playerHitLocationY) {
+                            enemy.setPositionY(enemy.getPositionY() - (enemy.getPositionY() - enemy.playerHitLocationY) * enemy.runMoveRatioY);
+                        } else {
+                            enemy.setPositionY(enemy.getPositionY() + (enemy.playerHitLocationY - enemy.getPositionY()) * enemy.runMoveRatioY);
+                        }
+                        enemy.setPositionX(enemy.getPositionX() - (20*LAYER_SPEED * dt));
+                    }
+
+                    if (this._enemies.length == 0) {
+                        this._isTargetDestroyed = false;
+                    }
+                }
+
+            }
         }
-    })
-    ;
+    }
+);
 
 GameLayer.create = function (scene) {
     var sg = new GameLayer();
