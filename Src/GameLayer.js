@@ -11,10 +11,14 @@ var GameLayer = cc.Layer.extend({
         _time: 0,
         _enemies: [],
         _blasts: [],
+
         _enemiesDestroyed: 0,
+        _targetsDestroyed: 0,
+
         _enemyTotalFireWait: 0.5,
         _isTargetDestroyed: false,
         _isEnemyPresent: false,
+
         _isFireEnabled: false,
         _isEnemyFireEnabled: false,
 
@@ -98,9 +102,6 @@ var GameLayer = cc.Layer.extend({
             this._player.update(dt);
             this.moveLayer(dt);
 
-            if (this._time % 0.4 <= 0.15)
-                this.removeBlast();
-
             this.enemyFire(dt);
             this.updateBulletPosition(dt);
             this.updateEnemyBulletPosition(dt);
@@ -153,12 +154,13 @@ var GameLayer = cc.Layer.extend({
                     }
                 }
 
-            if (this._enemies.length == 0 || this._player.getPositionX() + winSize.width <= enemyLocation) {
+            if ((this._enemies.length == 0) || (this._player.getPositionX() + winSize.width <= enemyLocation)) {
                 this.setPositionX(this.getPositionX() - (LAYER_SPEED * dt));
                 this._player.setPositionX(this._player.getPositionX() + (LAYER_SPEED * dt));
             } else {
                 this._isFireEnabled = true;
-                this._isEnemyFireEnabled = true;
+                if (!this._isTargetDestroyed)
+                    this._isEnemyFireEnabled = true;
             }
         },
 
@@ -241,19 +243,25 @@ var GameLayer = cc.Layer.extend({
                         if (enemy.isTarget) {
                             this._isTargetDestroyed = true;
                             isTargetHitNow = true;
+                            this._targetsDestroyed++;
                         }
                         cc.ArrayRemoveObject(this._player.bullets, bullet);
                         bullet.removeFromParent();
                         var blast = cc.Sprite.create(s_explosion);
                         blast.setPosition(enemy.getPositionX(), enemy.getPositionY());
                         this.addChild(blast);
-                        this._blasts.push(blast);
+                        blast.runAction(cc.Sequence.create(cc.FadeOut.create(0.5),
+                            cc.CallFunc.create(function(blast) {
+                                blast.removeFromParent();
+                            }, this)
+                        ));
                         cc.ArrayRemoveObject(this._enemies, enemy);
                         enemy.removeFromParent();
 
                         this._enemiesDestroyed++;
-                        if (this._enemiesDestroyed >= 100) {
-
+                        if (this._targetsDestroyed >= 10) {
+                            var scene = GameOver.scene(true);
+                            cc.Director.getInstance().replaceScene(scene);
                         }
                     }
                 }
@@ -261,18 +269,21 @@ var GameLayer = cc.Layer.extend({
 
             if (this._isTargetDestroyed) {
                 this._isFireEnabled = false;
+                this._isEnemyFireEnabled = false;
                 if (isTargetHitNow) {
-                    var closestEnemy = 0;
-                    for (j = 0; j < this._enemies.length; j++) {
-                        enemy = this._enemies[j];
-                        enemy.playerHitLocationY = this._player.getPositionY();
-                        enemy.runMoveRatioY = 0.05;
-                        if (Math.abs(this._enemies[closestEnemy].playerHitLocationY - this._enemies[closestEnemy].getPositionY()) >
-                            Math.abs(enemy.playerHitLocationY - enemy.getPositionY())) {
-                            closestEnemy = j;
+                    if (this._enemies.length > 0) {
+                        var closestEnemy = 0;
+                        for (j = 0; j < this._enemies.length; j++) {
+                            enemy = this._enemies[j];
+                            enemy.playerHitLocationY = this._player.getPositionY();
+                            enemy.runMoveRatioY = 0.03;
+                            if (Math.abs(this._enemies[closestEnemy].playerHitLocationY - this._enemies[closestEnemy].getPositionY()) >
+                                Math.abs(enemy.playerHitLocationY - enemy.getPositionY())) {
+                                closestEnemy = j;
+                            }
                         }
+                        this._enemies[closestEnemy].runMoveRatioY = 0.07;
                     }
-                    this._enemies[closestEnemy].runMoveRatioY = 0.08;
                 }
 
                 for (j = 0; j < this._enemies.length; j++) {
@@ -287,16 +298,49 @@ var GameLayer = cc.Layer.extend({
                         } else {
                             enemy.setPositionY(enemy.getPositionY() + (enemy.playerHitLocationY - enemy.getPositionY()) * enemy.runMoveRatioY);
                         }
-                        enemy.setPositionX(enemy.getPositionX() - (20*LAYER_SPEED * dt));
-                    }
-
-                    if (this._enemies.length == 0) {
-                        this._isTargetDestroyed = false;
+                        enemy.setPositionX(enemy.getPositionX() - (15*LAYER_SPEED * dt));
                     }
                 }
 
+                if (this._enemies.length == 0) {
+                    this._isTargetDestroyed = false;
+                }
             }
-        },
+
+            var playerRect = this._player.getBoundingBox();
+            for (i = 0; i < this._enemies.length; i++) {
+                enemy = this._enemies[i];
+                enemyRect = enemy.getBoundingBox();
+                if (cc.rectIntersectsRect(playerRect, enemyRect)) {
+                    enemy.removeFromParent();
+                    cc.ArrayRemoveObject(this._enemies, enemy);
+                    if (this._enemies.length == 0) {
+                        this._isTargetDestroyed = false;
+                    }
+                    blast = cc.Sprite.create(s_explosion);
+                    blast.setPosition(enemy.getPositionX(), enemy.getPositionY());
+                    this.addChild(blast);
+                    blast.runAction(cc.Sequence.create(cc.FadeOut.create(0.5),
+                        cc.CallFunc.create(function(blast) {
+                            blast.removeFromParent();
+                        })
+                    ));
+                    this._player.life -= 1;
+                    this._player.runAction(cc.Blink.create(0.5, 3));
+                }
+
+                for (j = 0; j < enemy.bullets.length; j++) {
+                    bullet = enemy.bullets[j];
+                    bulletRect = bullet.getBoundingBox();
+                    if (cc.rectIntersectsRect(playerRect, bulletRect)) {
+                        cc.ArrayRemoveObject(enemy.bullets, bullet);
+                        bullet.removeFromParent();
+                        this._player.life -= 1;
+                        this._player.runAction(cc.Blink.create(0.5,3));
+                    }
+                }
+            }
+        }
     }
 );
 
