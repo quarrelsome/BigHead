@@ -19,7 +19,7 @@ var Enemy = cc.Sprite.extend({
 		}
 		 
         this.initWithTexture(enemyTexture);
-        this.enemyFireWaitCompleted = getRandomInt(-1, 0);
+        this.enemyFireWaitCompleted = getRandomInt(-2, -1);
         this.bulletSpeed = getRandomInt(400, 800);
 		this.setTag(this.tag);
 	},
