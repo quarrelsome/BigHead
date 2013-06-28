@@ -329,7 +329,7 @@ var GameLayer = cc.Layer.extend({
                         })
                     ));
                     this._player.life -= 1;
-                    this._player.runAction(cc.Blink.create(0.5, 3));
+                    this._player.blinkNumber = 16;
                 }
 
                 for (j = 0; j < enemy.bullets.length; j++) {
@@ -339,7 +339,7 @@ var GameLayer = cc.Layer.extend({
                         cc.ArrayRemoveObject(enemy.bullets, bullet);
                         bullet.removeFromParent();
                         this._player.life -= 1;
-                        this._player.runAction(cc.Blink.create(0.5,3));
+                        this._player.blinkNumber = 16;
                     }
                 }
             }
