@@ -4,6 +4,8 @@ var Player = cc.Sprite.extend({
 	bulletSpeed: 900,
 	tag: 1,
     bullets: [],
+    isBlinking: false,
+    blinkNumber: 0,
 
 	ctor: function() {
         this._super();
@@ -22,6 +24,23 @@ var Player = cc.Sprite.extend({
 			position.y -= dt * this.speed;
 		}
 		this.setPosition(position);
+
+        if (this.blinkNumber > 0) {
+            if ((this.blinkNumber / 0.5) % 8 < 1) {
+                this.setColor(new cc.Color3B(255,255,255));
+                this.setVisible(false);
+            }
+            else {
+                this.setColor(new cc.Color3B(255,0,0));
+                this.setVisible(true);
+            }
+            this.blinkNumber -= 0.5;
+
+            if (this.blinkNumber == 0) {
+                this.setColor(new cc.Color3B(255,255,255));
+            }
+
+        }
 	},
 
     shoot: function () {
@@ -30,5 +49,10 @@ var Player = cc.Sprite.extend({
         bullet.setTag(2);
         this.bullets.push(bullet);
         return bullet;
+    },
+
+    startBlinking: function () {
+        this.isBlinking = true;
+
     }
 });
