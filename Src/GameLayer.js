@@ -5,6 +5,7 @@ Z_SCROLL = 10;
 Z_MOUNTAINS = 0;
 MOVEMENT_SPEED = 0.05;
 LAYER_SPEED = 100;
+LAYER_SPEED_INCREASE_FACTOR = 20;
 SKY_CHANGE_FACTOR = 5000;
 
 var GameLayer = cc.Layer.extend({
@@ -28,6 +29,7 @@ var GameLayer = cc.Layer.extend({
         _horizon1Parallax:null,
         _horizon2Parallax:null,
         _trees1Parallax:null,
+        _buildingParallax:null,
         _distanceTravelled:0,
 
         init: function (scene) {
@@ -37,6 +39,7 @@ var GameLayer = cc.Layer.extend({
                 this.initInterchangeableLayer(scene);
                 this.initCloudLayer(scene);
                 this.initCommonLayer(scene);
+                this.initBuildingLayer(scene);
                 this.initPlayer();
                 this.enableEvents();
                 this.scheduleUpdate();
@@ -69,6 +72,12 @@ var GameLayer = cc.Layer.extend({
             scene.addChild(this._cloudParallax);
         },
 
+        initBuildingLayer: function (scene) {
+            this._buildingParallax = BuildingParallaxLayer.create(g_buildings);
+            this._buildingParallax.setAnchorPoint(cc.p(0, 0));
+            scene.addChild(this._buildingParallax);
+        },
+
         initCommonLayer: function (scene) {
             this._horizon1Parallax = CommonParallaxLayer.create(s_horizon1);
             this._horizon1Parallax.setAnchorPoint(cc.p(0,0));
@@ -98,6 +107,7 @@ var GameLayer = cc.Layer.extend({
             this._horizon1Parallax.update(dt*(LAYER_SPEED-50));
             this._horizon2Parallax.update(dt*(LAYER_SPEED-40));
             this._trees1Parallax.update(dt*(LAYER_SPEED-30));
+            this._buildingParallax.update(dt*(LAYER_SPEED-20));
 
             this._player.update(dt);
             this.moveLayer(dt);
@@ -261,7 +271,7 @@ var GameLayer = cc.Layer.extend({
                         enemy.removeFromParent();
 
                         this._enemiesDestroyed++;
-                        LAYER_SPEED+=20;
+                        LAYER_SPEED+=LAYER_SPEED_INCREASE_FACTOR;
                         if (this._targetsDestroyed >= 10) {
                             var scene = GameOver.scene(true);
                             cc.Director.getInstance().replaceScene(scene);

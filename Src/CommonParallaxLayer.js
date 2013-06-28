@@ -22,8 +22,9 @@ var CommonParallaxLayer = cc.Layer.extend({
     {
         for(var key in this._children){
             this._children[key].setPositionX(this._children[key].getPositionX() - layerMovementSpeed);
+            var a = this._children[key].getPositionX()+winSize.width;
             if(this._children[key].getPositionX()+winSize.width<=0)
-                this._children[key].setPosition(winSize.width, 0);
+                this._children[key].setPosition(winSize.width+a, 0);
         }
     }
 });
