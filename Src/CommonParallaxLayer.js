@@ -1,10 +1,8 @@
 var CommonParallaxLayer = cc.Layer.extend({
-    _movementSpeed:0,
 
-    init:function(horizonImage, movementSpeed) {
+    init:function(horizonImage) {
         var bRet = false;
         if (this._super()) {
-            this._movementSpeed = movementSpeed;
             for(var i=0;i<2;i++){
                 var horizonSprite = cc.Sprite.create(horizonImage);
                 horizonSprite.setAnchorPoint(cc.p(0,0));
@@ -20,10 +18,10 @@ var CommonParallaxLayer = cc.Layer.extend({
 
         return bRet;
     },
-    update : function()
+    update : function(layerMovementSpeed)
     {
         for(var key in this._children){
-            this._children[key].setPositionX(this._children[key].getPositionX() - LAYER_SPEED*this._movementSpeed);
+            this._children[key].setPositionX(this._children[key].getPositionX() - layerMovementSpeed);
             if(this._children[key].getPositionX()+winSize.width<=0)
                 this._children[key].setPosition(winSize.width, 0);
         }
@@ -32,7 +30,7 @@ var CommonParallaxLayer = cc.Layer.extend({
 
 CommonParallaxLayer.create = function (horizonImage, movementSpeed) {
     var sg = new CommonParallaxLayer();
-    if (sg && sg.init(horizonImage, movementSpeed)) {
+    if (sg && sg.init(horizonImage)) {
         return sg;
     }
     return null;
