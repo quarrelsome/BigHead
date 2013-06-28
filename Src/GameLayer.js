@@ -5,6 +5,7 @@ Z_SCROLL = 10;
 Z_MOUNTAINS = 0;
 MOVEMENT_SPEED = 0.05;
 LAYER_SPEED = 100;
+SKY_CHANGE_FACTOR = 5000;
 
 var GameLayer = cc.Layer.extend({
         _player: null,
@@ -28,6 +29,7 @@ var GameLayer = cc.Layer.extend({
         _horizon2Parallax:null,
         _trees1Parallax:null,
         _distanceTravelled:0,
+        _isQuestionAppeared: false,
 
 
         init: function (scene) {
@@ -58,19 +60,19 @@ var GameLayer = cc.Layer.extend({
         },
 
         initInterchangeableLayer: function(scene){
-            this._interchangeableParallax = InterchangeableParallaxLayer.create(g_sky);
+            this._interchangeableParallax = InterchangeableParallaxLayer.create(g_sky, SKY_CHANGE_FACTOR);
             this._interchangeableParallax.setAnchorPoint(cc.p(0,0));
             scene.addChild(this._interchangeableParallax);
         },
 
         initCloudLayer: function (scene) {
-            this._cloudParallax = CloudParallaxLayer.create(g_clouds, MOVEMENT_SPEED - 0.01);
+            this._cloudParallax = CloudParallaxLayer.create(g_clouds, MOVEMENT_SPEED - 0.045);
             this._cloudParallax.setAnchorPoint(cc.p(0, 0));
             scene.addChild(this._cloudParallax);
         },
 
         initCommonLayer: function (scene) {
-            this._horizon1Parallax = CommonParallaxLayer.create(s_horizon1, MOVEMENT_SPEED - 0.035);
+            this._horizon1Parallax = CommonParallaxLayer.create(s_horizon1, MOVEMENT_SPEED - 0.04);
             this._horizon1Parallax.setAnchorPoint(cc.p(0,0));
             scene.addChild(this._horizon1Parallax);
 
@@ -92,12 +94,14 @@ var GameLayer = cc.Layer.extend({
 
         update: function (dt) {
             this._time += dt;
+            if(!this._isQuestionAppeared){
+                this._interchangeableParallax.update(this._distanceTravelled);
+                this._cloudParallax.update();
+                this._horizon1Parallax.update();
+                this._horizon2Parallax.update();
+                this._trees1Parallax.update();
+            }
 
-            this._interchangeableParallax.update();
-            this._cloudParallax.update();
-            this._horizon1Parallax.update();
-            this._horizon2Parallax.update();
-            this._trees1Parallax.update();
 
             this._player.update(dt);
             this.moveLayer(dt);
@@ -157,8 +161,11 @@ var GameLayer = cc.Layer.extend({
             if ((this._enemies.length == 0) || (this._player.getPositionX() + winSize.width <= enemyLocation)) {
                 this.setPositionX(this.getPositionX() - (LAYER_SPEED * dt));
                 this._player.setPositionX(this._player.getPositionX() + (LAYER_SPEED * dt));
+                this._distanceTravelled = Math.round(this._player.getPositionX());
+                this._isQuestionAppeared = false;
             } else {
                 this._isFireEnabled = true;
+                this._isQuestionAppeared = true;
                 if (!this._isTargetDestroyed)
                     this._isEnemyFireEnabled = true;
             }

@@ -10,9 +10,9 @@ var CommonParallaxLayer = cc.Layer.extend({
                 horizonSprite.setAnchorPoint(cc.p(0,0));
                 this.addChild(horizonSprite);
                 if(i==0)
-                    horizonSprite.setPosition(winSize.width / 2, horizonSprite.getContentSize().height/2);
+                    horizonSprite.setPosition(0, 0);
                 else
-                    horizonSprite.setPosition(winSize.width+winSize.width / 2, horizonSprite.getContentSize().height/2);
+                    horizonSprite.setPosition(winSize.width, 0);
             }
             bRet = true;
         }
@@ -24,8 +24,8 @@ var CommonParallaxLayer = cc.Layer.extend({
     {
         for(var key in this._children){
             this._children[key].setPositionX(this._children[key].getPositionX() - LAYER_SPEED*this._movementSpeed);
-            if(this._children[key].getPositionX()+winSize.width / 2<=0)
-                this._children[key].setPosition(winSize.width+winSize.width / 2, this._children[key].getContentSize().height/2);
+            if(this._children[key].getPositionX()+winSize.width<=0)
+                this._children[key].setPosition(winSize.width, 0);
         }
     }
 });
