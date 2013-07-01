@@ -9,8 +9,11 @@ var Enemy = cc.LayerColor.extend({
 	runMoveRatioY: 0,
     enemyFireWaitCompleted: 0,
     bullets: [],
+    displacementTop: 0,
+    displacementBottom: 0,
+    displacementDirection: 0,
 
-	ctor:function (enemyType) {
+	ctor: function (enemyType) {
         this._super();
 
 //		var enemyTexture;
@@ -32,6 +35,34 @@ var Enemy = cc.LayerColor.extend({
         this.setContentSize(cc.size(this.ship.getContentSize().width, this.ship.getContentSize().height));
         this.ship.setAnchorPoint(this.getAnchorPoint());
 	},
+
+    configure: function() {
+        this.displacementTop = this.getPositionY() + getRandomInt(20, 30);
+        this.displacementBottom = this.getPositionY() - getRandomInt(20,30);
+        cc.log(this.displacementTop + " " + this.displacementBottom + " " + this.displacementDirection);
+    },
+
+    update: function(dt) {
+        if (this.displacementDirection == 0) {
+            cc.log('if ' + dt);
+            var positionY = this.getPositionY() + dt * 20;
+            if (positionY > this.displacementTop) {
+                this.displacementDirection = 1;
+            }
+            else {
+                this.setPositionY(positionY);
+            }
+        }
+        else {
+            positionY = this.getPositionY() - dt * LAYER_SPEED;
+            if (positionY < this.displacementBottom) {
+                this.displacementDirection = 0;
+            }
+            else {
+                this.setPositionY(positionY);
+            }
+        }
+    },
 
     shoot: function () {
         var bullet = cc.Sprite.create(s_enemy_bullet);
