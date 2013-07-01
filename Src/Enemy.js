@@ -25,7 +25,6 @@ var Enemy = cc.LayerColor.extend({
             case 2: this.ship = cc.Sprite.create(s_enemy2); break;
         }
 
-        //this.ship.setPosition(,);
         this.enemyFireWaitCompleted = getRandomInt(-2, -1);
         this.bulletSpeed = getRandomInt(400, 800);
 		this.setTag(this.tag);
