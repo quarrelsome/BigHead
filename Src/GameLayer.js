@@ -109,8 +109,11 @@ var GameLayer = cc.Layer.extend({
             this._trees1Parallax.update(dt*(LAYER_SPEED-30));
             this._buildingParallax.update(dt*(LAYER_SPEED-10),this._distanceTravelled);
 
-            this._player.update(dt);
             this.moveLayer(dt);
+            this._player.update(dt);
+            for (var i=0; i < this._enemies.length; i++) {
+                this._enemies[i].update(dt);
+            }
 
             this.enemyFire(dt);
             this.updateBulletPosition(dt);
@@ -189,6 +192,7 @@ var GameLayer = cc.Layer.extend({
                 enemy.setPosition(this._player.getPositionX() + (winSize.width * 1.25) + enemy.getContentSize().width + xDisplacement, actualY);
                 if (i == 0)
                     enemy.isTarget = true;
+                enemy.configure();
                 this.addChild(enemy);
                 this._enemies.push(enemy);
             }
