@@ -10,9 +10,10 @@ var InterchangeableParallaxLayer = cc.Layer.extend({
             this._skyImages = skyImages;
             this._skyChangeFactor = skyChangeFactor;
             this._skyCurrentFactor = skyChangeFactor;
-            var skySprite = cc.Sprite.create(this._skyImages[this._skyImageLevel].src);
+            var skyTexture = cc.TextureCache.getInstance().addImage(this._skyImages[this._skyImageLevel].src);
+            var skySprite = cc.Sprite.createWithTexture(skyTexture);
             skySprite.setAnchorPoint(cc.p(0,0));
-            skySprite.setPosition(winSize.width / 2, winSize.height / 2);
+            //skySprite.setPosition(0, 0);
             this.addChild(skySprite);
             bRet = true;
         }
@@ -20,15 +21,16 @@ var InterchangeableParallaxLayer = cc.Layer.extend({
 
         return bRet;
     },
-    update : function(distanceTravelled)
+    update : function(dt,distanceTravelled)
     {
-        if(distanceTravelled>this._skyCurrentFactor+750){
+        if(distanceTravelled>this._skyCurrentFactor+1000){
             this._skyCurrentFactor = this._skyCurrentFactor + this._skyChangeFactor;
             this._skyImageLevel+=1;
             var skySprite = cc.Sprite.create(this._skyImages[this._skyImageLevel].src);
             skySprite.setAnchorPoint(cc.p(0,0));
-            skySprite.setPosition(winSize.width / 2, winSize.height / 2);
+            //skySprite.setPosition(0, 0);
             this.addChild(skySprite);
+            this.removeChild(this._children[0]);
         }
     }
 });

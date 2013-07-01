@@ -4,7 +4,8 @@ var CommonParallaxLayer = cc.Layer.extend({
         var bRet = false;
         if (this._super()) {
             for(var i=0;i<2;i++){
-                var horizonSprite = cc.Sprite.create(horizonImage);
+                var horizonTexture = cc.TextureCache.getInstance().addImage(horizonImage);
+                var horizonSprite = cc.Sprite.createWithTexture(horizonTexture);
                 horizonSprite.setAnchorPoint(cc.p(0,0));
                 this.addChild(horizonSprite);
                 if(i==0)

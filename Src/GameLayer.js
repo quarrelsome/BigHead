@@ -30,6 +30,7 @@ var GameLayer = cc.Layer.extend({
         _horizon2Parallax:null,
         _trees1Parallax:null,
         _buildingParallax:null,
+        _trees2Parallax:null,
         _distanceTravelled:0,
 
         init: function (scene) {
@@ -40,6 +41,7 @@ var GameLayer = cc.Layer.extend({
                 this.initCloudLayer(scene);
                 this.initCommonLayer(scene);
                 this.initBuildingLayer(scene);
+                this.initTreeLayer(scene);
                 this.initPlayer();
                 this.enableEvents();
                 this.scheduleUpdate();
@@ -92,6 +94,12 @@ var GameLayer = cc.Layer.extend({
             scene.addChild(this._buildingParallax);
         },
 
+        initTreeLayer: function(scene){
+            this._trees2Parallax = CommonParallaxLayer.create(s_tree2);
+            this._trees2Parallax.setAnchorPoint(cc.p(0,0));
+            scene.addChild(this._trees2Parallax);
+        },
+
         initPlayer: function () {
             this._player = new Player();
             this._player.setPosition(0 - this._player.getContentSize().width / 2, winSize.height / 2);
@@ -102,16 +110,16 @@ var GameLayer = cc.Layer.extend({
         update: function (dt) {
             this._time += dt;
 
-            this._interchangeableParallax.update(this._distanceTravelled);
+            this._interchangeableParallax.update(dt,this._distanceTravelled);
             this._cloudParallax.update(dt*(LAYER_SPEED-60));
             this._horizon1Parallax.update(dt*(LAYER_SPEED-50));
             this._horizon2Parallax.update(dt*(LAYER_SPEED-40));
             this._trees1Parallax.update(dt*(LAYER_SPEED-30));
-            this._buildingParallax.update(dt*(LAYER_SPEED-10),this._distanceTravelled);
+            this._buildingParallax.update(dt*(LAYER_SPEED-20),this._distanceTravelled);
+            this._trees2Parallax.update(dt*(LAYER_SPEED-10));
 
             this._player.update(dt);
             this.moveLayer(dt);
-
             this.enemyFire(dt);
             this.updateBulletPosition(dt);
             this.updateEnemyBulletPosition(dt);

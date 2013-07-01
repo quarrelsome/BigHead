@@ -4,7 +4,8 @@ var CloudParallaxLayer = cc.Layer.extend({
         var bRet = false;
         if (this._super()) {
             for(var key in cloudImages){
-                var cloudSprite = cc.Sprite.create(cloudImages[key].src);
+                var cloudTexture = cc.TextureCache.getInstance().addImage(cloudImages[key].src);
+                var cloudSprite = cc.Sprite.createWithTexture(cloudTexture);
                 cloudSprite.setAnchorPoint(cc.p(0,0));
                 cloudSprite.setPosition(getRandomInt(0,winSize.width-200),getRandomInt(winSize.height/2,winSize.height));
                 this.addChild(cloudSprite);

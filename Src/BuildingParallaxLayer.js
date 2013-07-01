@@ -30,11 +30,11 @@ var BuildingParallaxLayer = cc.Layer.extend({
             var child = this._children[key];
             if(child.getPositionX()+child.getContentSize().width+this.getPositionX()<=0){
                 this.removeChild(child);
-                check=true;
+                this._screenWidth = this._screenWidth + this.createBuilding();
             }
         }
-        if(check)
-            this._screenWidth = this._screenWidth + this.createBuilding();
+//        if(check)
+//            this._screenWidth = this._screenWidth + this.createBuilding();
 
         if(distanceTravelled>this._skyCurrentFactor){
             this._skyCurrentFactor = this._skyCurrentFactor + this._skyChangeFactor;
@@ -43,7 +43,8 @@ var BuildingParallaxLayer = cc.Layer.extend({
     },
     createBuilding: function(){
         var buildings = this._buildings["location"+this._level];
-        var buildingSprite = cc.Sprite.create(buildings[getRandomInt(0,buildings.length-1)]);
+        var buildingTexture = cc.TextureCache.getInstance().addImage(buildings[getRandomInt(0,buildings.length-1)]);
+        var buildingSprite = cc.Sprite.createWithTexture(buildingTexture);
         buildingSprite.setAnchorPoint(cc.p(0,0));
         buildingSprite.setPosition(this._screenWidth,0);
         this.addChild(buildingSprite);
