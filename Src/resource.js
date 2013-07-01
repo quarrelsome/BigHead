@@ -45,6 +45,7 @@ var s_cloud3 = dirArt + "parallax/common/Cloud3-common.png";
 var s_horizon1 = dirArt +"parallax/common/Horizon2-common.png";
 var s_horizon2 = dirArt +"parallax/common/Horizon1-common.png";
 var s_tree1 = dirArt +"parallax/common/Trees1.png";
+var s_tree2 = dirArt +"parallax/common/trees-foreground.png";
 var s_iranSky = dirArt + "parallax/iran/Sky-IR.png";
 var s_location1Building1 = dirArt + "parallax/iran/building-IR-1.png";
 var s_location1Building2 = dirArt + "parallax/iran/building-IR-2.png";
@@ -63,6 +64,12 @@ var s_location2Building4 = dirArt + "parallax/kazakhstan/Building-KH-4.png";
 var s_location2Building5 = dirArt + "parallax/kazakhstan/Building-KH-5.png";
 var s_location2Building6 = dirArt + "parallax/kazakhstan/Building-KH-6.png";
 var s_malaysiaSky = dirArt + "parallax/Malaysia/Sky-MY.png";
+var s_location3Building1 = dirArt + "parallax/Malaysia/Building-MY-1.png";
+var s_location3Building2 = dirArt + "parallax/Malaysia/Building-MY-2.png";
+var s_location3Building3 = dirArt + "parallax/Malaysia/Building-MY-3.png";
+var s_location3Building4 = dirArt + "parallax/Malaysia/Building-MY-4.png";
+var s_location3Building5 = dirArt + "parallax/Malaysia/Building-MY-5.png";
+var s_location3Building6 = dirArt + "parallax/Malaysia/Building-MY-6.png";
 
 var g_mainmenu = [
     {src:s_loading},
@@ -92,9 +99,16 @@ var g_ressources = [
     {src:s_score_text},
 	{src:s_lives_text},
 	{src:s_explosion},
+    {src:s_iranSky},
+    {src:s_kazakhstanSky},
+    {src:s_malaysiaSky},
+    {src:s_cloud1},
+    {src:s_cloud2},
+    {src:s_cloud3},
 	{src:s_horizon1},
     {src:s_horizon2},
     {src:s_tree1},
+    {src:s_tree2},
     {src:s_location1Building1},
     {src:s_location1Building2},
     {src:s_location1Building3},
@@ -109,7 +123,13 @@ var g_ressources = [
     {src:s_location2Building3},
     {src:s_location2Building4},
     {src:s_location2Building5},
-    {src:s_location2Building6}
+    {src:s_location2Building6},
+    {src:s_location3Building1},
+    {src:s_location3Building2},
+    {src:s_location3Building3},
+    {src:s_location3Building4},
+    {src:s_location3Building5},
+    {src:s_location3Building6}
 ];
 
 var g_clouds = [
@@ -145,11 +165,11 @@ var g_buildings = {
         s_location2Building6
     ],
     "location3":[
-        s_location2Building1,
-        s_location2Building2,
-        s_location2Building3,
-        s_location2Building4,
-        s_location2Building5,
-        s_location2Building6
+        s_location3Building1,
+        s_location3Building2,
+        s_location3Building3,
+        s_location3Building4,
+        s_location3Building5,
+        s_location3Building6
     ]
 }
