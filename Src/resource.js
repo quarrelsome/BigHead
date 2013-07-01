@@ -53,9 +53,15 @@ var s_location1Building4 = dirArt + "parallax/iran/building-ir-4.png";
 var s_location1Building5 = dirArt + "parallax/iran/building-ir-5.png";
 var s_location1Building6 = dirArt + "parallax/iran/building-ir-6.png";
 var s_location1Building7 = dirArt + "parallax/iran/building-ir-7.png";
-var s_location1Building8 = dirArt + "parallax/iran/building-ir-9.png";
+var s_location1Building8 = dirArt + "parallax/iran/building-ir-8.png";
 var s_location1Building9 = dirArt + "parallax/iran/building-ir-9.png";
 var s_kazakhstanSky = dirArt + "parallax/kazakhstan/Sky-KH.png";
+var s_location2Building1 = dirArt + "parallax/kazakhstan/Building-KH-1.png";
+var s_location2Building2 = dirArt + "parallax/kazakhstan/Building-KH-2.png";
+var s_location2Building3 = dirArt + "parallax/kazakhstan/Building-KH-3.png";
+var s_location2Building4 = dirArt + "parallax/kazakhstan/Building-KH-4.png";
+var s_location2Building5 = dirArt + "parallax/kazakhstan/Building-KH-5.png";
+var s_location2Building6 = dirArt + "parallax/kazakhstan/Building-KH-6.png";
 var s_malaysiaSky = dirArt + "parallax/Malaysia/Sky-MY.png";
 
 var g_mainmenu = [
@@ -97,7 +103,13 @@ var g_ressources = [
     {src:s_location1Building6},
     {src:s_location1Building7},
     {src:s_location1Building8},
-    {src:s_location1Building9}
+    {src:s_location1Building9},
+    {src:s_location2Building1},
+    {src:s_location2Building2},
+    {src:s_location2Building3},
+    {src:s_location2Building4},
+    {src:s_location2Building5},
+    {src:s_location2Building6}
 ];
 
 var g_clouds = [
@@ -125,14 +137,19 @@ var g_buildings = {
         s_location1Building9
     ],
     "location2":[
-        s_location1Building1,
-        s_location1Building2,
-        s_location1Building3,
-        s_location1Building4,
-        s_location1Building5,
-        s_location1Building6,
-        s_location1Building7,
-        s_location1Building8,
-        s_location1Building9
+        s_location2Building1,
+        s_location2Building2,
+        s_location2Building3,
+        s_location2Building4,
+        s_location2Building5,
+        s_location2Building6
+    ],
+    "location3":[
+        s_location2Building1,
+        s_location2Building2,
+        s_location2Building3,
+        s_location2Building4,
+        s_location2Building5,
+        s_location2Building6
     ]
 }

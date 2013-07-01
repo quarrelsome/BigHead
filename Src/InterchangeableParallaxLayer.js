@@ -22,7 +22,7 @@ var InterchangeableParallaxLayer = cc.Layer.extend({
     },
     update : function(distanceTravelled)
     {
-        if(distanceTravelled>this._skyCurrentFactor){
+        if(distanceTravelled>this._skyCurrentFactor+500){
             this._skyCurrentFactor = this._skyCurrentFactor + this._skyChangeFactor;
             this._skyImageLevel+=1;
             var skySprite = cc.Sprite.create(this._skyImages[this._skyImageLevel].src);

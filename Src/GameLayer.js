@@ -72,12 +72,6 @@ var GameLayer = cc.Layer.extend({
             scene.addChild(this._cloudParallax);
         },
 
-        initBuildingLayer: function (scene) {
-            this._buildingParallax = BuildingParallaxLayer.create(g_buildings);
-            this._buildingParallax.setAnchorPoint(cc.p(0, 0));
-            scene.addChild(this._buildingParallax);
-        },
-
         initCommonLayer: function (scene) {
             this._horizon1Parallax = CommonParallaxLayer.create(s_horizon1);
             this._horizon1Parallax.setAnchorPoint(cc.p(0,0));
@@ -90,6 +84,12 @@ var GameLayer = cc.Layer.extend({
             this._trees1Parallax = CommonParallaxLayer.create(s_tree1);
             this._trees1Parallax.setAnchorPoint(cc.p(0,0));
             scene.addChild(this._trees1Parallax);
+        },
+
+        initBuildingLayer: function (scene) {
+            this._buildingParallax = BuildingParallaxLayer.create(g_buildings, SKY_CHANGE_FACTOR);
+            this._buildingParallax.setAnchorPoint(cc.p(0, 0));
+            scene.addChild(this._buildingParallax);
         },
 
         initPlayer: function () {
@@ -107,7 +107,7 @@ var GameLayer = cc.Layer.extend({
             this._horizon1Parallax.update(dt*(LAYER_SPEED-50));
             this._horizon2Parallax.update(dt*(LAYER_SPEED-40));
             this._trees1Parallax.update(dt*(LAYER_SPEED-30));
-            this._buildingParallax.update(dt*(LAYER_SPEED-20));
+            this._buildingParallax.update(dt*(LAYER_SPEED-10),this._distanceTravelled);
 
             this._player.update(dt);
             this.moveLayer(dt);
@@ -163,12 +163,11 @@ var GameLayer = cc.Layer.extend({
                             enemyLocation = otherEnemyLocation;
                     }
                 }
-
-
+            this._distanceTravelled = this._distanceTravelled + Math.round(LAYER_SPEED * dt);
             if ((this._enemies.length == 0) || (this._player.getPositionX() + winSize.width <= enemyLocation)) {
                 this.setPositionX(this.getPositionX() - (LAYER_SPEED * dt));
                 this._player.setPositionX(this._player.getPositionX() + (LAYER_SPEED * dt));
-                this._distanceTravelled = Math.round(this._player.getPositionX());
+                //this._distanceTravelled = Math.round(this._player.getPositionX());
             } else {
                 this._isFireEnabled = true;
                 if (!this._isTargetDestroyed)

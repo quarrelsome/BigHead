@@ -2,11 +2,15 @@ var BuildingParallaxLayer = cc.Layer.extend({
     _level:1,
     _buildings:null,
     _screenWidth:0,
+    _skyChangeFactor: 0,
+    _skyCurrentFactor: 0,
 
-    init:function(buildings,movementSpeed) {
+    init:function(buildings,skyChangeFactor) {
         var bRet = false;
         if (this._super()) {
             this._buildings = buildings;
+            this._skyChangeFactor = skyChangeFactor;
+            this._skyCurrentFactor = skyChangeFactor;
 
             while(this._screenWidth<=(winSize.width+winSize.width/2)){
                 this._screenWidth = this._screenWidth + this.createBuilding();
@@ -18,13 +22,28 @@ var BuildingParallaxLayer = cc.Layer.extend({
 
         return bRet;
     },
-    update : function(layerMovementSpeed)
+    update : function(layerMovementSpeed,distanceTravelled)
     {
         this.setPositionX(this.getPositionX() - layerMovementSpeed);
+        var check = false;
+        for(var key in this._children){
+            var child = this._children[key];
+            if(child.getPositionX()+child.getContentSize().width+this.getPositionX()<=0){
+                this.removeChild(child);
+                check=true;
+            }
+        }
+        if(check)
+            this._screenWidth = this._screenWidth + this.createBuilding();
+
+        if(distanceTravelled>this._skyCurrentFactor){
+            this._skyCurrentFactor = this._skyCurrentFactor + this._skyChangeFactor;
+            this._level+=1;
+        }
     },
     createBuilding: function(){
         var buildings = this._buildings["location"+this._level];
-        var buildingSprite = cc.Sprite.create(buildings[getRandomInt(0,8)]);
+        var buildingSprite = cc.Sprite.create(buildings[getRandomInt(0,buildings.length-1)]);
         buildingSprite.setAnchorPoint(cc.p(0,0));
         buildingSprite.setPosition(this._screenWidth,0);
         this.addChild(buildingSprite);
@@ -32,9 +51,9 @@ var BuildingParallaxLayer = cc.Layer.extend({
     }
 });
 
-BuildingParallaxLayer.create = function (buildings,movementSpeed) {
+BuildingParallaxLayer.create = function (buildings,skyChangeFactor) {
     var sg = new BuildingParallaxLayer();
-    if (sg && sg.init(buildings)) {
+    if (sg && sg.init(buildings, skyChangeFactor)) {
         return sg;
     }
     return null;
