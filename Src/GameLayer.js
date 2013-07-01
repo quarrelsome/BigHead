@@ -165,7 +165,7 @@ var GameLayer = cc.Layer.extend({
                 }
 
 
-            if ((this._enemies.length == 0) || (this._player.getPositionX() + winSize.width <= enemyLocation)) {
+            if ((this._enemies.length == 0) || (this._player.getPositionX() - this._player.getContentSize().width/2 + winSize.width <= enemyLocation)) {
                 this.setPositionX(this.getPositionX() - (LAYER_SPEED * dt));
                 this._player.setPositionX(this._player.getPositionX() + (LAYER_SPEED * dt));
                 this._distanceTravelled = Math.round(this._player.getPositionX());
@@ -187,7 +187,7 @@ var GameLayer = cc.Layer.extend({
                 var maxY = BarSize.bottomBar.height + ((winSize.height - BarSize.bottomBar.height - BarSize.topBar.height - enemy.getContentSize().height / 2) / totalEnemies * (i + 1));
                 var rangeY = maxY - minY;
                 var actualY = Math.floor((Math.random() * rangeY + 1) + minY);
-                enemy.setPosition(this._player.getPositionX() + (winSize.width * 1.25) + enemy.getContentSize().width / 2 + xDisplacement, actualY);
+                enemy.setPosition(this._player.getPositionX() + (winSize.width * 1.25) + enemy.getContentSize().width + xDisplacement, actualY);
                 if (i == 0)
                     enemy.isTarget = true;
                 this.addChild(enemy);
@@ -251,6 +251,7 @@ var GameLayer = cc.Layer.extend({
                 for (var j = 0; j < this._enemies.length; j++) {
                     var enemy = this._enemies[j];
                     var enemyRect = enemy.getBoundingBox();
+                    cc.log(enemy.getContentSize().height);
                     if (cc.rectIntersectsRect(bulletRect, enemyRect)) {
                         if (enemy.isTarget) {
                             this._isTargetDestroyed = true;
