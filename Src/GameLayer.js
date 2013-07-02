@@ -109,27 +109,32 @@ var GameLayer = cc.Layer.extend({
         },
 
         update: function (dt) {
-            this._time += dt;
+            if(this._distanceTravelled<30000){
+                this._time += dt;
+                this._interchangeableParallax.update(dt,this._distanceTravelled);
+                this._cloudParallax.update(dt*(LAYER_SPEED-60));
+                this._horizon1Parallax.update(dt*(LAYER_SPEED-50));
+                this._horizon2Parallax.update(dt*(LAYER_SPEED-40));
+                this._trees1Parallax.update(dt*(LAYER_SPEED-30));
+                this._buildingParallax.update(dt*(LAYER_SPEED-20),this._distanceTravelled);
+                this._trees2Parallax.update(dt*(LAYER_SPEED-10));
 
-            this._interchangeableParallax.update(dt,this._distanceTravelled);
-            this._cloudParallax.update(dt*(LAYER_SPEED-60));
-            this._horizon1Parallax.update(dt*(LAYER_SPEED-50));
-            this._horizon2Parallax.update(dt*(LAYER_SPEED-40));
-            this._trees1Parallax.update(dt*(LAYER_SPEED-30));
-            this._buildingParallax.update(dt*(LAYER_SPEED-20),this._distanceTravelled);
-            this._trees2Parallax.update(dt*(LAYER_SPEED-10));
+                this.moveLayer(dt);
+                this._player.update(dt);
+                for (var i=0; i < this._enemies.length; i++) {
+                    this._enemies[i].update(dt);
+                }
 
-            this.moveLayer(dt);
-            this._player.update(dt);
-            for (var i=0; i < this._enemies.length; i++) {
-                this._enemies[i].update(dt);
+                this.enemyFire(dt);
+                this.updateBulletPosition(dt);
+                this.updateEnemyBulletPosition(dt);
+                this.detectCollision(dt);
+                this._distanceTravelled = this._distanceTravelled + Math.round(LAYER_SPEED * dt);
             }
-
-            this.enemyFire(dt);
-            this.updateBulletPosition(dt);
-            this.updateEnemyBulletPosition(dt);
-            this.detectCollision(dt);
-            this._distanceTravelled = this._distanceTravelled + Math.round(LAYER_SPEED * dt);
+            else{
+                var scene = GameOver.scene(true);
+                cc.Director.getInstance().replaceScene(scene);
+            }
         },
 
         onKeyDown: function (e) {
@@ -284,10 +289,6 @@ var GameLayer = cc.Layer.extend({
 
                         this._enemiesDestroyed++;
                         LAYER_SPEED+=LAYER_SPEED_INCREASE_FACTOR;
-                        if (this._targetsDestroyed >= 10) {
-                            var scene = GameOver.scene(true);
-                            cc.Director.getInstance().replaceScene(scene);
-                        }
                     }
                 }
             }
