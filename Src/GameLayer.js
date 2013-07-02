@@ -8,6 +8,9 @@ LAYER_SPEED = 100;
 LAYER_SPEED_INCREASE_FACTOR = 40;
 LOCATION_CHANGE_FACTOR = 10000;
 LANDMARK_PLACEMENT_FACTOR = 2000;
+ENEMY_VERTICAL_SPEED = 80;
+ENEMY_SPEED_INCREASE_FACTOR = 2;
+ENEMY_WAIT_TIME_FACTOR = 0;
 
 var GameLayer = cc.Layer.extend({
         _player: null,
@@ -139,11 +142,13 @@ var GameLayer = cc.Layer.extend({
 
         onKeyDown: function (e) {
             if (e == cc.KEY.down) {
-                this._player.speedBoost += 0.05;
+                if (this._player.speedBoost < 0.15)
+                    this._player.speedBoost += 0.05;
                 KEYS[e] = true;
             }
             if (e == cc.KEY.up) {
-                this._player.speedBoost += 0.05;
+                if (this._player.speedBoost < 0.15)
+                    this._player.speedBoost += 0.05;
                 KEYS[e] = true;
             }
             if (e == cc.KEY.space) {
@@ -262,7 +267,9 @@ var GameLayer = cc.Layer.extend({
                     }
                     else {
                         this.addChild(enemy.shoot());
-                        enemy.enemyFireWaitCompleted = getRandomInt(-1, 0);
+                        var minWait = -1 + ENEMY_SPEED_INCREASE_FACTOR * 0.1;
+                        var maxWait = 0 + ENEMY_SPEED_INCREASE_FACTOR * 0.1;
+                        enemy.enemyFireWaitCompleted = getRandomInt(minWait, maxWait);
                     }
                 }
             }
@@ -297,6 +304,8 @@ var GameLayer = cc.Layer.extend({
 
                         this._enemiesDestroyed++;
                         LAYER_SPEED+=LAYER_SPEED_INCREASE_FACTOR;
+                        ENEMY_VERTICAL_SPEED += ENEMY_SPEED_INCREASE_FACTOR;
+
                     }
                 }
             }

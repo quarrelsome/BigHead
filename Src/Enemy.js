@@ -28,7 +28,11 @@ var Enemy = cc.LayerColor.extend({
             case 2: this.ship = cc.Sprite.create(s_enemy2); break;
         }
 
-        this.enemyFireWaitCompleted = getRandomInt(-2, -1);
+        var minWait = -2 + 0.1*ENEMY_WAIT_TIME_FACTOR;
+        var maxWait = -1 + 0.1*ENEMY_WAIT_TIME_FACTOR;
+        ENEMY_WAIT_TIME_FACTOR += ENEMY_SPEED_INCREASE_FACTOR;
+        cc.log(minWait + " " + maxWait);
+        this.enemyFireWaitCompleted = getRandomInt(minWait, maxWait);
         this.bulletSpeed = getRandomInt(200, 400);
 		this.setTag(this.tag);
         this.addChild(this.ship);
@@ -43,7 +47,7 @@ var Enemy = cc.LayerColor.extend({
 
     update: function(dt) {
         if (this.displacementDirection == 0) {
-            var positionY = this.getPositionY() + dt * LAYER_SPEED;
+            var positionY = this.getPositionY() + dt * ENEMY_VERTICAL_SPEED;
             if (positionY > this.displacementTop) {
                 this.displacementDirection = 1;
             }
@@ -52,7 +56,7 @@ var Enemy = cc.LayerColor.extend({
             }
         }
         else {
-            positionY = this.getPositionY() - dt * LAYER_SPEED/2;
+            positionY = this.getPositionY() - dt * ENEMY_VERTICAL_SPEED/2;
             if (positionY < this.displacementBottom) {
                 this.displacementDirection = 0;
             }
@@ -69,8 +73,4 @@ var Enemy = cc.LayerColor.extend({
         this.bullets.push(bullet);
         return bullet;
     },
-
-    getPosition: function() {
-
-    }
 });
