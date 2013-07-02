@@ -17,6 +17,7 @@ var Player = cc.Sprite.extend({
         this.initWithSpriteFrameName("fly__001.png");
 //		var playerTexture = cc.TextureCache.getInstance().addImage(s_player);
 //        this.initWithTexture(playerTexture);
+        this.setScale(0.75);
 		this.setTag(this.tag);
 	},
 	
@@ -73,7 +74,7 @@ var Player = cc.Sprite.extend({
 
     shoot: function () {
         var bullet = cc.Sprite.create(s_player_bullet);
-        bullet.setPosition(this.getPositionX() + 20, this.getPositionY());
+        bullet.setPosition(this.getPositionX() + 20, this.getPositionY() - 20);
         bullet.setTag(2);
         this.bullets.push(bullet);
         return bullet;
