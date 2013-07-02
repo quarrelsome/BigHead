@@ -2,7 +2,7 @@ var Player = cc.Sprite.extend({
     life : 3,
 	speed: 150,
     speedBoost: 0,
-    dropSpeed: 20,
+    dropSpeed: 30,
 	bulletSpeed: 900,
 	tag: 1,
     bullets: [],
@@ -15,9 +15,7 @@ var Player = cc.Sprite.extend({
 
         var cache = cc.SpriteFrameCache.getInstance().addSpriteFrames(s_player_plist, s_player);
         this.initWithSpriteFrameName("fly__001.png");
-//		var playerTexture = cc.TextureCache.getInstance().addImage(s_player);
-//        this.initWithTexture(playerTexture);
-        this.setScale(0.75);
+        this.setScale(0.6);
 		this.setTag(this.tag);
 	},
 	

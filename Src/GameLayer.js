@@ -212,10 +212,9 @@ var GameLayer = cc.Layer.extend({
                 var enemyType = Math.floor((Math.random() * 2) + 1);
                 var enemy = new Enemy(enemyType);
 
-                var minY = enemy.getContentSize().height / 2 + BarSize.bottomBar.height + ((winSize.height - BarSize.bottomBar.height - BarSize.topBar.height) / totalEnemies * i);
-                var maxY = BarSize.bottomBar.height + ((winSize.height - BarSize.bottomBar.height - BarSize.topBar.height - enemy.getContentSize().height / 2) / totalEnemies * (i + 1));
-                var rangeY = maxY - minY;
-                var actualY = Math.floor((Math.random() * rangeY + 1) + minY);
+                var minY = enemy.getContentSize().height / 2 + BarSize.bottomBar.height + ((winSize.height - BarSize.bottomBar.height - BarSize.topBar.height) / totalEnemies * i) + 30;
+                var maxY = BarSize.bottomBar.height + ((winSize.height - BarSize.bottomBar.height - BarSize.topBar.height - enemy.getContentSize().height / 2) / totalEnemies * (i + 1)) - 30;
+                var actualY = getRandomInt(minY, maxY);
                 enemy.setPosition(this._player.getPositionX() + (winSize.width * 1.25) + enemy.getContentSize().width + xDisplacement, actualY);
                 if (i == 0)
                     enemy.isTarget = true;
