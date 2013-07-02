@@ -6,7 +6,8 @@ Z_MOUNTAINS = 0;
 MOVEMENT_SPEED = 0.05;
 LAYER_SPEED = 100;
 LAYER_SPEED_INCREASE_FACTOR = 40;
-SKY_CHANGE_FACTOR = 5000;
+LOCATION_CHANGE_FACTOR = 10000;
+LANDMARK_PLACEMENT_FACTOR = 2000;
 
 var GameLayer = cc.Layer.extend({
         _player: null,
@@ -63,7 +64,7 @@ var GameLayer = cc.Layer.extend({
         },
 
         initInterchangeableLayer: function(scene){
-            this._interchangeableParallax = InterchangeableParallaxLayer.create(g_sky, SKY_CHANGE_FACTOR);
+            this._interchangeableParallax = InterchangeableParallaxLayer.create(g_sky, LOCATION_CHANGE_FACTOR);
             this._interchangeableParallax.setAnchorPoint(cc.p(0,0));
             scene.addChild(this._interchangeableParallax);
         },
@@ -89,7 +90,7 @@ var GameLayer = cc.Layer.extend({
         },
 
         initBuildingLayer: function (scene) {
-            this._buildingParallax = BuildingParallaxLayer.create(g_buildings, SKY_CHANGE_FACTOR);
+            this._buildingParallax = BuildingParallaxLayer.create(g_buildings, LOCATION_CHANGE_FACTOR, LANDMARK_PLACEMENT_FACTOR);
             this._buildingParallax.setAnchorPoint(cc.p(0, 0));
             scene.addChild(this._buildingParallax);
         },
@@ -128,6 +129,7 @@ var GameLayer = cc.Layer.extend({
             this.updateBulletPosition(dt);
             this.updateEnemyBulletPosition(dt);
             this.detectCollision(dt);
+            this._distanceTravelled = this._distanceTravelled + Math.round(LAYER_SPEED * dt);
         },
 
         onKeyDown: function (e) {
@@ -175,11 +177,9 @@ var GameLayer = cc.Layer.extend({
                             enemyLocation = otherEnemyLocation;
                     }
                 }
-            this._distanceTravelled = this._distanceTravelled + Math.round(LAYER_SPEED * dt);
             if ((this._enemies.length == 0) || (this._player.getPositionX() - this._player.getContentSize().width/2 + winSize.width <= enemyLocation)) {
                 this.setPositionX(this.getPositionX() - (LAYER_SPEED * dt));
                 this._player.setPositionX(this._player.getPositionX() + (LAYER_SPEED * dt));
-                //this._distanceTravelled = Math.round(this._player.getPositionX());
             } else {
                 this._isFireEnabled = true;
                 if (!this._isTargetDestroyed)

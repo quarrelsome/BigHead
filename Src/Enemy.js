@@ -44,7 +44,6 @@ var Enemy = cc.LayerColor.extend({
 
     update: function(dt) {
         if (this.displacementDirection == 0) {
-            cc.log('if ' + dt);
             var positionY = this.getPositionY() + dt * 20;
             if (positionY > this.displacementTop) {
                 this.displacementDirection = 1;
