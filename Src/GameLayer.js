@@ -154,7 +154,10 @@ var GameLayer = cc.Layer.extend({
             if (e == cc.KEY.space) {
                 if (this._isFireEnabled) {
                     KEYS[e] = true;
-                    this.addChild(this._player.shoot());
+                    if (this._player.fireWait <= 0) {
+                        this.addChild(this._player.shoot());
+                        this._player.fireWait = 0.75;
+                    }
                 }
             }
         },

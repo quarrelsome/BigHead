@@ -9,6 +9,7 @@ var Player = cc.Sprite.extend({
     isBlinking: false,
     blinkNumber: 0,
     spriteFrameIndex: 1,
+    fireWait: 0.75,
 
 	ctor: function() {
         this._super();
@@ -28,6 +29,10 @@ var Player = cc.Sprite.extend({
             prefix += "00";
         } else {
             prefix += "0";
+        }
+
+        if (this.fireWait > 0) {
+            this.fireWait -= dt;
         }
 
         var frame = cc.SpriteFrameCache.getInstance().getSpriteFrame(prefix + this.spriteFrameIndex + ".png");

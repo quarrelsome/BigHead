@@ -72,5 +72,5 @@ var Enemy = cc.LayerColor.extend({
         bullet.setTag(4);
         this.bullets.push(bullet);
         return bullet;
-    },
+    }
 });
