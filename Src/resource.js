@@ -36,6 +36,7 @@ var s_shootEffectWav = dirSounds + "pew-pew-lei.wav";
 
 //plist
 var s_textureTransparentPack_plist = dirArt + "textureTransparentPack.plist";
+var s_player_plist = dirArt + "player.plist";
 
 //splash screen
 var s_backgeound = dirArt + "parallax/common/BG-common.png";
@@ -92,6 +93,7 @@ var g_mainmenu = [
 var g_ressources = [
  
     {src:s_player},
+    {src:s_player_plist},
 	{src:s_enemy1},
 	{src:s_enemy2},
     {src:s_shootEffect},

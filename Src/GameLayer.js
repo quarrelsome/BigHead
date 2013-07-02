@@ -18,7 +18,7 @@ var GameLayer = cc.Layer.extend({
         _enemiesDestroyed: 0,
         _targetsDestroyed: 0,
 
-        _enemyTotalFireWait: 0.5,
+        _enemyTotalFireWait: 2,
         _isTargetDestroyed: false,
         _isEnemyPresent: false,
 
@@ -139,13 +139,16 @@ var GameLayer = cc.Layer.extend({
 
         onKeyDown: function (e) {
             if (e == cc.KEY.down) {
+                this._player.speedBoost += 0.05;
                 KEYS[e] = true;
             }
             if (e == cc.KEY.up) {
+                this._player.speedBoost += 0.05;
                 KEYS[e] = true;
             }
             if (e == cc.KEY.space) {
                 if (this._isFireEnabled) {
+                    KEYS[e] = true;
                     this.addChild(this._player.shoot());
                 }
             }
@@ -153,9 +156,14 @@ var GameLayer = cc.Layer.extend({
 
         onKeyUp: function (e) {
             if (e == cc.KEY.down) {
+                this._player.speedBoost = 0;
                 KEYS[e] = false;
             }
             if (e == cc.KEY.up) {
+                this._player.speedBoost = 0;
+                KEYS[e] = false;
+            }
+            if (e == cc.KEY.space) {
                 KEYS[e] = false;
             }
         },

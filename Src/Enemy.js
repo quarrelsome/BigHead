@@ -29,7 +29,7 @@ var Enemy = cc.LayerColor.extend({
         }
 
         this.enemyFireWaitCompleted = getRandomInt(-2, -1);
-        this.bulletSpeed = getRandomInt(400, 800);
+        this.bulletSpeed = getRandomInt(200, 400);
 		this.setTag(this.tag);
         this.addChild(this.ship);
         this.setContentSize(cc.size(this.ship.getContentSize().width, this.ship.getContentSize().height));
@@ -39,12 +39,11 @@ var Enemy = cc.LayerColor.extend({
     configure: function() {
         this.displacementTop = this.getPositionY() + getRandomInt(20, 30);
         this.displacementBottom = this.getPositionY() - getRandomInt(20,30);
-        cc.log(this.displacementTop + " " + this.displacementBottom + " " + this.displacementDirection);
     },
 
     update: function(dt) {
         if (this.displacementDirection == 0) {
-            var positionY = this.getPositionY() + dt * 20;
+            var positionY = this.getPositionY() + dt * LAYER_SPEED;
             if (positionY > this.displacementTop) {
                 this.displacementDirection = 1;
             }
@@ -53,7 +52,7 @@ var Enemy = cc.LayerColor.extend({
             }
         }
         else {
-            positionY = this.getPositionY() - dt * LAYER_SPEED;
+            positionY = this.getPositionY() - dt * LAYER_SPEED/2;
             if (positionY < this.displacementBottom) {
                 this.displacementDirection = 0;
             }
