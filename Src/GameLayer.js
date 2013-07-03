@@ -252,14 +252,17 @@ var GameLayer = cc.Layer.extend({
         },
 
         addEnemy: function () {
-            var totalEnemies = Math.floor((Math.random() * 2) + 2);
+            var totalEnemies = getRandomInt(2,3);
             for (var i = 0; i < totalEnemies; i++) {
                 var xDisplacement = Math.floor((Math.random() * winSize.width * 0.15 + 1) + 0);
-                var enemyType = Math.floor((Math.random() * 2) + 1);
+                var enemyType = getRandomInt(1,2);
                 var enemy = new Enemy(enemyType);
 
-                var minY = enemy.getContentSize().height / 2 + BarSize.bottomBar.height + ((winSize.height - BarSize.bottomBar.height - BarSize.topBar.height) / totalEnemies * i) + 30;
-                var maxY = BarSize.bottomBar.height + ((winSize.height - BarSize.bottomBar.height - BarSize.topBar.height - enemy.getContentSize().height / 2) / totalEnemies * (i + 1)) - 30;
+                //var minY = enemy.getContentSize().height / 2 + BarSize.bottomBar.height + ((winSize.height - BarSize.bottomBar.height - BarSize.topBar.height) / totalEnemies * i) + 30;
+                //var maxY = BarSize.bottomBar.height + ((winSize.height - BarSize.bottomBar.height - BarSize.topBar.height - enemy.getContentSize().height / 2) / totalEnemies * (i + 1)) - 30;
+
+                var minY = ((winSize.height/totalEnemies) * i) + 30;
+                var maxY = ((winSize.height/totalEnemies) * (i + 1)) - enemy.getContentSize().height - 30;
                 var actualY = getRandomInt(minY, maxY);
                 enemy.setPosition(this._player.getPositionX() + (winSize.width * 1.25) + enemy.getContentSize().width + xDisplacement, actualY);
                 if (i == 0)
