@@ -1,5 +1,7 @@
 var Player = cc.Sprite.extend({
     health : 100,
+    hitImpact: 20,
+    armour: 0,
 	speed: 150,
     speedBoost: 0,
     dropSpeed: 30,
@@ -10,7 +12,6 @@ var Player = cc.Sprite.extend({
     blinkNumber: 0,
     spriteFrameIndex: 1,
     fireWait: 0.75,
-    isHit: false,
 
 	ctor: function() {
         this._super();
@@ -91,5 +92,17 @@ var Player = cc.Sprite.extend({
         bullet.setTag(2);
         this.bullets.push(bullet);
         return bullet;
+    },
+
+    hit: function() {
+        this.health = this.health - (this.hitImpact - this.armour * 2);
+        if (this.health <= 0) {
+            this.die();
+        }
+    },
+
+    die: function() {
+        var scene = GameOver.scene(false);
+        cc.Director.getInstance().replaceScene(scene);
     }
 });
