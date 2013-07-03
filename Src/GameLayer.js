@@ -318,6 +318,7 @@ var GameLayer = cc.Layer.extend({
                     var enemy = this._enemies[j];
                     var enemyRect = enemy.getBoundingBox();
                     if (cc.rectIntersectsRect(bulletRect, enemyRect)) {
+                        this._gameSate.score += 25;
                         if (enemy.isTarget) {
                             this._isTargetDestroyed = true;
                             isTargetHitNow = true;
@@ -375,7 +376,7 @@ var GameLayer = cc.Layer.extend({
                         } else {
                             enemy.setPositionY(enemy.getPositionY() + (enemy.playerHitLocationY - enemy.getPositionY()) * enemy.runMoveRatioY);
                         }
-                        enemy.setPositionX(enemy.getPositionX() - (1500 * dt));
+                        enemy.setPositionX(enemy.getPositionX() - (ENEMY_RUN_SPEED * dt));
                     }
                 }
 
