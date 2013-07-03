@@ -6,7 +6,7 @@ var Player = cc.Sprite.extend({
 	bulletSpeed: 900,
 	tag: 1,
     bullets: [],
-    isBlinking: false,
+    //isBlinking: false,
     blinkNumber: 0,
     spriteFrameIndex: 1,
     fireWait: 0.75,
@@ -81,10 +81,5 @@ var Player = cc.Sprite.extend({
         bullet.setTag(2);
         this.bullets.push(bullet);
         return bullet;
-    },
-
-    startBlinking: function () {
-        this.isBlinking = true;
-
     }
 });

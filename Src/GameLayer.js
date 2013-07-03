@@ -356,7 +356,7 @@ var GameLayer = cc.Layer.extend({
             for (i = 0; i < this._enemies.length; i++) {
                 enemy = this._enemies[i];
                 enemyRect = enemy.getBoundingBox();
-                if (cc.rectIntersectsRect(playerRect, enemyRect)) {
+                if ((cc.rectIntersectsRect(playerRect, enemyRect)) && (this._player.blinkNumber == 0)) {
                     enemy.removeFromParent();
                     cc.ArrayRemoveObject(this._enemies, enemy);
                     if (this._enemies.length == 0) {
@@ -377,7 +377,7 @@ var GameLayer = cc.Layer.extend({
                 for (j = 0; j < enemy.bullets.length; j++) {
                     bullet = enemy.bullets[j];
                     bulletRect = bullet.getBoundingBox();
-                    if (cc.rectIntersectsRect(playerRect, bulletRect)) {
+                    if ((cc.rectIntersectsRect(playerRect, bulletRect))  && (this._player.blinkNumber == 0)) {
                         cc.ArrayRemoveObject(enemy.bullets, bullet);
                         bullet.removeFromParent();
                         this._player.life -= 1;
