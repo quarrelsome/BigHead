@@ -32,13 +32,17 @@ var GameLayer = cc.Layer.extend({
         _time: 0,
         _enemies: [],
         _blasts: [],
+
         _enemiesDestroyed: 0,
         _targetsDestroyed: 0,
         _enemyTotalFireWait: 2,
+
         _isTargetDestroyed: false,
         _isEnemyPresent: false,
         _isFireEnabled: false,
         _isEnemyFireEnabled: false,
+
+        _playerHitLocationY: 0,
         _cloudParallax: null,
         _interchangeableParallax: null,
         _horizon1Parallax:null,
@@ -161,10 +165,17 @@ var GameLayer = cc.Layer.extend({
                     this._enemies[i].update(dt);
                 }
 
+                //this.detectCollision(dt);
                 this.enemyFire(dt);
                 this.updateBulletPosition(dt);
                 this.updateEnemyBulletPosition(dt);
-                this.detectCollision(dt);
+
+                this.detectPlayerCollision(dt);
+                this.detectEnemyCollision(dt);
+                if (this._isTargetDestroyed) {
+                    this.enemyRun(dt);
+                }
+
                 this._distanceTravelled = this._distanceTravelled + Math.round(LAYER_SPEED * dt);
             }
         },
@@ -309,7 +320,113 @@ var GameLayer = cc.Layer.extend({
             }
         },
 
-        detectCollision: function (dt) {
+        detectEnemyCollision: function (dt) {
+            for (var i = 0; i < this._player.bullets.length; i++) {
+                var bullet = this._player.bullets[i];
+                var bulletRect = bullet.getBoundingBox();
+                for (var j = 0; j < this._enemies.length; j++) {
+                    var enemy = this._enemies[j];
+                    var enemyRect = enemy.getBoundingBox();
+                    if (cc.rectIntersectsRect(bulletRect, enemyRect)) {
+                        this._gameSate.score += 25;
+                        if (enemy.isTarget) {
+                            this._isTargetDestroyed = true;
+                            this._targetsDestroyed++;
+                        }
+                        cc.ArrayRemoveObject(this._player.bullets, bullet);
+                        bullet.removeFromParent();
+                        var blast = cc.Sprite.create(s_explosion);
+                        blast.setPosition(enemy.getPositionX(), enemy.getPositionY());
+                        this.addChild(blast);
+                        blast.runAction(cc.Sequence.create(cc.FadeOut.create(0.5),
+                            cc.CallFunc.create(function(blast) {
+                                blast.removeFromParent();
+                            }, this)
+                        ));
+                        cc.ArrayRemoveObject(this._enemies, enemy);
+                        enemy.removeFromParent();
+
+                        this._enemiesDestroyed++;
+                        LAYER_SPEED+=LAYER_SPEED_INCREASE_FACTOR;
+                        ENEMY_VERTICAL_SPEED += ENEMY_SPEED_INCREASE_FACTOR;
+                        ENEMY_RUN_SPEED += ENEMY_RUN_SPEED_FACTOR;
+
+                        this._playerHitLocationY = this._player.getPositionY();
+                        this._isFireEnabled = false;
+                        this._isEnemyFireEnabled = false;
+                    }
+                }
+            }
+        },
+
+        enemyRun: function(dt) {
+                for (var j = 0; j < this._enemies.length; j++) {
+                    var enemy = this._enemies[j];
+                    if (enemy.getPositionX() + enemy.getContentSize().width / 2 < this._player.getPositionX() - this._player.getContentSize().width / 2) {
+                        enemy.removeFromParent();
+                        cc.ArrayRemoveObject(this._enemies, enemy);
+                    }
+                    else {
+                        if (enemy.getPositionY() > this._playerHitLocationY) {
+                            enemy.setPositionY(enemy.getPositionY() - (enemy.getPositionY() - enemy.playerHitLocationY) * 0.03);
+                        } else {
+                            enemy.setPositionY(enemy.getPositionY() + (enemy.playerHitLocationY - enemy.getPositionY()) * 0.03);
+                        }
+                        enemy.setPositionX(enemy.getPositionX() - (ENEMY_RUN_SPEED * dt));
+                    }
+                }
+
+                if (this._enemies.length == 0) {
+                    this._isTargetDestroyed = false;
+                }
+        },
+
+        detectPlayerCollision: function (dt) {
+            var playerRect = this._player.getBoundingBox();
+            var playerHit = false;
+            for (var i = 0; i < this._enemies.length; i++) {
+                var enemy = this._enemies[i];
+                var enemyRect = enemy.getBoundingBox();
+                if ((cc.rectIntersectsRect(playerRect, enemyRect)) && (this._player.blinkNumber == 0)) {
+                    this._player.hit();
+                    enemy.removeFromParent();
+                    cc.ArrayRemoveObject(this._enemies, enemy);
+                    if (this._enemies.length == 0) {
+                        this._isTargetDestroyed = false;
+                    }
+                    var blast = cc.Sprite.create(s_explosion);
+                    blast.setPosition(enemy.getPositionX(), enemy.getPositionY());
+                    this.addChild(blast);
+                    blast.runAction(cc.Sequence.create(cc.FadeOut.create(0.5),
+                        cc.CallFunc.create(function(blast) {
+                            blast.removeFromParent();
+                        })
+                    ));
+                    playerHit = true;
+//                    this._player.life -= 1;
+//                    this._player.blinkNumber = 16;
+                }
+
+                for (j = 0; j < enemy.bullets.length; j++) {
+                    var bullet = enemy.bullets[j];
+                    var bulletRect = bullet.getBoundingBox();
+                    if ((cc.rectIntersectsRect(playerRect, bulletRect))  && (this._player.blinkNumber == 0)) {
+                        this._player.hit();
+                        cc.ArrayRemoveObject(enemy.bullets, bullet);
+                        bullet.removeFromParent();
+                        playerHit = true;
+
+                    }
+                }
+
+                if (playerHit) {
+                    this._player.life -= 1;
+                    this._player.blinkNumber = 16;
+                }
+            }
+        }
+
+        /*detectCollision: function (dt) {
             var isTargetHitNow = false;
             for (var i = 0; i < this._player.bullets.length; i++) {
                 var bullet = this._player.bullets[i];
@@ -420,7 +537,7 @@ var GameLayer = cc.Layer.extend({
                     }
                 }
             }
-        }
+        }*/
     }
 );
 
