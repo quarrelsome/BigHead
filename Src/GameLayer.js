@@ -8,9 +8,12 @@ LAYER_SPEED = 100;
 LAYER_SPEED_INCREASE_FACTOR = 40;
 LOCATION_CHANGE_FACTOR = 10000;
 LANDMARK_PLACEMENT_FACTOR = 2000;
+
 ENEMY_VERTICAL_SPEED = 80;
 ENEMY_SPEED_INCREASE_FACTOR = 2;
 ENEMY_WAIT_TIME_FACTOR = 0;
+ENEMY_RUN_SPEED = 1500;
+ENEMY_RUN_SPEED_FACTOR = 100;
 
 //
 // Game State
@@ -256,14 +259,6 @@ var GameLayer = cc.Layer.extend({
             }
         },
 
-        removeBlast: function () {
-            for (var i = 0; i < this._blasts.length; i++) {
-                var blast = this._blasts[i];
-                cc.ArrayRemoveObject(this._blasts, blast);
-                blast.removeFromParent();
-            }
-        },
-
         updateBulletPosition: function (dt) {
             for (var i = 0; i < this._player.bullets.length; i++) {
                 var bullet = this._player.bullets[i];
@@ -316,6 +311,7 @@ var GameLayer = cc.Layer.extend({
                     var enemy = this._enemies[j];
                     var enemyRect = enemy.getBoundingBox();
                     if (cc.rectIntersectsRect(bulletRect, enemyRect)) {
+                        this._gameSate.score += 25;
                         if (enemy.isTarget) {
                             this._isTargetDestroyed = true;
                             isTargetHitNow = true;
@@ -338,7 +334,7 @@ var GameLayer = cc.Layer.extend({
                         this._enemiesDestroyed++;
                         LAYER_SPEED+=LAYER_SPEED_INCREASE_FACTOR;
                         ENEMY_VERTICAL_SPEED += ENEMY_SPEED_INCREASE_FACTOR;
-
+                        ENEMY_RUN_SPEED += ENEMY_RUN_SPEED_FACTOR;
                     }
                 }
             }
@@ -374,7 +370,7 @@ var GameLayer = cc.Layer.extend({
                         } else {
                             enemy.setPositionY(enemy.getPositionY() + (enemy.playerHitLocationY - enemy.getPositionY()) * enemy.runMoveRatioY);
                         }
-                        enemy.setPositionX(enemy.getPositionX() - (15*LAYER_SPEED * dt));
+                        enemy.setPositionX(enemy.getPositionX() - (ENEMY_RUN_SPEED * dt));
                     }
                 }
 
