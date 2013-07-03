@@ -145,7 +145,7 @@ var GameLayer = cc.Layer.extend({
                 cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2,scene));
             }
 
-            this._gameSate.state = this._hudLayer.update(dt);
+            this._gameSate.state = this._hudLayer.update(dt,{score:this._gameSate.score,travelledDistance:this._distanceTravelled,health:this._player.health});
 
             if(this._gameSate.state == STATE_PLAYING){
                 this._time += dt;
@@ -331,6 +331,7 @@ var GameLayer = cc.Layer.extend({
                         var blast = cc.Sprite.create(s_explosion);
                         blast.setPosition(enemy.getPositionX(), enemy.getPositionY());
                         this.addChild(blast);
+                        cc.AudioEngine.getInstance().playEffect(s_enemyDestroyedEffect);
                         blast.runAction(cc.Sequence.create(cc.FadeOut.create(0.5),
                             cc.CallFunc.create(function(blast) {
                                 blast.removeFromParent();
@@ -383,6 +384,7 @@ var GameLayer = cc.Layer.extend({
                 if ((cc.rectIntersectsRect(playerRect, enemyRect)) && (this._player.blinkNumber == 0)) {
                     enemy.removeFromParent();
                     cc.ArrayRemoveObject(this._enemies, enemy);
+                    cc.AudioEngine.getInstance().playEffect(s_playerGetsHitEffect);
                     if (this._enemies.length == 0) {
                         this._isTargetDestroyed = false;
                     }
@@ -403,6 +405,7 @@ var GameLayer = cc.Layer.extend({
                     if ((cc.rectIntersectsRect(playerRect, bulletRect))  && (this._player.blinkNumber == 0)) {
                         cc.ArrayRemoveObject(enemy.bullets, bullet);
                         bullet.removeFromParent();
+                        cc.AudioEngine.getInstance().playEffect(s_playerGetsHitEffect);
                         playerHit = true;
 
                     }

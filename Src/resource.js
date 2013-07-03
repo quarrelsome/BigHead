@@ -30,6 +30,7 @@ var s_playerShootEffect = dirSounds + "zap.wav";
 var s_enemyDestroyedEffect = dirSounds + "enemy-destroy.wav";
 var s_playerGetsHitEffect = dirSounds + "playerGetsHit.wav";
 var s_enemyShootEffect = dirSounds + "enemyFire.wav";
+var s_playerFlying = dirSounds + "flying.mp3";
 
 //music
 var s_mainMainMusic = dirSounds + "backgroundMusic.wav";
@@ -98,6 +99,7 @@ var g_ressources = [
     {src:s_enemyDestroyedEffect},
     {src:s_playerGetsHitEffect},
     {src:s_enemyShootEffect},
+    {src:s_playerFlying},
 	{src:s_top_bar},
 	{src:s_bottom_bar},
     {src:s_player_bullet},
