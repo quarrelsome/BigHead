@@ -3,7 +3,6 @@ STATE_PAUSED = 2;
 STATE_GAMEOVER = 3;
 Z_SCROLL = 10;
 Z_MOUNTAINS = 0;
-MOVEMENT_SPEED = 0.05;
 LOCATION_CHANGE_FACTOR = 10000;
 LANDMARK_PLACEMENT_FACTOR = 2000;
 
@@ -280,7 +279,7 @@ var GameLayer = cc.Layer.extend({
                     cc.ArrayRemoveObject(this._player.bullets, bullet);
                     bullet.removeFromParent();
                 }
-                bullet.setPositionX(bullet.getPositionX() + ((MOVEMENT_SPEED + this._player.bulletSpeed) * dt));
+                bullet.setPositionX(bullet.getPositionX() + (this._player.bulletSpeed * dt));
             }
         },
 
@@ -293,7 +292,7 @@ var GameLayer = cc.Layer.extend({
                         cc.ArrayRemoveObject(enemy.bullets, bullet);
                         bullet.removeFromParent();
                     }
-                    bullet.setPositionX(bullet.getPositionX() - ((MOVEMENT_SPEED + enemy.bulletSpeed) * dt));
+                    bullet.setPositionX(bullet.getPositionX() - (enemy.bulletSpeed * dt));
                 }
             }
         },
