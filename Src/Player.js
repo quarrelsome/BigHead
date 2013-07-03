@@ -1,12 +1,14 @@
 var Player = cc.Sprite.extend({
-    life : 3,
+    health : 100,
+    hitImpact: 20,
+    armour: 0,
 	speed: 150,
     speedBoost: 0,
     dropSpeed: 30,
 	bulletSpeed: 900,
 	tag: 1,
     bullets: [],
-    isBlinking: false,
+    //isBlinking: false,
     blinkNumber: 0,
     spriteFrameIndex: 1,
     fireWait: 0.75,
@@ -21,6 +23,38 @@ var Player = cc.Sprite.extend({
 	},
 	
 	update:function (dt) {
+        this.changeFrame();
+        this.updatePosition(dt);
+
+        if (this.fireWait > 0) {
+            this.fireWait -= dt;
+        }
+        if (this.blinkNumber > 0) {
+            this.blink();
+        }
+	},
+
+    updatePosition: function(dt) {
+        var position = this.getPosition();
+        if (KEYS[cc.KEY.up]) {
+            var nextPositionY = position.y + (dt * this.speed) + (this.speedBoost * this.speed);
+            if (nextPositionY + this.getContentSize().height/2 <= winSize.height)
+                position.y = nextPositionY;
+        }
+        else if (KEYS[cc.KEY.down]) {
+            nextPositionY = position.y - (dt * this.speed) - (this.speedBoost * this.speed);
+            if (nextPositionY >= this.getContentSize().height/2)
+                position.y = nextPositionY;
+        } else if (!KEYS[cc.KEY.space]) {
+            nextPositionY = position.y - (dt * this.dropSpeed);
+            if (nextPositionY >= this.getContentSize().height/2)
+                position.y = nextPositionY;
+        }
+
+        this.setPosition(position);
+    },
+
+    changeFrame: function() {
         var prefix = "fly__";
         if (this.spriteFrameIndex > 24) {
             this.spriteFrameIndex = 1;
@@ -31,49 +65,26 @@ var Player = cc.Sprite.extend({
             prefix += "0";
         }
 
-        if (this.fireWait > 0) {
-            this.fireWait -= dt;
-        }
-
         var frame = cc.SpriteFrameCache.getInstance().getSpriteFrame(prefix + this.spriteFrameIndex + ".png");
         this.setDisplayFrame(frame);
         this.spriteFrameIndex++;
+    },
 
-        var position = this.getPosition();
-		if (KEYS[cc.KEY.up]) {
-            var nextPositionY = position.y + (dt * this.speed) + (this.speedBoost * this.speed);
-            if (nextPositionY + this.getContentSize().height/2 <= winSize.height)
-			    position.y = nextPositionY;
-		}
-		else if (KEYS[cc.KEY.down]) {
-            nextPositionY = position.y - (dt * this.speed) - (this.speedBoost * this.speed);
-			if (nextPositionY >= this.getContentSize().height/2)
-                position.y = nextPositionY;
-		} else if (!KEYS[cc.KEY.space]) {
-            nextPositionY = position.y - (dt * this.dropSpeed);
-            if (nextPositionY >= this.getContentSize().height/2)
-                position.y = nextPositionY;
+    blink: function() {
+        if ((this.blinkNumber / 0.5) % 8 < 1) {
+            this.setColor(new cc.Color3B(255,255,255));
+            this.setVisible(false);
         }
-
-		this.setPosition(position);
-
-        if (this.blinkNumber > 0) {
-            if ((this.blinkNumber / 0.5) % 8 < 1) {
-                this.setColor(new cc.Color3B(255,255,255));
-                this.setVisible(false);
-            }
-            else {
-                this.setColor(new cc.Color3B(255,0,0));
-                this.setVisible(true);
-            }
-            this.blinkNumber -= 0.5;
-
-            if (this.blinkNumber == 0) {
-                this.setColor(new cc.Color3B(255,255,255));
-            }
-
+        else {
+            this.setColor(new cc.Color3B(255,0,0));
+            this.setVisible(true);
         }
-	},
+        this.blinkNumber -= 0.5;
+
+        if (this.blinkNumber == 0) {
+            this.setColor(new cc.Color3B(255,255,255));
+        }
+    },
 
     shoot: function () {
         var bullet = cc.Sprite.create(s_player_bullet);
@@ -83,8 +94,15 @@ var Player = cc.Sprite.extend({
         return bullet;
     },
 
-    startBlinking: function () {
-        this.isBlinking = true;
+    hit: function() {
+        this.health = this.health - (this.hitImpact - this.armour * 2);
+        if (this.health <= 0) {
+            this.die();
+        }
+    },
 
+    die: function() {
+        var scene = GameOver.scene(false);
+        cc.Director.getInstance().replaceScene(scene);
     }
 });

@@ -16,13 +16,6 @@ var Enemy = cc.LayerColor.extend({
 	ctor: function (enemyType) {
         this._super();
 
-//		var enemyTexture;
-//		switch (enemyType) {
-//			case 1: enemyTexture = cc.TextureCache.getInstance().addImage(s_enemy1); break;
-//			case 2: enemyTexture = cc.TextureCache.getInstance().addImage(s_enemy2); break;
-//		}
-//        this.initWithTexture(enemyTexture);
-
         switch (enemyType) {
             case 1: this.ship = cc.Sprite.create(s_enemy1); break;
             case 2: this.ship = cc.Sprite.create(s_enemy2); break;
@@ -31,7 +24,7 @@ var Enemy = cc.LayerColor.extend({
         var minWait = -2 + 0.1*ENEMY_WAIT_TIME_FACTOR;
         var maxWait = -1 + 0.1*ENEMY_WAIT_TIME_FACTOR;
         ENEMY_WAIT_TIME_FACTOR += ENEMY_SPEED_INCREASE_FACTOR;
-        cc.log(minWait + " " + maxWait);
+
         this.enemyFireWaitCompleted = getRandomInt(minWait, maxWait);
         this.bulletSpeed = getRandomInt(200, 400);
 		this.setTag(this.tag);
