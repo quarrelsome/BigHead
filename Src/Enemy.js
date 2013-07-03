@@ -39,6 +39,10 @@ var Enemy = cc.LayerColor.extend({
     },
 
     update: function(dt) {
+        this.verticalMovement(dt);
+    },
+
+    verticalMovement: function (dt) {
         if (this.displacementDirection == 0) {
             var positionY = this.getPositionY() + dt * ENEMY_VERTICAL_SPEED;
             if (positionY > this.displacementTop) {
