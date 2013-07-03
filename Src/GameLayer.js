@@ -414,9 +414,9 @@ var GameLayer = cc.Layer.extend({
                     }
                 }
 
-                if (playerHit) {
-                    this._player.hit();
-                }
+            }
+            if (playerHit) {
+                this._player.hit();
             }
         }
 
