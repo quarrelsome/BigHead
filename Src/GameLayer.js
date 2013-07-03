@@ -4,8 +4,6 @@ STATE_GAMEOVER = 3;
 Z_SCROLL = 10;
 Z_MOUNTAINS = 0;
 MOVEMENT_SPEED = 0.05;
-LAYER_SPEED = 100;
-LAYER_SPEED_INCREASE_FACTOR = 40;
 LOCATION_CHANGE_FACTOR = 10000;
 LANDMARK_PLACEMENT_FACTOR = 2000;
 
@@ -53,6 +51,8 @@ var GameLayer = cc.Layer.extend({
         _distanceTravelled:0,
         _gameSate:null,
         _hudLayer:null,
+         _layerSpeed: 100,
+         _layerSpeedIncreaseFactor: 40,
 
         init: function (scene, game_state) {
             var bRet = false;
@@ -150,12 +150,12 @@ var GameLayer = cc.Layer.extend({
             if(this._gameSate.state == STATE_PLAYING){
                 this._time += dt;
                 this._interchangeableParallax.update(dt,this._distanceTravelled);
-                this._cloudParallax.update(dt*(LAYER_SPEED-60));
-                this._horizon1Parallax.update(dt*(LAYER_SPEED-50));
-                this._horizon2Parallax.update(dt*(LAYER_SPEED-40));
-                this._trees1Parallax.update(dt*(LAYER_SPEED-30));
-                this._buildingParallax.update(dt*(LAYER_SPEED-20),this._distanceTravelled);
-                this._trees2Parallax.update(dt*(LAYER_SPEED-10));
+                this._cloudParallax.update(dt*(this._layerSpeed-60));
+                this._horizon1Parallax.update(dt*(this._layerSpeed-50));
+                this._horizon2Parallax.update(dt*(this._layerSpeed-40));
+                this._trees1Parallax.update(dt*(this._layerSpeed-30));
+                this._buildingParallax.update(dt*(this._layerSpeed-20),this._distanceTravelled);
+                this._trees2Parallax.update(dt*(this._layerSpeed-10));
 
                 this.moveLayer(dt);
                 this._player.update(dt);
@@ -174,7 +174,7 @@ var GameLayer = cc.Layer.extend({
                     this.enemyRun(dt);
                 }
 
-                this._distanceTravelled = this._distanceTravelled + Math.round(LAYER_SPEED * dt);
+                this._distanceTravelled = this._distanceTravelled + Math.round(this._layerSpeed * dt);
             }
         },
 
@@ -242,8 +242,8 @@ var GameLayer = cc.Layer.extend({
                     }
                 }
             if ((this._enemies.length == 0) || (this._player.getPositionX() - this._player.getContentSize().width/2 + winSize.width <= enemyLocation)) {
-                this.setPositionX(this.getPositionX() - (LAYER_SPEED * dt));
-                this._player.setPositionX(this._player.getPositionX() + (LAYER_SPEED * dt));
+                this.setPositionX(this.getPositionX() - (this._layerSpeed * dt));
+                this._player.setPositionX(this._player.getPositionX() + (this._layerSpeed * dt));
             } else {
                 this._isFireEnabled = true;
                 if (!this._isTargetDestroyed)
@@ -340,7 +340,7 @@ var GameLayer = cc.Layer.extend({
                         enemy.removeFromParent();
 
                         this._enemiesDestroyed++;
-                        LAYER_SPEED+=LAYER_SPEED_INCREASE_FACTOR;
+                        this._layerSpeed+=this._layerSpeedIncreaseFactor;
                         ENEMY_VERTICAL_SPEED += ENEMY_SPEED_INCREASE_FACTOR;
                         ENEMY_RUN_SPEED += ENEMY_RUN_SPEED_FACTOR;
 
@@ -444,7 +444,7 @@ var GameLayer = cc.Layer.extend({
                         enemy.removeFromParent();
 
                         this._enemiesDestroyed++;
-                        LAYER_SPEED+=LAYER_SPEED_INCREASE_FACTOR;
+                        this._layerSpeed+=this._layerSpeed_INCREASE_FACTOR;
                         ENEMY_VERTICAL_SPEED += ENEMY_SPEED_INCREASE_FACTOR;
                         ENEMY_RUN_SPEED += ENEMY_RUN_SPEED_FACTOR;
                     }
