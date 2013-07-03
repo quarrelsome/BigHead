@@ -26,13 +26,13 @@ var s_fire_particle = dirArt + "ship-exhaust-fire-particle.png";
 
 //effect
 var s_buttonEffect_mp3 = dirSounds + "buttonEffet.mp3";
+var s_playerShootEffect = dirSounds + "zap.wav";
+var s_enemyDestroyedEffect = dirSounds + "enemy-destroy.wav";
+var s_playerGetsHitEffect = dirSounds + "playerGetsHit.wav";
+var s_enemyShootEffect = dirSounds + "enemyFire.wav";
 
 //music
-var s_mainMainMusic_mp3 = dirSounds + "mainMainMusic.mp3";
-var s_mainMainMusic_ogg = dirSounds + "mainMainMusic.ogg";
-var s_shootEffect = dirSounds + "pew-pew-lei.mp3";
-var s_shootEffectOgg = dirSounds + "pew-pew-lei.ogg";
-var s_shootEffectWav = dirSounds + "pew-pew-lei.wav";
+var s_mainMainMusic = dirSounds + "backgroundMusic.wav";
 
 //plist
 var s_textureTransparentPack_plist = dirArt + "textureTransparentPack.plist";
@@ -82,23 +82,22 @@ var g_mainmenu = [
     {src:s_flare},
     {src:s_menu},
     {src:s_logo},
-    {src:s_flare},
-    {src:s_mainMainMusic_mp3},
-    {src:s_mainMainMusic_ogg},
+    {src:s_mainMainMusic},
     {src:s_menuTitle},
     {src:s_textureTransparentPack_plist},
     {src:s_textureTransparentPack}
 ];
 
 var g_ressources = [
- 
+    {src:s_backgeound},
     {src:s_player},
     {src:s_player_plist},
 	{src:s_enemy1},
 	{src:s_enemy2},
-    {src:s_shootEffect},
-    {src:s_shootEffectOgg},
-    {src:s_shootEffectWav},
+    {src:s_playerShootEffect},
+    {src:s_enemyDestroyedEffect},
+    {src:s_playerGetsHitEffect},
+    {src:s_enemyShootEffect},
 	{src:s_top_bar},
 	{src:s_bottom_bar},
     {src:s_player_bullet},

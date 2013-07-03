@@ -52,6 +52,7 @@ var GameLayer = cc.Layer.extend({
         _trees2Parallax:null,
         _distanceTravelled:0,
         _gameSate:null,
+        _hudLayer:null,
 
         init: function (scene, game_state) {
             var bRet = false;
@@ -62,20 +63,10 @@ var GameLayer = cc.Layer.extend({
                 this.initCommonLayer(scene);
                 this.initBuildingLayer(scene);
                 this.initTreeLayer(scene);
+                this.initHudLayer(scene);
                 this.initPlayer();
                 this.enableEvents();
                 this.scheduleUpdate();
-
-//                cc.MenuItemFont.setFontSize(16);
-//
-//                var item1_pause = cc.MenuItemFont.create("Pause");
-//                var item1_resume = cc.MenuItemFont.create("Resume");
-//                var item1 = cc.MenuItemToggle.create(item1_pause, item1_resume);
-//                item1.setCallback(this.onPause, this);
-//                var menu = cc.Menu.create(item1);
-//                menu.alignItemsVertically();
-//                this.addChild(menu);
-//                menu.setPosition(cc.p(winSize.width - (50 * sizeRatio), winSize.height - (80 * sizeRatio)));
                 this._gameSate = game_state;
 
                 sys.dumpRoot();
@@ -89,7 +80,6 @@ var GameLayer = cc.Layer.extend({
             var staticParallaxLayer = cc.Layer.create();
             var staticBackground = cc.Sprite.create(s_backgeound);
             staticBackground.setAnchorPoint(cc.p(0,0));
-            staticBackground.setPosition(winSize.width / 2, winSize.height / 2);
             staticParallaxLayer.addChild(staticBackground);
             scene.addChild(staticParallaxLayer);
         },
@@ -139,15 +129,23 @@ var GameLayer = cc.Layer.extend({
             this._player.runAction(cc.MoveTo.create(1.5, cc.p(this._player.getContentSize().width / 2, winSize.height / 2)));
         },
 
+        initHudLayer: function(scene){
+          this._hudLayer = GameControlMenu.create(STATE_PLAYING);
+            this._hudLayer.setAnchorPoint(cc.p(0,0));
+            scene.addChild(this._hudLayer);
+        },
+
         update: function (dt) {
-            if(this._distanceTravelled>=30000){
+            if(this._distanceTravelled>=29000){
                 this._gameSate.state = STATE_GAMEOVER;
             }
 
             if(this._gameSate.state == STATE_GAMEOVER){
                 var scene = GameOver.scene(true);
-                cc.Director.getInstance().replaceScene(scene);
+                cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2,scene));
             }
+
+            this._gameSate.state = this._hudLayer.update(dt);
 
             if(this._gameSate.state == STATE_PLAYING){
                 this._time += dt;
@@ -184,13 +182,6 @@ var GameLayer = cc.Layer.extend({
             this._gameSate.state = STATE_PLAYING;
         },
 
-        onPause:function (sender) {
-            if (this._gameSate.state == STATE_PAUSED)
-                this._gameSate.state = STATE_PLAYING;
-            else
-                this._gameSate.state = STATE_PAUSED;
-        },
-
         onKeyDown: function (e) {
             if (e == cc.KEY.down) {
                 if (this._player.speedBoost < 0.15)
@@ -207,6 +198,7 @@ var GameLayer = cc.Layer.extend({
                     KEYS[e] = true;
                     if (this._player.fireWait <= 0) {
                         this.addChild(this._player.shoot());
+                        cc.AudioEngine.getInstance().playEffect(s_playerShootEffect);
                         this._player.fireWait = 0.75;
                     }
                 }
@@ -312,6 +304,7 @@ var GameLayer = cc.Layer.extend({
                     }
                     else {
                         this.addChild(enemy.shoot());
+                        cc.AudioEngine.getInstance().playEffect(s_enemyShootEffect);
                         var minWait = -1 + ENEMY_SPEED_INCREASE_FACTOR * 0.1;
                         var maxWait = 0 + ENEMY_SPEED_INCREASE_FACTOR * 0.1;
                         enemy.enemyFireWaitCompleted = getRandomInt(minWait, maxWait);
@@ -446,6 +439,7 @@ var GameLayer = cc.Layer.extend({
                         var blast = cc.Sprite.create(s_explosion);
                         blast.setPosition(enemy.getPositionX(), enemy.getPositionY());
                         this.addChild(blast);
+                        cc.AudioEngine.getInstance().playEffect(s_enemyDestroyedEffect);
                         blast.runAction(cc.Sequence.create(cc.FadeOut.create(0.5),
                             cc.CallFunc.create(function(blast) {
                                 blast.removeFromParent();
@@ -508,6 +502,7 @@ var GameLayer = cc.Layer.extend({
                 enemyRect = enemy.getBoundingBox();
                 if ((cc.rectIntersectsRect(playerRect, enemyRect)) && (this._player.blinkNumber == 0)) {
                     this._player.hit();
+                    cc.AudioEngine.getInstance().playEffect(s_playerGetsHitEffect);
                     enemy.removeFromParent();
                     cc.ArrayRemoveObject(this._enemies, enemy);
                     if (this._enemies.length == 0) {
@@ -530,6 +525,7 @@ var GameLayer = cc.Layer.extend({
                     bulletRect = bullet.getBoundingBox();
                     if ((cc.rectIntersectsRect(playerRect, bulletRect))  && (this._player.blinkNumber == 0)) {
                         this._player.hit();
+                        cc.AudioEngine.getInstance().playEffect(s_playerGetsHitEffect);
                         cc.ArrayRemoveObject(enemy.bullets, bullet);
                         bullet.removeFromParent();
                         this._player.life -= 1;
