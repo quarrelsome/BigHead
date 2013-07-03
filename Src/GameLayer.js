@@ -1,6 +1,6 @@
-STATE_PLAYING = 0;
-STATE_PAUSED = 1;
-STATE_GAMEOVER = 2;
+STATE_PLAYING = 1;
+STATE_PAUSED = 2;
+STATE_GAMEOVER = 3;
 Z_SCROLL = 10;
 Z_MOUNTAINS = 0;
 MOVEMENT_SPEED = 0.05;
@@ -15,22 +15,30 @@ ENEMY_WAIT_TIME_FACTOR = 0;
 ENEMY_RUN_SPEED = 1500;
 ENEMY_RUN_SPEED_FACTOR = 100;
 
+//
+// Game State
+//
+var GameState = function() {
+    this.score = 0;
+    this.state = STATE_PAUSED;
+};
+GameState.prototype.reset = function() {
+    this.score = 0;
+    this.state = STATE_PAUSED;
+};
+
 var GameLayer = cc.Layer.extend({
         _player: null,
         _time: 0,
         _enemies: [],
         _blasts: [],
-
         _enemiesDestroyed: 0,
         _targetsDestroyed: 0,
-
         _enemyTotalFireWait: 2,
         _isTargetDestroyed: false,
         _isEnemyPresent: false,
-
         _isFireEnabled: false,
         _isEnemyFireEnabled: false,
-
         _cloudParallax: null,
         _interchangeableParallax: null,
         _horizon1Parallax:null,
@@ -39,8 +47,9 @@ var GameLayer = cc.Layer.extend({
         _buildingParallax:null,
         _trees2Parallax:null,
         _distanceTravelled:0,
+        _gameSate:null,
 
-        init: function (scene) {
+        init: function (scene, game_state) {
             var bRet = false;
             if (this._super()) {
                 this.initStaticLayer(scene);
@@ -52,10 +61,22 @@ var GameLayer = cc.Layer.extend({
                 this.initPlayer();
                 this.enableEvents();
                 this.scheduleUpdate();
-                bRet = true;
+
+//                cc.MenuItemFont.setFontSize(16);
+//
+//                var item1_pause = cc.MenuItemFont.create("Pause");
+//                var item1_resume = cc.MenuItemFont.create("Resume");
+//                var item1 = cc.MenuItemToggle.create(item1_pause, item1_resume);
+//                item1.setCallback(this.onPause, this);
+//                var menu = cc.Menu.create(item1);
+//                menu.alignItemsVertically();
+//                this.addChild(menu);
+//                menu.setPosition(cc.p(winSize.width - (50 * sizeRatio), winSize.height - (80 * sizeRatio)));
+                this._gameSate = game_state;
 
                 sys.dumpRoot();
                 sys.garbageCollect();
+                bRet = true;
             }
             return bRet;
         },
@@ -115,7 +136,16 @@ var GameLayer = cc.Layer.extend({
         },
 
         update: function (dt) {
-            if(this._distanceTravelled<30000){
+            if(this._distanceTravelled>=30000){
+                this._gameSate.state = STATE_GAMEOVER;
+            }
+
+            if(this._gameSate.state == STATE_GAMEOVER){
+                var scene = GameOver.scene(true);
+                cc.Director.getInstance().replaceScene(scene);
+            }
+
+            if(this._gameSate.state == STATE_PLAYING){
                 this._time += dt;
                 this._interchangeableParallax.update(dt,this._distanceTravelled);
                 this._cloudParallax.update(dt*(LAYER_SPEED-60));
@@ -137,10 +167,17 @@ var GameLayer = cc.Layer.extend({
                 this.detectCollision(dt);
                 this._distanceTravelled = this._distanceTravelled + Math.round(LAYER_SPEED * dt);
             }
-            else{
-                var scene = GameOver.scene(true);
-                cc.Director.getInstance().replaceScene(scene);
-            }
+        },
+
+        onEnterTransitionDidFinish:function () {
+            this._gameSate.state = STATE_PLAYING;
+        },
+
+        onPause:function (sender) {
+            if (this._gameSate.state == STATE_PAUSED)
+                this._gameSate.state = STATE_PLAYING;
+            else
+                this._gameSate.state = STATE_PAUSED;
         },
 
         onKeyDown: function (e) {
@@ -388,7 +425,7 @@ var GameLayer = cc.Layer.extend({
 
 GameLayer.create = function (scene) {
     var sg = new GameLayer();
-    if (sg && sg.init(scene)) {
+    if (sg && sg.init(scene, new GameState())) {
         return sg;
     }
     return null;
