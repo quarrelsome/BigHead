@@ -48,10 +48,10 @@ var HomeLayer = cc.Layer.extend({
             this._ship.setPosition( pos );
             this._ship.runAction(cc.MoveBy.create(5, cc.p(0-pos.x, pos.y + winSize.height + 100)));
 
-            if (MW.SOUND) {
-                cc.AudioEngine.getInstance().setMusicVolume(0.7);
-                cc.AudioEngine.getInstance().playMusic(s_mainMainMusic_mp3, true);
-            }
+
+            cc.AudioEngine.getInstance().setMusicVolume(0.5);
+            cc.AudioEngine.getInstance().playMusic(s_mainMainMusic, true);
+
 
             bRet = true;
 
@@ -66,7 +66,7 @@ var HomeLayer = cc.Layer.extend({
         cc.Loader.preload(g_ressources, function () {
             var scene = cc.Scene.create();
             scene.addChild(GameLayer.create(scene));
-            scene.addChild(GameControlMenu.create());
+            cc.AudioEngine.getInstance().setMusicVolume(0.2);
             cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
         }, this);
     },
