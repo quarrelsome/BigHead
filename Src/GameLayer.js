@@ -381,7 +381,6 @@ var GameLayer = cc.Layer.extend({
                 var enemy = this._enemies[i];
                 var enemyRect = enemy.getBoundingBox();
                 if ((cc.rectIntersectsRect(playerRect, enemyRect)) && (this._player.blinkNumber == 0)) {
-                    this._player.hit();
                     enemy.removeFromParent();
                     cc.ArrayRemoveObject(this._enemies, enemy);
                     if (this._enemies.length == 0) {
@@ -396,15 +395,12 @@ var GameLayer = cc.Layer.extend({
                         })
                     ));
                     playerHit = true;
-//                    this._player.life -= 1;
-//                    this._player.blinkNumber = 16;
                 }
 
                 for (j = 0; j < enemy.bullets.length; j++) {
                     var bullet = enemy.bullets[j];
                     var bulletRect = bullet.getBoundingBox();
                     if ((cc.rectIntersectsRect(playerRect, bulletRect))  && (this._player.blinkNumber == 0)) {
-                        this._player.hit();
                         cc.ArrayRemoveObject(enemy.bullets, bullet);
                         bullet.removeFromParent();
                         playerHit = true;
@@ -413,8 +409,7 @@ var GameLayer = cc.Layer.extend({
                 }
 
                 if (playerHit) {
-                    this._player.life -= 1;
-                    this._player.blinkNumber = 16;
+                    this._player.hit();
                 }
             }
         }

@@ -98,7 +98,10 @@ var Player = cc.Sprite.extend({
         this.health = this.health - (this.hitImpact - this.armour * 2);
         if (this.health <= 0) {
             this.die();
+        } else {
+            this.blinkNumber = 16;
         }
+
     },
 
     die: function() {
