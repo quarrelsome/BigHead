@@ -10,8 +10,8 @@ LANDMARK_PLACEMENT_FACTOR = 2000;
 ENEMY_VERTICAL_SPEED = 80;
 ENEMY_VERTICAL_SPEED_INCREASE_FACTOR = 2;
 ENEMY_WAIT_TIME_FACTOR = 0;
-ENEMY_RUN_SPEED = 1500;
-ENEMY_RUN_SPEED_FACTOR = 100;
+ENEMY_RUN_SPEED = 1000;
+ENEMY_RUN_SPEED_FACTOR = 50;
 
 //
 // Game State
@@ -33,10 +33,11 @@ var GameLayer = cc.Layer.extend({
 
         _enemiesDestroyed: 0,
         _targetsDestroyed: 0,
-        _enemyTotalFireWait: 2,
+        _enemyTotalFireWait: 1,
         _enemyLifeTime: 0,
 
         _isTargetDestroyed: false,
+        _isWrongEnemyDestroyed: false,
         _isEnemyPresent: false,
         _isFireEnabled: false,
         _isEnemyFireEnabled: false,
@@ -172,11 +173,9 @@ var GameLayer = cc.Layer.extend({
                     if (this._isEnemyInAttackMode) {
                         this._isEnemyInAttackMode = false;
                         this._playerHitLocationY = this._player.getPositionY();
-                        cc.log(this._player.getPositionY());
                         for (i=0; i < this._enemies.length; i++)
                             cc.log(this._enemies[i].getPositionY());
                     }
-                    this._isFireEnabled = false;
                     this.enemyRun(dt);
                 }
                 else if (this._enemyLifeTime > 15) {
@@ -194,7 +193,6 @@ var GameLayer = cc.Layer.extend({
                 this.detectPlayerCollision(dt);
                 this.detectEnemyCollision(dt);
                 if (this._isTargetDestroyed) {
-                    this._isFireEnabled = false;
                     this.enemyRun(dt);
                 }
 
@@ -253,21 +251,27 @@ var GameLayer = cc.Layer.extend({
 
         moveLayer: function (dt) {
             if (this._enemies.length == 0) {
-                this._isEnemyFireEnabled = false;
+                for (var i=0; i < this._player.bullets; i++) {
+                    this._player.bullets[i].removeFromParent();
+                    cc.ArrayRemoveObject(this._player.bullets, this._player.bullets[i]);
+                }
                 this.addEnemy();
+                this._isEnemyFireEnabled = false;
+                this._isWrongEnemyDestroyed = false;
                 this._enemyLifeTime = 0;
                 ENEMY_WAIT_TIME_FACTOR += ENEMY_VERTICAL_SPEED_INCREASE_FACTOR;
             }
                 var enemyLocation = this._enemies[0].getPositionX() + this._enemies[0].getContentSize().width;
 
                 if (this._enemies.length > 1) {
-                    for (var i = 1; i < this._enemies.length; i++) {
+                    for (i = 1; i < this._enemies.length; i++) {
                         var otherEnemyLocation = this._enemies[i].getPositionX() + this._enemies[i].getContentSize().width;
                         if (otherEnemyLocation > enemyLocation)
                             enemyLocation = otherEnemyLocation;
                     }
                 }
             if ((this._enemies.length == 0) || (this._player.getPositionX() - this._player.getContentSize().width/2 + winSize.width <= enemyLocation)) {
+                this._isFireEnabled = false;
                 this.setPositionX(this.getPositionX() - (this._layerSpeed * dt));
                 this._player.setPositionX(this._player.getPositionX() + (this._layerSpeed * dt));
             } else {
@@ -306,7 +310,7 @@ var GameLayer = cc.Layer.extend({
                     cc.ArrayRemoveObject(this._player.bullets, bullet);
                     bullet.removeFromParent();
                 }
-                bullet.setPositionX(bullet.getPositionX() + ((MOVEMENT_SPEED + this._player.bulletSpeed) * dt));
+                bullet.setPositionX(bullet.getPositionX() + (this._player.bulletSpeed * dt));
             }
         },
 
@@ -321,9 +325,9 @@ var GameLayer = cc.Layer.extend({
                     }
                     
                     if (this._isEnemyInAttackMode) {
-                        bullet.setPositionX(bullet.getPositionX() - (MOVEMENT_SPEED + enemy.bulletSpeed) * dt * 2);
+                        bullet.setPositionX(bullet.getPositionX() -  (enemy.bulletSpeed * dt * 1.5));
                     } else {
-                        bullet.setPositionX(bullet.getPositionX() - ((MOVEMENT_SPEED + enemy.bulletSpeed) * dt));
+                        bullet.setPositionX(bullet.getPositionX() - (enemy.bulletSpeed * dt));
                     }
                 }
             }
@@ -339,15 +343,16 @@ var GameLayer = cc.Layer.extend({
                         }
                     }
                     else {
-                        if (enemy.enemyFireWaitCompleted < this._enemyTotalFireWait) {
-                            enemy.enemyFireWaitCompleted += dt;
+                        if (enemy.fireWaitCompleted < this._enemyTotalFireWait) {
+                            enemy.fireWaitCompleted += dt;
                         }
                         else {
                             this.addChild(enemy.shoot());
                             cc.AudioEngine.getInstance().playEffect(s_enemyShootEffect);
-                            var minWait = -2 + ENEMY_WAIT_TIME_FACTOR * 0.1;
-                            var maxWait = -1 + ENEMY_WAIT_TIME_FACTOR * 0.1;
-                            enemy.enemyFireWaitCompleted = getRandomInt(minWait, maxWait);
+//                            var minWait = -0.25;
+//                            var maxWait = 0;
+//                            enemy.fireWaitCompleted = getRandomInt(minWait, maxWait);
+                            enemy.fireWaitCompleted = 0;
                         }
                     }
                 }
@@ -369,7 +374,10 @@ var GameLayer = cc.Layer.extend({
                             if(this._targetsDestroyed>0 && this._targetsDestroyed%10==0)
                                 cc.AudioEngine.getInstance().playEffect(s_wildLaughEffect);
                         } else {
-                            this._enemyLifeTime = 13;
+                            if (!this._isWrongEnemyDestroyed) {
+                                this._enemyLifeTime = 13;
+                                this._isWrongEnemyDestroyed = true;
+                            }
                         }
                         cc.ArrayRemoveObject(this._player.bullets, bullet);
                         bullet.removeFromParent();
@@ -391,7 +399,6 @@ var GameLayer = cc.Layer.extend({
                         ENEMY_RUN_SPEED += ENEMY_RUN_SPEED_FACTOR;
 
                         this._playerHitLocationY = this._player.getPositionY();
-                        this._isFireEnabled = false;
                         this._isEnemyFireEnabled = false;
                     }
                 }

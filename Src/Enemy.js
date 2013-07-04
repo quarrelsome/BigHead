@@ -6,7 +6,7 @@ var Enemy = cc.LayerColor.extend({
 	tag: 3,
     isTarget: false,
 	runMoveRatioY: 0,
-    enemyFireWaitCompleted: 0,
+    fireWaitCompleted: 0,
     bullets: [],
     displacementTop: 0,
     displacementBottom: 0,
@@ -21,11 +21,13 @@ var Enemy = cc.LayerColor.extend({
             case 2: this.ship = cc.Sprite.create(s_enemy2); break;
         }
 
-        var minWait = -2 + 0.1*ENEMY_WAIT_TIME_FACTOR;
-        var maxWait = -1 + 0.1*ENEMY_WAIT_TIME_FACTOR;
+//        var minWait = -2 + 0.1*ENEMY_WAIT_TIME_FACTOR;
+//        var maxWait = -1 + 0.1*ENEMY_WAIT_TIME_FACTOR;
 
-        this.enemyFireWaitCompleted = getRandomInt(minWait, maxWait);
-        this.bulletSpeed = getRandomInt(200, 400);
+//        this.fireWaitCompleted = getRandomInt(minWait, maxWait);
+
+        this.fireWaitCompleted = 0;
+        this.bulletSpeed = getRandomInt(200, 300);
 		this.setTag(this.tag);
         this.addChild(this.ship);
         this.setContentSize(cc.size(this.ship.getContentSize().width, this.ship.getContentSize().height));
