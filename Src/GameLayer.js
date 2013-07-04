@@ -176,6 +176,7 @@ var GameLayer = cc.Layer.extend({
                         for (i=0; i < this._enemies.length; i++)
                             cc.log(this._enemies[i].getPositionY());
                     }
+                    this._isFireEnabled = false;
                     this.enemyRun(dt);
                 }
                 else if (this._enemyLifeTime > 15) {
@@ -193,6 +194,7 @@ var GameLayer = cc.Layer.extend({
                 this.detectPlayerCollision(dt);
                 this.detectEnemyCollision(dt);
                 if (this._isTargetDestroyed) {
+                    this._isFireEnabled = false;
                     this.enemyRun(dt);
                 }
 
@@ -364,6 +366,8 @@ var GameLayer = cc.Layer.extend({
                         if (enemy.isTarget) {
                             this._isTargetDestroyed = true;
                             this._targetsDestroyed++;
+                        } else {
+                            this._enemyLifeTime = 13;
                         }
                         cc.ArrayRemoveObject(this._player.bullets, bullet);
                         bullet.removeFromParent();
@@ -400,9 +404,9 @@ var GameLayer = cc.Layer.extend({
                     }
                     else {
                         if (enemy.getPositionY() >= this._playerHitLocationY) {
-                            enemy.setPositionY(enemy.getPositionY() - (enemy.getPositionY() - this._playerHitLocationY) * dt);
+                            enemy.setPositionY(enemy.getPositionY() - (enemy.getPositionY() - this._playerHitLocationY) / (ENEMY_RUN_SPEED * dt));
                         } else {
-                            enemy.setPositionY(enemy.getPositionY() + (this._playerHitLocationY - enemy.getPositionY()) * dt);
+                            enemy.setPositionY(enemy.getPositionY() + (this._playerHitLocationY - enemy.getPositionY()) / (ENEMY_RUN_SPEED * dt));
                         }
                         enemy.setPositionX(enemy.getPositionX() - (ENEMY_RUN_SPEED * dt));
                     }
