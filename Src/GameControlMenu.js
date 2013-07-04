@@ -1,6 +1,9 @@
 var GameControlMenu = cc.Layer.extend({
 
     _gameSate:0,
+    lbScore: null,
+    _lbPlayerLife: null,
+    _lbtravelledDistance: null,
 
     init:function (gameState) {
         var bRet = false;
@@ -14,16 +17,35 @@ var GameControlMenu = cc.Layer.extend({
             item1.setCallback(this.onPause, this);
             var menu = cc.Menu.create(item1,systemMenu);
             menu.alignItemsVertically();
-            menu.setAnchorPoint(cc.p(0, 0));
+            //menu.setAnchorPoint(cc.p(0, 0));
             menu.setPosition(winSize.width-95, 50);
             this.addChild(menu);
+
+            this.lbScore = cc.LabelTTF.create("Score: 0", "Arial", 20);
+            this.lbScore.setColor(cc.c3b(0, 0, 0));
+            this.addChild(this.lbScore);
+            this.lbScore.setPosition(winSize.width - 900 , winSize.height - 30);
+
+            this._lbPlayerLife = cc.LabelTTF.create("Player Life: 0", "Arial", 20);
+            this._lbPlayerLife.setColor(cc.c3b(0, 0, 0));
+            this.addChild(this._lbPlayerLife);
+            this._lbPlayerLife.setPosition(winSize.width - 750 , winSize.height - 30);
+
+            this._lbtravelledDistance = cc.LabelTTF.create("Distance Travelled: 0", "Arial", 20);
+            this._lbtravelledDistance.setColor(cc.c3b(0, 0, 0));
+            this.addChild(this._lbtravelledDistance);
+            this._lbtravelledDistance.setPosition(winSize.width - 450 , winSize.height - 30);
+
             this._gameSate = gameState;
             bRet = true;
         }
 
         return bRet;
     },
-    update: function(dt){
+    update: function(dt, gameUpdates){
+        this.lbScore.setString("Score: " + gameUpdates.score);
+        this._lbPlayerLife.setString("Player Life: "+gameUpdates.health);
+        this._lbtravelledDistance.setString("Distance Travelled: "+gameUpdates.travelledDistance/1000+" KM");
         return this._gameSate;
     },
 

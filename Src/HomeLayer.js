@@ -51,8 +51,6 @@ var HomeLayer = cc.Layer.extend({
 
             cc.AudioEngine.getInstance().setMusicVolume(0.5);
             cc.AudioEngine.getInstance().playMusic(s_mainMainMusic, true);
-
-
             bRet = true;
 
             sys.dumpRoot();
@@ -94,7 +92,7 @@ var HomeLayer = cc.Layer.extend({
     },
     onButtonEffect:function(){
         if (MW.SOUND) {
-            var s = cc.AudioEngine.getInstance().playEffect(s_buttonEffect_mp3);
+            cc.AudioEngine.getInstance().playEffect(s_buttonEffect_mp3);
         }
     }
 });
