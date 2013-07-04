@@ -32,6 +32,9 @@ var Player = cc.Sprite.extend({
         if (this.blinkNumber > 0) {
             this.blink();
         }
+
+        if(this.health<=20)
+            cc.AudioEngine.getInstance().playEffect(s_playerLowLifeEffect);
 	},
 
     updatePosition: function(dt) {

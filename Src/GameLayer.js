@@ -327,6 +327,8 @@ var GameLayer = cc.Layer.extend({
                         if (enemy.isTarget) {
                             this._isTargetDestroyed = true;
                             this._targetsDestroyed++;
+                            if(this._targetsDestroyed%10==0 && this._targetsDestroyed>0)
+                                cc.AudioEngine.getInstance().playEffect(s_wildLaughEffect);
                         }
                         cc.ArrayRemoveObject(this._player.bullets, bullet);
                         bullet.removeFromParent();
