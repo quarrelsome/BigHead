@@ -56,7 +56,7 @@ var HomeLayer = cc.Layer.extend({
             var scene = cc.Scene.create();
             scene.addChild(GameLayer.create(scene));
             cc.AudioEngine.getInstance().setMusicVolume(0.2);
-            cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
+            cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));
         }, this);
     },
     onSettings:function (pSender) {
