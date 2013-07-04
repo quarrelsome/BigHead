@@ -18,7 +18,8 @@ var InterchangeableParallaxLayer = cc.Layer.extend({
             bRet = true;
         }
 
-
+        sys.dumpRoot();
+        sys.garbageCollect();
         return bRet;
     },
     update : function(dt,distanceTravelled)

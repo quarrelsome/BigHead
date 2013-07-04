@@ -33,7 +33,7 @@ var Player = cc.Sprite.extend({
             this.blink();
         }
 
-        if(this.health<=20)
+        if(this.health>0 && this.health<=20)
             cc.AudioEngine.getInstance().playEffect(s_playerLowLifeEffect);
 	},
 
@@ -104,11 +104,11 @@ var Player = cc.Sprite.extend({
         } else {
             this.blinkNumber = 16;
         }
-        cc.log(this.health);
     },
 
     die: function() {
-        var scene = GameOver.scene(false);
-        cc.Director.getInstance().replaceScene(scene);
+        var scene = cc.Scene.create();
+        scene.addChild(GameOver.create(false));
+        cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));
     }
 });

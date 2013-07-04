@@ -39,7 +39,8 @@ var GameControlMenu = cc.Layer.extend({
             this._gameSate = gameState;
             bRet = true;
         }
-
+        sys.dumpRoot();
+        sys.garbageCollect();
         return bRet;
     },
     update: function(dt, gameUpdates){
@@ -58,7 +59,7 @@ var GameControlMenu = cc.Layer.extend({
     onSysMenu:function (pSender) {
         var scene = cc.Scene.create();
         scene.addChild(HomeLayer.create());
-        cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2,scene));
+        cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5,scene));
     }
 });
 

@@ -17,16 +17,16 @@ var s_explosion = dirArt + "explosion-particle.png";
 
 //effect
 var s_buttonEffect_mp3 = dirSounds + "buttonEffet.mp3";
-var s_playerShootEffect = dirSounds + "player-fire.wav";
-var s_enemyDestroyedEffect = dirSounds + "enemy-destroy.wav";
-var s_playerGetsHitEffect = dirSounds + "player-hit.wav";
-var s_enemyShootEffect = dirSounds + "enemy-fire.wav";
+var s_playerShootEffect = dirSounds + "player-fire.mp3";
+var s_enemyDestroyedEffect = dirSounds + "enemy-destroy.mp3";
+var s_playerGetsHitEffect = dirSounds + "player-hit.mp3";
+var s_enemyShootEffect = dirSounds + "enemy-fire.mp3";
 var s_playerFlying = dirSounds + "player-flying.mp3";
-var s_wildLaughEffect = dirSounds + "wild-laugh.wav";
-var s_playerLowLifeEffect = dirSounds + "player-Lowlife.wav";
+var s_wildLaughEffect = dirSounds + "wild-laugh.mp3";
+var s_playerLowLifeEffect = dirSounds + "player-Lowlife.mp3";
 
 //music
-var s_mainMainMusic = dirSounds + "backgroundMusic.wav";
+var s_mainMainMusic = dirSounds + "backgroundMusic.mp3";
 
 //plist
 var s_player_plist = dirArt + "player.plist";
@@ -74,7 +74,6 @@ var g_mainmenu = [
     {src:s_splashScreen},
     {src:s_flare},
     {src:s_menu},
-    {src:s_mainMainMusic},
     {src:s_menuTitle}
 ];
 
@@ -84,13 +83,13 @@ var g_ressources = [
     {src:s_player_plist},
 	{src:s_enemy1},
 	{src:s_enemy2},
-    {src:s_playerShootEffect},
-    {src:s_enemyDestroyedEffect},
-    {src:s_playerGetsHitEffect},
-    {src:s_enemyShootEffect},
-    {src:s_playerFlying},
-    {src:s_wildLaughEffect},
-    {src:s_playerLowLifeEffect},
+//    {src:s_playerShootEffect},
+//    {src:s_enemyDestroyedEffect},
+//    {src:s_playerGetsHitEffect},
+//    {src:s_enemyShootEffect},
+//    {src:s_playerFlying},
+//    {src:s_wildLaughEffect},
+//    {src:s_playerLowLifeEffect},
     {src:s_player_bullet},
     {src:s_enemy_bullet},
 	{src:s_explosion},

@@ -16,7 +16,8 @@ var CommonParallaxLayer = cc.Layer.extend({
             bRet = true;
         }
 
-
+        sys.dumpRoot();
+        sys.garbageCollect();
         return bRet;
     },
     update : function(layerMovementSpeed)
