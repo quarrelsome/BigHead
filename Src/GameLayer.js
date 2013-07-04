@@ -223,7 +223,7 @@ var GameLayer = cc.Layer.extend({
                     if (this._player.fireWait <= 0) {
                         this.addChild(this._player.shoot());
                         cc.AudioEngine.getInstance().playEffect(s_playerShootEffect);
-                        this._player.fireWait = 0.75;
+                        this._player.fireWait = 0.3;
                     }
                 }
             }
@@ -362,8 +362,8 @@ var GameLayer = cc.Layer.extend({
                     var enemy = this._enemies[j];
                     var enemyRect = enemy.getBoundingBox();
                     if (cc.rectIntersectsRect(bulletRect, enemyRect)) {
-                        this._gameSate.score += 25;
                         if (enemy.isTarget) {
+                            this._gameSate.score += 25;
                             this._isTargetDestroyed = true;
                             this._targetsDestroyed++;
                         } else {
