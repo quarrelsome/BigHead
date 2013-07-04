@@ -79,6 +79,7 @@ var g_mainmenu = [
 
 var g_ressources = [
     {src:s_backgeound},
+    {src:s_mainMainMusic},
     {src:s_player},
     {src:s_player_plist},
 	{src:s_enemy1},
