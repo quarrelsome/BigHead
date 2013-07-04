@@ -366,6 +366,8 @@ var GameLayer = cc.Layer.extend({
                             this._gameSate.score += 25;
                             this._isTargetDestroyed = true;
                             this._targetsDestroyed++;
+                            if(this._targetsDestroyed>0 && this._targetsDestroyed%10==0)
+                                cc.AudioEngine.getInstance().playEffect(s_wildLaughEffect);
                         } else {
                             this._enemyLifeTime = 13;
                         }

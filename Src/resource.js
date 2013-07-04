@@ -2,41 +2,33 @@ var dirArt = "Art/";
 var dirSounds = "Sounds/";
 
 //image
-var s_loading = dirArt + "blue-sky.jpg";
+var s_splashScreen = dirArt + "splash-screen.jpg";
 var s_menu = dirArt + "menu.png";
-var s_logo = dirArt + "logo.png";
 var s_menuTitle = dirArt + "menuTitle.png";
 var s_flare = dirArt + "flare.jpg";
-var s_textureTransparentPack = dirArt + "textureTransparentPack.png";
-
 var s_player = dirArt + "player.png";
 var s_enemy1 = dirArt + "enemy1.png";
 var s_enemy2 = dirArt + "enemy2.png";
-
 var s_player_bullet = dirArt + "bullet.png";
 var s_enemy_bullet = dirArt + "bullet-enemy.png";
-var s_top_bar = dirArt + "top-bar.png";
-var s_bottom_bar = dirArt + "bottom-bar.png";
 
-var s_score_text = dirArt + "score-text.png";
-var s_lives_text = dirArt + "lives-text.png";
 
 var s_explosion = dirArt + "explosion-particle.png";
-var s_fire_particle = dirArt + "ship-exhaust-fire-particle.png";
 
 //effect
 var s_buttonEffect_mp3 = dirSounds + "buttonEffet.mp3";
-var s_playerShootEffect = dirSounds + "zap.wav";
+var s_playerShootEffect = dirSounds + "player-fire.wav";
 var s_enemyDestroyedEffect = dirSounds + "enemy-destroy.wav";
-var s_playerGetsHitEffect = dirSounds + "playerGetsHit.wav";
-var s_enemyShootEffect = dirSounds + "enemyFire.wav";
-var s_playerFlying = dirSounds + "flying.mp3";
+var s_playerGetsHitEffect = dirSounds + "player-hit.wav";
+var s_enemyShootEffect = dirSounds + "enemy-fire.wav";
+var s_playerFlying = dirSounds + "player-flying.mp3";
+var s_wildLaughEffect = dirSounds + "wild-laugh.wav";
+var s_playerLowLifeEffect = dirSounds + "player-Lowlife.wav";
 
 //music
 var s_mainMainMusic = dirSounds + "backgroundMusic.wav";
 
 //plist
-var s_textureTransparentPack_plist = dirArt + "textureTransparentPack.plist";
 var s_player_plist = dirArt + "player.plist";
 
 //splash screen
@@ -79,14 +71,11 @@ var s_location3Special1 = dirArt + "parallax/Malaysia/Special-MY-1.png";
 var s_location3Special2 = dirArt + "parallax/Malaysia/Special-MY-2.png";
 
 var g_mainmenu = [
-    {src:s_loading},
+    {src:s_splashScreen},
     {src:s_flare},
     {src:s_menu},
-    {src:s_logo},
     {src:s_mainMainMusic},
-    {src:s_menuTitle},
-    {src:s_textureTransparentPack_plist},
-    {src:s_textureTransparentPack}
+    {src:s_menuTitle}
 ];
 
 var g_ressources = [
@@ -100,12 +89,10 @@ var g_ressources = [
     {src:s_playerGetsHitEffect},
     {src:s_enemyShootEffect},
     {src:s_playerFlying},
-	{src:s_top_bar},
-	{src:s_bottom_bar},
+    {src:s_wildLaughEffect},
+    {src:s_playerLowLifeEffect},
     {src:s_player_bullet},
     {src:s_enemy_bullet},
-    {src:s_score_text},
-	{src:s_lives_text},
 	{src:s_explosion},
     {src:s_iranSky},
     {src:s_kazakhstanSky},
