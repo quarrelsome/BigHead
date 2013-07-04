@@ -5,13 +5,13 @@ var Enemy = cc.LayerColor.extend({
 	bulletSpeed: 500,
 	tag: 3,
     isTarget: false,
-    playerHitLocationY: 0,
 	runMoveRatioY: 0,
     enemyFireWaitCompleted: 0,
     bullets: [],
     displacementTop: 0,
     displacementBottom: 0,
     displacementDirection: 0,
+    bulletAngle: 0,
 
 	ctor: function (enemyType) {
         this._super();
@@ -23,7 +23,6 @@ var Enemy = cc.LayerColor.extend({
 
         var minWait = -2 + 0.1*ENEMY_WAIT_TIME_FACTOR;
         var maxWait = -1 + 0.1*ENEMY_WAIT_TIME_FACTOR;
-        ENEMY_WAIT_TIME_FACTOR += ENEMY_SPEED_INCREASE_FACTOR;
 
         this.enemyFireWaitCompleted = getRandomInt(minWait, maxWait);
         this.bulletSpeed = getRandomInt(200, 400);
