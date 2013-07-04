@@ -146,7 +146,7 @@ var GameLayer = cc.Layer.extend({
             if(this._gameSate.state == STATE_GAMEOVER){
                 var scene = cc.Scene.create();
                 scene.addChild(GameOver.create(true));
-                cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
+                cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));
             }
 
             this._gameSate.state = this._hudLayer.update(dt,{score:this._gameSate.score,travelledDistance:this._distanceTravelled,health:this._player.health});

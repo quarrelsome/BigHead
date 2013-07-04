@@ -39,7 +39,8 @@ var GameControlMenu = cc.Layer.extend({
             this._gameSate = gameState;
             bRet = true;
         }
-
+        sys.dumpRoot();
+        sys.garbageCollect();
         return bRet;
     },
     update: function(dt, gameUpdates){

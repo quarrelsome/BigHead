@@ -44,10 +44,9 @@ var HomeLayer = cc.Layer.extend({
             cc.AudioEngine.getInstance().setMusicVolume(0.5);
             cc.AudioEngine.getInstance().playMusic(s_mainMainMusic, true);
             bRet = true;
-
-            sys.dumpRoot();
-            sys.garbageCollect();
         }
+        sys.dumpRoot();
+        sys.garbageCollect();
         return bRet;
     },
 
