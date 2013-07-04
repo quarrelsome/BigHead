@@ -104,7 +104,7 @@ var Player = cc.Sprite.extend({
         } else {
             this.blinkNumber = 16;
         }
-
+        cc.log(this.health);
     },
 
     die: function() {
