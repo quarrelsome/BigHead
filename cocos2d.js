@@ -28,7 +28,8 @@ var MW = MW || {};
 			'./Src/Enemy.js',
             './Src/GameOver.js',
             './Src/Effect.js',
-            './Src/GameControlMenu.js'
+            './Src/GameControlMenu.js',
+            './Src/EnvironmentLayer.js'
         ]
     };
  
