@@ -4,7 +4,7 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>player_fly_0.png</key>
+            <key>player_die_0.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{2,2},{128,128}}</string>
@@ -17,7 +17,7 @@
                 <key>sourceSize</key>
                 <string>{128,128}</string>
             </dict>
-            <key>player_fly_1.png</key>
+            <key>player_die_1.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{132,2},{128,128}}</string>
@@ -30,7 +30,7 @@
                 <key>sourceSize</key>
                 <string>{128,128}</string>
             </dict>
-            <key>player_fly_10.png</key>
+            <key>player_die_10.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{262,2},{128,128}}</string>
@@ -43,59 +43,7 @@
                 <key>sourceSize</key>
                 <string>{128,128}</string>
             </dict>
-            <key>player_fly_11.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{392,2},{128,128}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{128,128}}</string>
-                <key>sourceSize</key>
-                <string>{128,128}</string>
-            </dict>
-            <key>player_fly_12.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{522,2},{128,128}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{128,128}}</string>
-                <key>sourceSize</key>
-                <string>{128,128}</string>
-            </dict>
-            <key>player_fly_13.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{652,2},{128,128}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{128,128}}</string>
-                <key>sourceSize</key>
-                <string>{128,128}</string>
-            </dict>
-            <key>player_fly_14.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{782,2},{128,128}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{128,128}}</string>
-                <key>sourceSize</key>
-                <string>{128,128}</string>
-            </dict>
-            <key>player_fly_15.png</key>
+            <key>player_die_11.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{2,132},{128,128}}</string>
@@ -108,7 +56,7 @@
                 <key>sourceSize</key>
                 <string>{128,128}</string>
             </dict>
-            <key>player_fly_16.png</key>
+            <key>player_die_12.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{132,132},{128,128}}</string>
@@ -121,7 +69,7 @@
                 <key>sourceSize</key>
                 <string>{128,128}</string>
             </dict>
-            <key>player_fly_17.png</key>
+            <key>player_die_13.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{262,132},{128,128}}</string>
@@ -134,59 +82,7 @@
                 <key>sourceSize</key>
                 <string>{128,128}</string>
             </dict>
-            <key>player_fly_18.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{392,132},{128,128}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{128,128}}</string>
-                <key>sourceSize</key>
-                <string>{128,128}</string>
-            </dict>
-            <key>player_fly_19.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{522,132},{128,128}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{128,128}}</string>
-                <key>sourceSize</key>
-                <string>{128,128}</string>
-            </dict>
-            <key>player_fly_2.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{652,132},{128,128}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{128,128}}</string>
-                <key>sourceSize</key>
-                <string>{128,128}</string>
-            </dict>
-            <key>player_fly_20.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{782,132},{128,128}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{128,128}}</string>
-                <key>sourceSize</key>
-                <string>{128,128}</string>
-            </dict>
-            <key>player_fly_21.png</key>
+            <key>player_die_14.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{2,262},{128,128}}</string>
@@ -199,7 +95,7 @@
                 <key>sourceSize</key>
                 <string>{128,128}</string>
             </dict>
-            <key>player_fly_22.png</key>
+            <key>player_die_15.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{132,262},{128,128}}</string>
@@ -212,7 +108,7 @@
                 <key>sourceSize</key>
                 <string>{128,128}</string>
             </dict>
-            <key>player_fly_23.png</key>
+            <key>player_die_2.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{262,262},{128,128}}</string>
@@ -225,59 +121,7 @@
                 <key>sourceSize</key>
                 <string>{128,128}</string>
             </dict>
-            <key>player_fly_3.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{392,262},{128,128}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{128,128}}</string>
-                <key>sourceSize</key>
-                <string>{128,128}</string>
-            </dict>
-            <key>player_fly_4.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{522,262},{128,128}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{128,128}}</string>
-                <key>sourceSize</key>
-                <string>{128,128}</string>
-            </dict>
-            <key>player_fly_5.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{652,262},{128,128}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{128,128}}</string>
-                <key>sourceSize</key>
-                <string>{128,128}</string>
-            </dict>
-            <key>player_fly_6.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{782,262},{128,128}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{128,128}}</string>
-                <key>sourceSize</key>
-                <string>{128,128}</string>
-            </dict>
-            <key>player_fly_7.png</key>
+            <key>player_die_3.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{2,392},{128,128}}</string>
@@ -290,7 +134,7 @@
                 <key>sourceSize</key>
                 <string>{128,128}</string>
             </dict>
-            <key>player_fly_8.png</key>
+            <key>player_die_4.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{132,392},{128,128}}</string>
@@ -303,10 +147,62 @@
                 <key>sourceSize</key>
                 <string>{128,128}</string>
             </dict>
-            <key>player_fly_9.png</key>
+            <key>player_die_5.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{262,392},{128,128}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{128,128}}</string>
+                <key>sourceSize</key>
+                <string>{128,128}</string>
+            </dict>
+            <key>player_die_6.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,522},{128,128}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{128,128}}</string>
+                <key>sourceSize</key>
+                <string>{128,128}</string>
+            </dict>
+            <key>player_die_7.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{132,522},{128,128}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{128,128}}</string>
+                <key>sourceSize</key>
+                <string>{128,128}</string>
+            </dict>
+            <key>player_die_8.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{262,522},{128,128}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{128,128}}</string>
+                <key>sourceSize</key>
+                <string>{128,128}</string>
+            </dict>
+            <key>player_die_9.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,652},{128,128}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -322,13 +218,13 @@
             <key>format</key>
             <integer>2</integer>
             <key>realTextureFileName</key>
-            <string>player.png</string>
+            <string>player_die.png</string>
             <key>size</key>
-            <string>{1024,1024}</string>
+            <string>{512,1024}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:dd296aefdbd6fc4c1a5d6d2a31213f22$</string>
+            <string>$TexturePacker:SmartUpdate:72324a053d7df8ec98ad1af1d43afabf$</string>
             <key>textureFileName</key>
-            <string>player.png</string>
+            <string>player_die.png</string>
         </dict>
     </dict>
 </plist>

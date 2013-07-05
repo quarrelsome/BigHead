@@ -10,20 +10,42 @@ var Player = cc.Sprite.extend({
     bullets: [],
     //isBlinking: false,
     blinkNumber: 0,
-    spriteFrameIndex: 1,
+    spriteFrameIndex: 0,
     fireWait: 0.75,
+    currentState: 0,
 
 	ctor: function() {
         this._super();
+        this.setTag(this.tag);
 
-        var cache = cc.SpriteFrameCache.getInstance().addSpriteFrames(s_player_plist, s_player);
-        this.initWithSpriteFrameName("fly__001.png");
-        this.setScale(0.6);
-		this.setTag(this.tag);
+        cc.SpriteFrameCache.getInstance().addSpriteFrames(s_player_plist, s_player);
+        cc.SpriteFrameCache.getInstance().addSpriteFrames(s_player_spawn_plist, s_player_spawn);
+        cc.SpriteFrameCache.getInstance().addSpriteFrames(s_player_fire_plist, s_player_fire);
+        cc.SpriteFrameCache.getInstance().addSpriteFrames(s_player_die_plist, s_player_die);
+
+        this.initWithSpriteFrameName("player_spawn_0.png");
+
+        var spawnAnimationFrames = [];
+        for (var i = 0; i < 36; i++) {
+            var frame = cc.SpriteFrameCache.getInstance().getSpriteFrame('player_spawn_'+ i +'.png');
+            spawnAnimationFrames.push(frame);
+        }
+
+        var animation = cc.Animation.create(spawnAnimationFrames, 0.1);
+        var animate = cc.Animate.create(animation);
+        this.runAction(cc.Sequence.create(animate,
+            cc.CallFunc.create(function() {
+                this.currentState = 1;
+            }, this)
+        ));
 	},
 	
 	update:function (dt) {
-        this.changeFrame();
+        if (this._parent._time % 0.1 < 0.05) {
+            if (this.currentState == 1 || this.currentState == 2)
+                this.changeFrame();
+        }
+
         this.updatePosition(dt);
 
         if (this.fireWait > 0) {
@@ -58,17 +80,22 @@ var Player = cc.Sprite.extend({
     },
 
     changeFrame: function() {
-        var prefix = "fly__";
-        if (this.spriteFrameIndex > 24) {
-            this.spriteFrameIndex = 1;
-        }
-        if (this.spriteFrameIndex < 10) {
-            prefix += "00";
-        } else {
-            prefix += "0";
-        }
+         if (this.currentState == 1) {
+            var prefix = "player_fly_";
+            if (this.spriteFrameIndex > 23) {
+                this.spriteFrameIndex = 0;
+            }
+            var frame = cc.SpriteFrameCache.getInstance().getSpriteFrame(prefix + this.spriteFrameIndex + ".png");
 
-        var frame = cc.SpriteFrameCache.getInstance().getSpriteFrame(prefix + this.spriteFrameIndex + ".png");
+         } else if (this.currentState == 2) {
+             prefix = "player_fire_";
+             frame = cc.SpriteFrameCache.getInstance().getSpriteFrame(prefix + this.spriteFrameIndex + ".png");
+             if (this.spriteFrameIndex == 4) {
+                 this.spriteFrameIndex = -1;
+                 this.currentState = 1;
+             }
+         }
+
         this.setDisplayFrame(frame);
         this.spriteFrameIndex++;
     },
@@ -90,6 +117,8 @@ var Player = cc.Sprite.extend({
     },
 
     shoot: function () {
+        this.currentState = 2;
+        this.spriteFrameIndex = 0;
         var bullet = cc.Sprite.create(s_player_bullet);
         bullet.setPosition(this.getPositionX() + 20, this.getPositionY() - 20);
         bullet.setTag(2);
@@ -107,8 +136,22 @@ var Player = cc.Sprite.extend({
     },
 
     die: function() {
-        var scene = cc.Scene.create();
-        scene.addChild(GameOver.create(false));
-        cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));
+        this.currentState = 3;
+        var dieAnimationFrames = [];
+        for (var i = 0; i < 15; i++) {
+            var frame = cc.SpriteFrameCache.getInstance().getSpriteFrame('player_die_'+ i +'.png');
+            dieAnimationFrames.push(frame);
+        }
+
+        var animation = cc.Animation.create(dieAnimationFrames, 0.1);
+        var animate = cc.Animate.create(animation);
+        this.runAction(cc.Sequence.create(animate,
+            cc.CallFunc.create(function() {
+                var scene = cc.Scene.create();
+                scene.addChild(GameOver.create(false));
+                cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));
+            }, this)
+        ));
+
     }
 });

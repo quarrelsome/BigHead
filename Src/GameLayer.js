@@ -70,7 +70,7 @@ var GameLayer = cc.Layer.extend({
                 this.initBuildingLayer(scene);
                 this.initPlayer();
                 this.initTreeLayer(scene);
-                this.initRainLayer(scene);
+                //this.initRainLayer(scene);
                 this.initHudLayer(scene);
                 this.enableEvents();
                 this.scheduleUpdate();
@@ -139,7 +139,7 @@ var GameLayer = cc.Layer.extend({
             this._player = new Player();
             this._player.setPosition(0 - this._player.getContentSize().width / 2, winSize.height / 2);
             this.addChild(this._player, this._player.tag);
-            this._player.runAction(cc.MoveTo.create(1.5, cc.p(this._player.getContentSize().width / 2, winSize.height / 2)));
+            this._player.runAction(cc.Sequence.create(cc.MoveTo.create(2.5, cc.p(this._player.getContentSize().width / 2, winSize.height / 2))));
         },
 
         initHudLayer: function(scene){
@@ -172,25 +172,27 @@ var GameLayer = cc.Layer.extend({
                 this._buildingParallax.update(dt*(this._layerSpeed-20),this._distanceTravelled);
                 this._trees2Parallax.update(dt*(this._layerSpeed-10));
 
+                if (this._enemies.length == 0) {
+                    this.addEnemy();
+                }
+
                 this.moveLayer(dt);
                 this._player.update(dt);
                 for (var i=0; i < this._enemies.length; i++) {
                     this._enemies[i].update(dt);
                 }
 
-                if (this._enemyLifeTime > 16) {
+                if (this._enemyLifeTime > 9) {
                     if (this._isEnemyInAttackMode) {
                         this._isEnemyInAttackMode = false;
                         this._playerHitLocationY = this._player.getPositionY();
-                        for (i=0; i < this._enemies.length; i++)
-                            cc.log(this._enemies[i].getPositionY());
                     }
                     this.enemyRun(dt);
                 }
-                else if (this._enemyLifeTime > 15) {
+                else if (this._enemyLifeTime > 8) {
                     this._isEnemyFireEnabled = false;
                 }
-                else if (this._enemyLifeTime > 13) {
+                else if (this._enemyLifeTime > 6) {
                         this._isEnemyInAttackMode = true;
                 }
 
@@ -259,30 +261,22 @@ var GameLayer = cc.Layer.extend({
         },
 
         moveLayer: function (dt) {
-            if (this._enemies.length == 0) {
-                for (var i=0; i < this._player.bullets; i++) {
-                    this._player.bullets[i].removeFromParent();
-                    cc.ArrayRemoveObject(this._player.bullets, this._player.bullets[i]);
-                }
-                this.addEnemy();
-                this._isEnemyFireEnabled = false;
-                this._isWrongEnemyDestroyed = false;
-                this._enemyLifeTime = 0;
-                ENEMY_WAIT_TIME_FACTOR += ENEMY_VERTICAL_SPEED_INCREASE_FACTOR;
-            }
-                var enemyLocation = this._enemies[0].getPositionX() + this._enemies[0].getContentSize().width;
+            var enemyLocation = this._enemies[0].getPositionX() + this._enemies[0].getContentSize().width;
 
-                if (this._enemies.length > 1) {
-                    for (i = 1; i < this._enemies.length; i++) {
-                        var otherEnemyLocation = this._enemies[i].getPositionX() + this._enemies[i].getContentSize().width;
-                        if (otherEnemyLocation > enemyLocation)
-                            enemyLocation = otherEnemyLocation;
-                    }
+            if (this._enemies.length > 1) {
+                for (var i = 1; i < this._enemies.length; i++) {
+                    var otherEnemyLocation = this._enemies[i].getPositionX() + this._enemies[i].getContentSize().width;
+                    if (otherEnemyLocation > enemyLocation)
+                        enemyLocation = otherEnemyLocation;
                 }
-            if ((this._enemies.length == 0) || (this._player.getPositionX() - this._player.getContentSize().width/2 + winSize.width <= enemyLocation)) {
+            }
+            if (this._player.getPositionX() - this._player.getContentSize().width/2 + winSize.width <= enemyLocation) {
                 this._isFireEnabled = false;
                 this.setPositionX(this.getPositionX() - (this._layerSpeed * dt));
                 this._player.setPositionX(this._player.getPositionX() + (this._layerSpeed * dt));
+                if (this._enemiesDestroyed == 0) {
+                    this._enemyLifeTime = 0;
+                }
             } else {
                 this._isFireEnabled = true;
                 if (!this._isTargetDestroyed)
@@ -310,6 +304,16 @@ var GameLayer = cc.Layer.extend({
                 this.addChild(enemy);
                 this._enemies.push(enemy);
             }
+
+            for (i=0; i < this._player.bullets; i++) {
+                this._player.bullets[i].removeFromParent();
+                cc.ArrayRemoveObject(this._player.bullets, this._player.bullets[i]);
+            }
+
+            this._isEnemyFireEnabled = false;
+            this._isWrongEnemyDestroyed = false;
+            ENEMY_WAIT_TIME_FACTOR += ENEMY_VERTICAL_SPEED_INCREASE_FACTOR;
+            this._enemiesDestroyed = 0;
         },
 
         updateBulletPosition: function (dt) {
@@ -383,8 +387,8 @@ var GameLayer = cc.Layer.extend({
                             if(this._targetsDestroyed>0 && this._targetsDestroyed%10==0)
                                 cc.AudioEngine.getInstance().playEffect(s_wildLaughEffect);
                         } else {
-                            if (!this._isWrongEnemyDestroyed) {
-                                this._enemyLifeTime = 13;
+                            if (!this._isWrongEnemyDestroyed && this._enemiesDestroyed == 0) {
+                                this._enemyLifeTime = 6;
                                 this._isWrongEnemyDestroyed = true;
                             }
                         }
