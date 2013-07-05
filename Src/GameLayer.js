@@ -69,7 +69,7 @@ var GameLayer = cc.Layer.extend({
                 this.initCommonLayer(scene);
                 this.initBuildingLayer(scene);
                 this.initTreeLayer(scene);
-                this.initRainLayer(scene);
+                //this.initRainLayer(scene);
                 this.initHudLayer(scene);
                 this.initPlayer();
                 this.enableEvents();
@@ -139,7 +139,7 @@ var GameLayer = cc.Layer.extend({
             this._player = new Player();
             this._player.setPosition(0 - this._player.getContentSize().width / 2, winSize.height / 2);
             this.addChild(this._player, this._player.tag);
-            this._player.runAction(cc.Sequence.create(cc.MoveTo.create(1.5, cc.p(this._player.getContentSize().width / 2, winSize.height / 2))));
+            this._player.runAction(cc.Sequence.create(cc.MoveTo.create(2.5, cc.p(this._player.getContentSize().width / 2, winSize.height / 2))));
         },
 
         initHudLayer: function(scene){
