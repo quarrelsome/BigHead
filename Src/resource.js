@@ -7,6 +7,7 @@ var s_menu = dirArt + "menu.png";
 var s_menuTitle = dirArt + "menuTitle.png";
 var s_flare = dirArt + "flare.jpg";
 var s_player = dirArt + "player.png";
+var s_player_spawn = dirArt + "player_spawn.png";
 var s_enemy1 = dirArt + "enemy1.png";
 var s_enemy2 = dirArt + "enemy2.png";
 var s_player_bullet = dirArt + "bullet.png";
@@ -30,6 +31,7 @@ var s_mainMainMusic = dirSounds + "backgroundMusic.mp3";
 
 //plist
 var s_player_plist = dirArt + "player.plist";
+var s_player_spawn_plist = dirArt + "player_spawn.plist";
 
 //splash screen
 var s_backgeound = dirArt + "parallax/common/BG-common.png";
@@ -80,7 +82,9 @@ var g_mainmenu = [
 var g_ressources = [
     {src:s_backgeound},
     {src:s_player},
+    {src:s_player_spawn},
     {src:s_player_plist},
+    {src:s_player_spawn_plist},
 	{src:s_enemy1},
 	{src:s_enemy2},
 //    {src:s_playerShootEffect},

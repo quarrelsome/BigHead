@@ -10,20 +10,22 @@ var Player = cc.Sprite.extend({
     bullets: [],
     //isBlinking: false,
     blinkNumber: 0,
-    spriteFrameIndex: 1,
+    spriteFrameIndex: 0,
     fireWait: 0.75,
+    currentState: 0,
 
 	ctor: function() {
         this._super();
-
+        var spawnCache = cc.SpriteFrameCache.getInstance().addSpriteFrames(s_player_spawn_plist, s_player_spawn);
         var cache = cc.SpriteFrameCache.getInstance().addSpriteFrames(s_player_plist, s_player);
-        this.initWithSpriteFrameName("fly__001.png");
-        this.setScale(0.6);
+        this.initWithSpriteFrameName("player_spawn_0.png");
 		this.setTag(this.tag);
 	},
 	
 	update:function (dt) {
-        this.changeFrame();
+        if (this._parent._time % 0.1 < 0.05)
+            this.changeFrame();
+
         this.updatePosition(dt);
 
         if (this.fireWait > 0) {
@@ -58,17 +60,22 @@ var Player = cc.Sprite.extend({
     },
 
     changeFrame: function() {
-        var prefix = "fly__";
-        if (this.spriteFrameIndex > 24) {
-            this.spriteFrameIndex = 1;
+        if (this.currentState == 0) {
+            prefix = "player_spawn_";
+            var frame = cc.SpriteFrameCache.getInstance().getSpriteFrame(prefix + this.spriteFrameIndex + ".png");
+            if (this.spriteFrameIndex == 35) {
+                this.currentState = 1;
+                this.spriteFrameIndex = 0;
+            }
         }
-        if (this.spriteFrameIndex < 10) {
-            prefix += "00";
-        } else {
-            prefix += "0";
+        else if (this.currentState == 1) {
+            var prefix = "player_fly_";
+            if (this.spriteFrameIndex > 23) {
+                this.spriteFrameIndex = 0;
+            }
+            frame = cc.SpriteFrameCache.getInstance().getSpriteFrame(prefix + this.spriteFrameIndex + ".png");
         }
 
-        var frame = cc.SpriteFrameCache.getInstance().getSpriteFrame(prefix + this.spriteFrameIndex + ".png");
         this.setDisplayFrame(frame);
         this.spriteFrameIndex++;
     },
