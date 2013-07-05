@@ -57,16 +57,19 @@ var GameLayer = cc.Layer.extend({
         _hudLayer:null,
          _layerSpeed: 100,
          _layerSpeedIncreaseFactor: 40,
+        _location:0,
 
         init: function (scene, game_state) {
             var bRet = false;
             if (this._super()) {
+                this._location = getRandomInt(0,g_sky.length-1);
                 this.initStaticLayer(scene);
                 this.initInterchangeableLayer(scene);
                 this.initCloudLayer(scene);
                 this.initCommonLayer(scene);
                 this.initBuildingLayer(scene);
                 this.initTreeLayer(scene);
+                this.initRainLayer(scene);
                 this.initHudLayer(scene);
                 this.initPlayer();
                 this.enableEvents();
@@ -89,7 +92,7 @@ var GameLayer = cc.Layer.extend({
         },
 
         initInterchangeableLayer: function(scene){
-            this._interchangeableParallax = InterchangeableParallaxLayer.create(g_sky, LOCATION_CHANGE_FACTOR);
+            this._interchangeableParallax = InterchangeableParallaxLayer.create(g_sky[this._location].src);
             this._interchangeableParallax.setAnchorPoint(cc.p(0,0));
             scene.addChild(this._interchangeableParallax);
         },
@@ -115,7 +118,7 @@ var GameLayer = cc.Layer.extend({
         },
 
         initBuildingLayer: function (scene) {
-            this._buildingParallax = BuildingParallaxLayer.create(g_buildings, LOCATION_CHANGE_FACTOR, LANDMARK_PLACEMENT_FACTOR);
+            this._buildingParallax = BuildingParallaxLayer.create(g_buildings, this._location+1, LANDMARK_PLACEMENT_FACTOR);
             this._buildingParallax.setAnchorPoint(cc.p(0, 0));
             scene.addChild(this._buildingParallax);
         },
@@ -124,6 +127,12 @@ var GameLayer = cc.Layer.extend({
             this._trees2Parallax = CommonParallaxLayer.create(s_tree2);
             this._trees2Parallax.setAnchorPoint(cc.p(0,0));
             scene.addChild(this._trees2Parallax);
+        },
+
+        initRainLayer: function(scene){
+            var rainLayer = EnvironmentLayer.create(g_environments[0].src);
+            rainLayer.setAnchorPoint(cc.p(0,0));
+            scene.addChild(rainLayer);
         },
 
         initPlayer: function () {
@@ -156,7 +165,6 @@ var GameLayer = cc.Layer.extend({
                 this._time += dt;
                 this._enemyLifeTime += dt;
 
-                this._interchangeableParallax.update(dt,this._distanceTravelled);
                 this._cloudParallax.update(dt*(this._layerSpeed-60));
                 this._horizon1Parallax.update(dt*(this._layerSpeed-50));
                 this._horizon2Parallax.update(dt*(this._layerSpeed-40));

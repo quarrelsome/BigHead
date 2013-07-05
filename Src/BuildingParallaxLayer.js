@@ -2,20 +2,16 @@ var BuildingParallaxLayer = cc.Layer.extend({
     _level:1,
     _buildings:null,
     _screenWidth:0,
-    _skyChangeFactor: 0,
-    _skyCurrentFactor: 0,
     _landMarkPlacementChangeFactor: 0,
     _landMarkPlacementCurrentFactor: 0,
 
-    init:function(buildings,skyChangeFactor,landMarkPlacementFactor) {
+    init:function(buildings,level,landMarkPlacementFactor) {
         var bRet = false;
         if (this._super()) {
             this._buildings = buildings;
-            this._skyChangeFactor = skyChangeFactor;
-            this._skyCurrentFactor = skyChangeFactor;
             this._landMarkPlacementChangeFactor = landMarkPlacementFactor;
             this._landMarkPlacementCurrentFactor = landMarkPlacementFactor;
-
+            this._level = level;
             while(this._screenWidth<=(winSize.width+winSize.width/2)){
                 this._screenWidth = this._screenWidth + this.createBuilding();
             }
@@ -30,10 +26,6 @@ var BuildingParallaxLayer = cc.Layer.extend({
     update : function(layerMovementSpeed,distanceTravelled)
     {
         this.setPositionX(this.getPositionX() - layerMovementSpeed);
-        if(distanceTravelled>this._skyCurrentFactor){
-            this._skyCurrentFactor = this._skyCurrentFactor + this._skyChangeFactor;
-            this._level+=1;
-        }
         for(var key in this._children){
             var child = this._children[key];
             if(child.getPositionX()+child.getContentSize().width+this.getPositionX()<=0){
@@ -64,12 +56,15 @@ var BuildingParallaxLayer = cc.Layer.extend({
         buildingSprite.setPosition(this._screenWidth,0);
         this.addChild(buildingSprite);
         return buildingSprite.getContentSize().width;
+    },
+    incrementLevel: function(){
+       this._level+=1;
     }
 });
 
-BuildingParallaxLayer.create = function (buildings,skyChangeFactor, landMarkPlacementFactor) {
+BuildingParallaxLayer.create = function (buildings, level, landMarkPlacementFactor) {
     var sg = new BuildingParallaxLayer();
-    if (sg && sg.init(buildings, skyChangeFactor, landMarkPlacementFactor)) {
+    if (sg && sg.init(buildings, level, landMarkPlacementFactor)) {
         return sg;
     }
     return null;

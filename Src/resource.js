@@ -31,7 +31,7 @@ var s_mainMainMusic = dirSounds + "backgroundMusic.mp3";
 //plist
 var s_player_plist = dirArt + "player.plist";
 
-//splash screen
+//parallax
 var s_backgeound = dirArt + "parallax/common/BG-common.png";
 var s_cloud1 = dirArt + "parallax/common/Cloud1-common.png";
 var s_cloud2 = dirArt + "parallax/common/Cloud2-common.png";
@@ -69,6 +69,9 @@ var s_location3Building5 = dirArt + "parallax/Malaysia/Building-MY-5.png";
 var s_location3Building6 = dirArt + "parallax/Malaysia/Building-MY-6.png";
 var s_location3Special1 = dirArt + "parallax/Malaysia/Special-MY-1.png";
 var s_location3Special2 = dirArt + "parallax/Malaysia/Special-MY-2.png";
+
+//environment
+var s_rainEnvironment = dirArt + "environment/rain.plist";
 
 var g_mainmenu = [
     {src:s_splashScreen},
@@ -129,7 +132,8 @@ var g_ressources = [
     {src:s_location2Special1},
     {src:s_location2Special2},
     {src:s_location3Special1},
-    {src:s_location3Special2}
+    {src:s_location3Special2},
+    {src:s_rainEnvironment}
 ];
 
 var g_clouds = [
@@ -184,3 +188,7 @@ var g_buildings = {
         s_location3Special2
     ]
 }
+
+var g_environments = [
+    {src:s_rainEnvironment}
+]
