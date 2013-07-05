@@ -68,10 +68,10 @@ var GameLayer = cc.Layer.extend({
                 this.initCloudLayer(scene);
                 this.initCommonLayer(scene);
                 this.initBuildingLayer(scene);
+                this.initPlayer();
                 this.initTreeLayer(scene);
                 this.initRainLayer(scene);
                 this.initHudLayer(scene);
-                this.initPlayer();
                 this.enableEvents();
                 this.scheduleUpdate();
                 this._gameSate = game_state;
@@ -92,7 +92,7 @@ var GameLayer = cc.Layer.extend({
         },
 
         initInterchangeableLayer: function(scene){
-            this._interchangeableParallax = InterchangeableParallaxLayer.create(g_sky[this._location].src);
+            this._interchangeableParallax = InterchangeableParallaxLayer.create(g_sky,LOCATION_CHANGE_FACTOR);
             this._interchangeableParallax.setAnchorPoint(cc.p(0,0));
             scene.addChild(this._interchangeableParallax);
         },
@@ -164,7 +164,7 @@ var GameLayer = cc.Layer.extend({
             if(this._gameSate.state == STATE_PLAYING){
                 this._time += dt;
                 this._enemyLifeTime += dt;
-
+                this._interchangeableParallax.update(dt,this._distanceTravelled);
                 this._cloudParallax.update(dt*(this._layerSpeed-60));
                 this._horizon1Parallax.update(dt*(this._layerSpeed-50));
                 this._horizon2Parallax.update(dt*(this._layerSpeed-40));
