@@ -149,7 +149,7 @@ var Player = cc.Sprite.extend({
             cc.CallFunc.create(function() {
                 var scene = cc.Scene.create();
                 scene.addChild(GameOver.create(false));
-                cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));
+                cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1, scene));
             }, this)
         ));
 
