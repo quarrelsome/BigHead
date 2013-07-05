@@ -21,6 +21,7 @@ var Player = cc.Sprite.extend({
         cc.SpriteFrameCache.getInstance().addSpriteFrames(s_player_plist, s_player);
         cc.SpriteFrameCache.getInstance().addSpriteFrames(s_player_spawn_plist, s_player_spawn);
         cc.SpriteFrameCache.getInstance().addSpriteFrames(s_player_fire_plist, s_player_fire);
+        cc.SpriteFrameCache.getInstance().addSpriteFrames(s_player_die_plist, s_player_die);
 
         this.initWithSpriteFrameName("player_spawn_0.png");
 
@@ -135,8 +136,22 @@ var Player = cc.Sprite.extend({
     },
 
     die: function() {
-        var scene = cc.Scene.create();
-        scene.addChild(GameOver.create(false));
-        cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));
+        this.currentState = 3;
+        var dieAnimationFrames = [];
+        for (var i = 0; i < 15; i++) {
+            var frame = cc.SpriteFrameCache.getInstance().getSpriteFrame('player_die_'+ i +'.png');
+            dieAnimationFrames.push(frame);
+        }
+
+        var animation = cc.Animation.create(dieAnimationFrames, 0.1);
+        var animate = cc.Animate.create(animation);
+        this.runAction(cc.Sequence.create(animate,
+            cc.CallFunc.create(function() {
+                var scene = cc.Scene.create();
+                scene.addChild(GameOver.create(false));
+                cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));
+            }, this)
+        ));
+
     }
 });
