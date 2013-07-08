@@ -68,9 +68,9 @@ var GameLayer = cc.Layer.extend({
                 this.initCloudLayer(scene);
                 this.initCommonLayer(scene);
                 this.initBuildingLayer(scene);
-                this.initPlayer();
                 this.initTreeLayer(scene);
-                //this.initRainLayer(scene);
+                this.initPlayer();
+                this.initRainLayer(scene);
                 this.initHudLayer(scene);
                 this.enableEvents();
                 this.scheduleUpdate();
@@ -143,7 +143,7 @@ var GameLayer = cc.Layer.extend({
         },
 
         initHudLayer: function(scene){
-          this._hudLayer = GameControlMenu.create(STATE_PLAYING);
+            this._hudLayer = GameControlMenu.create(STATE_PLAYING);
             this._hudLayer.setAnchorPoint(cc.p(0,0));
             scene.addChild(this._hudLayer);
         },
@@ -151,15 +151,17 @@ var GameLayer = cc.Layer.extend({
         update: function (dt) {
             if(this._distanceTravelled>=29000){
                 this._gameSate.state = STATE_GAMEOVER;
-            }
-
-            if(this._gameSate.state == STATE_GAMEOVER){
                 var scene = cc.Scene.create();
                 scene.addChild(GameOver.create(true));
                 cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));
             }
 
-            this._gameSate.state = this._hudLayer.update(dt,{score:this._gameSate.score,travelledDistance:this._distanceTravelled,health:this._player.health});
+            if(this._player.currentState==3){
+                this._gameSate.state = STATE_GAMEOVER;
+            }
+
+            if(this._gameSate.state != STATE_GAMEOVER)
+                this._gameSate.state = this._hudLayer.update(dt,{score:this._gameSate.score,travelledDistance:this._distanceTravelled,health:this._player.health});
 
             if(this._gameSate.state == STATE_PLAYING){
                 this._time += dt;

@@ -79,6 +79,9 @@ var s_location3Special2 = dirArt + "parallax/Malaysia/Special-MY-2.png";
 //environment
 var s_rainEnvironment = dirArt + "environment/rain.plist";
 
+//hud
+var s_pauseButton = dirArt + "hud/BH-Pause-bt.png"
+
 var g_mainmenu = [
     {src:s_splashScreen},
     {src:s_flare},
@@ -145,7 +148,8 @@ var g_ressources = [
     {src:s_location2Special2},
     {src:s_location3Special1},
     {src:s_location3Special2},
-    {src:s_rainEnvironment}
+    {src:s_rainEnvironment},
+    {src:s_pauseButton}
 ];
 
 var g_clouds = [

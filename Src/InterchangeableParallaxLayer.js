@@ -54,7 +54,6 @@ var InterchangeableParallaxLayer = cc.Layer.extend({
         if(distanceTravelled>this.c && this._skyImageLevel<this._skyImages.length && (this._skySpriteRe.getPositionY()-this.b)>=0){
             this._skySpriteRe.setPositionY(this._skySpriteRe.getPositionY()-this.b);
             this.c = this.c+this.d;
-            cc.log(this._skySpriteRe.getPositionY());
         }
 
     }
