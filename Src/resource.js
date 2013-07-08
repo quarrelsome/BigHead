@@ -10,6 +10,10 @@ var s_player = dirArt + "player.png";
 var s_player_spawn = dirArt + "player_spawn.png";
 var s_player_fire = dirArt + "player_fire.png";
 var s_player_die = dirArt + "player_die.png";
+var s_enemy = dirArt + "enemy.png";
+var s_enemy_stick1 = dirArt + "enemy-stick1.png";
+var s_enemy_stick2 = dirArt + "enemy-stick2.png";
+
 var s_enemy1 = dirArt + "enemy1.png";
 var s_enemy2 = dirArt + "enemy2.png";
 var s_player_bullet = dirArt + "bullet.png";
@@ -97,7 +101,10 @@ var g_ressources = [
     {src:s_player_spawn_plist},
     {src:s_player_fire_plist},
     {src:s_player_die_plist},
-	{src:s_enemy1},
+    {src:s_enemy},
+    {src:s_enemy_stick1},
+    {src:s_enemy_stick2},
+    {src:s_enemy1},
 	{src:s_enemy2},
 //    {src:s_playerShootEffect},
 //    {src:s_enemyDestroyedEffect},

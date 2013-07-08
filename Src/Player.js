@@ -31,7 +31,7 @@ var Player = cc.Sprite.extend({
             spawnAnimationFrames.push(frame);
         }
 
-        var animation = cc.Animation.create(spawnAnimationFrames, 0.1);
+        var animation = cc.Animation.create(spawnAnimationFrames, 0.05);
         var animate = cc.Animate.create(animation);
         this.runAction(cc.Sequence.create(animate,
             cc.CallFunc.create(function() {
