@@ -46,30 +46,30 @@ var GameLayer = cc.Layer.extend({
         _playerHitLocationY: 0,
         _cloudParallax: null,
         _interchangeableParallax: null,
-        _horizon1Parallax: null,
-        _horizon2Parallax: null,
-        _trees1Parallax: null,
-        _buildingParallax: null,
-        _trees2Parallax: null,
-        _distanceTravelled: 0,
-        _gameSate: null,
-        _hudLayer: null,
-        _layerSpeed: 100,
-        _layerSpeedIncreaseFactor: 40,
-        _location: 0,
+        _horizon1Parallax:null,
+        _horizon2Parallax:null,
+        _trees1Parallax:null,
+        _buildingParallax:null,
+        _trees2Parallax:null,
+        _distanceTravelled:0,
+        _gameSate:null,
+        _hudLayer:null,
+         _layerSpeed: 100,
+         _layerSpeedIncreaseFactor: 40,
+        _location:0,
 
         init: function (scene, game_state) {
             var bRet = false;
             if (this._super()) {
-                this._location = getRandomInt(0, g_sky.length - 1);
+                this._location = getRandomInt(0,g_sky.length-1);
                 this.initStaticLayer(scene);
                 this.initInterchangeableLayer(scene);
                 this.initCloudLayer(scene);
                 this.initCommonLayer(scene);
                 this.initBuildingLayer(scene);
-                this.initPlayer();
                 this.initTreeLayer(scene);
-                //this.initRainLayer(scene);
+                this.initPlayer();
+                this.initRainLayer(scene);
                 this.initHudLayer(scene);
                 this.enableEvents();
                 this.scheduleUpdate();
@@ -85,14 +85,14 @@ var GameLayer = cc.Layer.extend({
         initStaticLayer: function (scene) {
             var staticParallaxLayer = cc.Layer.create();
             var staticBackground = cc.Sprite.create(s_backgeound);
-            staticBackground.setAnchorPoint(cc.p(0, 0));
+            staticBackground.setAnchorPoint(cc.p(0,0));
             staticParallaxLayer.addChild(staticBackground);
             scene.addChild(staticParallaxLayer);
         },
 
-        initInterchangeableLayer: function (scene) {
-            this._interchangeableParallax = InterchangeableParallaxLayer.create(g_sky, LOCATION_CHANGE_FACTOR);
-            this._interchangeableParallax.setAnchorPoint(cc.p(0, 0));
+        initInterchangeableLayer: function(scene){
+            this._interchangeableParallax = InterchangeableParallaxLayer.create(g_sky,LOCATION_CHANGE_FACTOR);
+            this._interchangeableParallax.setAnchorPoint(cc.p(0,0));
             scene.addChild(this._interchangeableParallax);
         },
 
@@ -104,33 +104,33 @@ var GameLayer = cc.Layer.extend({
 
         initCommonLayer: function (scene) {
             this._horizon1Parallax = CommonParallaxLayer.create(s_horizon1);
-            this._horizon1Parallax.setAnchorPoint(cc.p(0, 0));
+            this._horizon1Parallax.setAnchorPoint(cc.p(0,0));
             scene.addChild(this._horizon1Parallax);
 
             this._horizon2Parallax = CommonParallaxLayer.create(s_horizon2);
-            this._horizon2Parallax.setAnchorPoint(cc.p(0, 0));
+            this._horizon2Parallax.setAnchorPoint(cc.p(0,0));
             scene.addChild(this._horizon2Parallax);
 
             this._trees1Parallax = CommonParallaxLayer.create(s_tree1);
-            this._trees1Parallax.setAnchorPoint(cc.p(0, 0));
+            this._trees1Parallax.setAnchorPoint(cc.p(0,0));
             scene.addChild(this._trees1Parallax);
         },
 
         initBuildingLayer: function (scene) {
-            this._buildingParallax = BuildingParallaxLayer.create(g_buildings, this._location + 1, LANDMARK_PLACEMENT_FACTOR);
+            this._buildingParallax = BuildingParallaxLayer.create(g_buildings, this._location+1, LANDMARK_PLACEMENT_FACTOR);
             this._buildingParallax.setAnchorPoint(cc.p(0, 0));
             scene.addChild(this._buildingParallax);
         },
 
-        initTreeLayer: function (scene) {
+        initTreeLayer: function(scene){
             this._trees2Parallax = CommonParallaxLayer.create(s_tree2);
-            this._trees2Parallax.setAnchorPoint(cc.p(0, 0));
+            this._trees2Parallax.setAnchorPoint(cc.p(0,0));
             scene.addChild(this._trees2Parallax);
         },
 
-        initRainLayer: function (scene) {
+        initRainLayer: function(scene){
             var rainLayer = EnvironmentLayer.create(g_environments[0].src);
-            rainLayer.setAnchorPoint(cc.p(0, 0));
+            rainLayer.setAnchorPoint(cc.p(0,0));
             scene.addChild(rainLayer);
         },
 
@@ -141,35 +141,37 @@ var GameLayer = cc.Layer.extend({
             this._player.runAction(cc.Sequence.create(cc.MoveTo.create(1.5, cc.p(this._player.getContentSize().width / 2, winSize.height / 2))));
         },
 
-        initHudLayer: function (scene) {
+        initHudLayer: function(scene){
             this._hudLayer = GameControlMenu.create(STATE_PLAYING);
-            this._hudLayer.setAnchorPoint(cc.p(0, 0));
+            this._hudLayer.setAnchorPoint(cc.p(0,0));
             scene.addChild(this._hudLayer);
         },
 
         update: function (dt) {
             if (this._distanceTravelled >= 29000) {
                 this._gameSate.state = STATE_GAMEOVER;
-            }
-
-            if (this._gameSate.state == STATE_GAMEOVER) {
                 var scene = cc.Scene.create();
                 scene.addChild(GameOver.create(true));
                 cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));
             }
 
-            this._gameSate.state = this._hudLayer.update(dt, {score: this._gameSate.score, travelledDistance: this._distanceTravelled, health: this._player.health});
+            if(this._player.currentState==3){
+                this._gameSate.state = STATE_GAMEOVER;
+            }
 
-            if (this._gameSate.state == STATE_PLAYING) {
+            if(this._gameSate.state != STATE_GAMEOVER)
+                this._gameSate.state = this._hudLayer.update(dt,{score:this._gameSate.score,travelledDistance:this._distanceTravelled,health:this._player.health});
+
+            if(this._gameSate.state == STATE_PLAYING){
                 this._time += dt;
                 this._enemyLifeTime += dt;
-                this._interchangeableParallax.update(dt, this._distanceTravelled);
-                this._cloudParallax.update(dt * (this._layerSpeed - 60));
-                this._horizon1Parallax.update(dt * (this._layerSpeed - 50));
-                this._horizon2Parallax.update(dt * (this._layerSpeed - 40));
-                this._trees1Parallax.update(dt * (this._layerSpeed - 30));
-                this._buildingParallax.update(dt * (this._layerSpeed - 20), this._distanceTravelled);
-                this._trees2Parallax.update(dt * (this._layerSpeed - 10));
+                this._interchangeableParallax.update(dt,this._distanceTravelled);
+                this._cloudParallax.update(dt*(this._layerSpeed-60));
+                this._horizon1Parallax.update(dt*(this._layerSpeed-50));
+                this._horizon2Parallax.update(dt*(this._layerSpeed-40));
+                this._trees1Parallax.update(dt*(this._layerSpeed-30));
+                this._buildingParallax.update(dt*(this._layerSpeed-20),this._distanceTravelled);
+                this._trees2Parallax.update(dt*(this._layerSpeed-10));
 
                 if (this._enemies.length == 0) {
                     this.addEnemy();
@@ -177,7 +179,7 @@ var GameLayer = cc.Layer.extend({
 
                 this.moveLayer(dt);
                 this._player.update(dt);
-                for (var i = 0; i < this._enemies.length; i++) {
+                for (var i=0; i < this._enemies.length; i++) {
                     this._enemies[i].update(dt);
                 }
 
@@ -192,7 +194,7 @@ var GameLayer = cc.Layer.extend({
                     this._isEnemyFireEnabled = false;
                 }
                 else if (this._enemyLifeTime > 6) {
-                    this._isEnemyInAttackMode = true;
+                        this._isEnemyInAttackMode = true;
                 }
 
                 //this.detectCollision(dt);
@@ -210,7 +212,7 @@ var GameLayer = cc.Layer.extend({
             }
         },
 
-        onEnterTransitionDidFinish: function () {
+        onEnterTransitionDidFinish:function () {
             this._gameSate.state = STATE_PLAYING;
         },
 
