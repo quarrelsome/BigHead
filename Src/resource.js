@@ -80,7 +80,13 @@ var s_location3Special2 = dirArt + "parallax/Malaysia/Special-MY-2.png";
 var s_rainEnvironment = dirArt + "environment/rain.plist";
 
 //hud
-var s_pauseButton = dirArt + "hud/BH-Pause-bt.png"
+var s_pauseButton = dirArt + "hud/BH-Pause-bt.png";
+var s_scoreContainer = dirArt + "hud/BH-Score-container.png";
+var s_healthContainer = dirArt + "hud/BH-Health-container.png";
+var s_healthBar = dirArt + "hud/BH-Health-bar.png";
+var s_targetNumberContainer = dirArt + "hud/BH-Targetnumber-container.png";
+var s_scoreFont = dirArt + "hud/hud-font.fnt";
+var s_scoreFontImage = dirArt + "hud/hud-font.png";
 
 var g_mainmenu = [
     {src:s_splashScreen},
@@ -102,13 +108,13 @@ var g_ressources = [
     {src:s_player_die_plist},
 	{src:s_enemy1},
 	{src:s_enemy2},
-//    {src:s_playerShootEffect},
-//    {src:s_enemyDestroyedEffect},
-//    {src:s_playerGetsHitEffect},
-//    {src:s_enemyShootEffect},
-//    {src:s_playerFlying},
-//    {src:s_wildLaughEffect},
-//    {src:s_playerLowLifeEffect},
+    {src:s_playerShootEffect},
+    {src:s_enemyDestroyedEffect},
+    {src:s_playerGetsHitEffect},
+    {src:s_enemyShootEffect},
+    {src:s_playerFlying},
+    {src:s_wildLaughEffect},
+    {src:s_playerLowLifeEffect},
     {src:s_player_bullet},
     {src:s_enemy_bullet},
 	{src:s_explosion},
@@ -149,7 +155,13 @@ var g_ressources = [
     {src:s_location3Special1},
     {src:s_location3Special2},
     {src:s_rainEnvironment},
-    {src:s_pauseButton}
+    {src:s_pauseButton},
+    {src:s_scoreContainer},
+    {src:s_healthContainer},
+    {src:s_healthBar},
+    {src:s_targetNumberContainer},
+    {src:s_scoreFont},
+    {src:s_scoreFontImage}
 ];
 
 var g_clouds = [
