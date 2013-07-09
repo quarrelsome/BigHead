@@ -3,19 +3,21 @@ var GameControlMenu = cc.Layer.extend({
     _gameSate:0,
     lbScore: null,
     _healthBar: null,
+    lbQuestion: null,
+    _previousScale: 1,
+    _currentScale: 1,
+    _pauseLayer: null,
 
     init:function (gameState) {
         var bRet = false;
         if (this._super()) {
-            cc.MenuItemFont.setFontSize(18);
-            cc.MenuItemFont.setFontName("Arial");
+            this._gameSate = gameState;
+
             var pauseButton = cc.Sprite.create(s_pauseButton);
-            var pauseButton3 = cc.Sprite.create(s_explosion);
-            var item1_pause = cc.MenuItemSprite.create(pauseButton);
-            var item1_resume = cc.MenuItemSprite.create(pauseButton3);
-            var item1 = cc.MenuItemToggle.create(item1_pause, item1_resume);
-            item1.setCallback(this.onPause, this);
-            var menu = cc.Menu.create(item1);
+            var pauseButtonSelected = cc.Sprite.create(s_pauseButton);
+            var pauseButtonDisabled = cc.Sprite.create(s_pauseButton);
+            var item1_pause = cc.MenuItemSprite.create(pauseButton,pauseButtonSelected,pauseButtonDisabled,this.onPause,this);
+            var menu = cc.Menu.create(item1_pause);
             menu.setPosition(pauseButton.getContentSize().width/2, pauseButton.getContentSize().height/2);
             this.addChild(menu);
 
@@ -39,7 +41,11 @@ var GameControlMenu = cc.Layer.extend({
             this.addChild(this.lbScore);
             this.lbScore.setPosition(160 , winSize.height - 20);
 
-            this._gameSate = gameState;
+            this.lbQuestion = cc.LabelBMFont.create("0", s_scoreFontHd);
+            this.addChild(this.lbQuestion);
+            this.lbQuestion.setPosition(487 , winSize.height - 40);
+
+            //this.initPauseLayer();
             bRet = true;
         }
         sys.dumpRoot();
@@ -48,21 +54,67 @@ var GameControlMenu = cc.Layer.extend({
     },
     update: function(dt, gameUpdates){
         this.lbScore.setString(gameUpdates.score);
-        this._healthBar.setScaleX(gameUpdates.health/100);
-        //this._healthBar.setPositionX(20);
+        this._currentScale = gameUpdates.health/100;
+        this._healthBar.setScaleX(this._currentScale);
+//        if(this._previousScale!=this._currentScale){
+//            this._healthBar.setPositionX(120-(120*(1-gameUpdates.health/120)));
+//            cc.log(this._healthBar.getPosition());
+//            this._previousScale = this._currentScale;
+//        }
+
         return this._gameSate;
     },
 
+    initPauseLayer: function(){
+        this._pauseLayer = cc.Layer.create();
+        var staticBackground = cc.Sprite.create(s_pauseScreenBackground);
+        staticBackground.setAnchorPoint(cc.p(0,0));
+        this._pauseLayer.addChild(staticBackground);
+
+        var pauseWindow = cc.Sprite.create(s_pauseScreenWindow);
+        pauseWindow.setAnchorPoint(cc.p(0,0));
+        pauseWindow.setPosition(180,100);
+        this._pauseLayer.addChild(pauseWindow);
+
+        var pauseTitle = cc.Sprite.create(s_pauseTitle);
+        pauseTitle.setAnchorPoint(cc.p(0,0));
+        pauseTitle.setPosition(333,433);
+        this._pauseLayer.addChild(pauseTitle);
+
+        var resumeButton = cc.Sprite.create(s_pauseScreenResumeBtn);
+        var resumeButtonSelected = cc.Sprite.create(s_pauseScreenResumeBtnPress);
+        var resumeButtonDisabled = cc.Sprite.create(s_pauseScreenResumeBtnPress);
+        var item_resume = cc.MenuItemSprite.create(resumeButton,resumeButtonSelected,resumeButtonDisabled,this.onPause,this);
+        var menu = cc.Menu.create(item_resume);
+        menu.setAnchorPoint(cc.p(0,0));
+        menu.setPosition(470,340);
+        this._pauseLayer.addChild(menu);
+
+        this.addChild(this._pauseLayer);
+
+    },
+
     onPause:function (sender) {
-        if (this._gameSate == STATE_PAUSED)
+        this._pauseLayer.removeFromParent(true);
+        cc.log(this._children.length);
+        if (this._gameSate == STATE_PAUSED){
             this._gameSate = STATE_PLAYING;
-        else
+            //this._pauseLayer.setOpacity(0);
+            cc.log("here");
+        }
+        else{
+            //this._pauseLayer.setOpacity(100);
             this._gameSate = STATE_PAUSED;
+        }
+
     },
     onSysMenu:function (pSender) {
         var scene = cc.Scene.create();
         scene.addChild(HomeLayer.create());
         cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5,scene));
+    },
+    setQuestion:function(question){
+        this.lbQuestion.setString(question);
     }
 });
 
