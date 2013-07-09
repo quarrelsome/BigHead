@@ -97,6 +97,10 @@ var s_pauseScreenWindow = dirArt +"pause-screen/BH-PM-window.png";
 var s_pauseTitle = dirArt +"pause-screen/BH-PM-Paused-text.png";
 var s_pauseScreenResumeBtn = dirArt +"pause-screen/BH-PM-Resume-BT.png";
 var s_pauseScreenResumeBtnPress = dirArt +"pause-screen/BH-PM-Resume-BT-Press.png";
+var s_pauseScreenRestartBtn = dirArt +"pause-screen/BH-PM-Restart-BT.png";
+var s_pauseScreenRestartBtnPress = dirArt +"pause-screen/BH-PM-Restart-BT-Press.png";
+var s_pauseScreenMenuBtn = dirArt +"pause-screen/BH-PM-Menu-BT.png";
+var s_pauseScreenMenuBtnPress = dirArt +"pause-screen/BH-PM-Menu-BT-Press.png";
 
 var g_mainmenu = [
     {src:s_splashScreen},
@@ -179,7 +183,11 @@ var g_ressources = [
     {src:s_pauseScreenWindow},
     {src:s_pauseTitle},
     {src:s_pauseScreenResumeBtn},
-    {src:s_pauseScreenResumeBtnPress}
+    {src:s_pauseScreenResumeBtnPress},
+    {src:s_pauseScreenRestartBtn},
+    {src:s_pauseScreenRestartBtnPress},
+    {src:s_pauseScreenMenuBtn},
+    {src:s_pauseScreenMenuBtnPress}
 ];
 
 var g_clouds = [
