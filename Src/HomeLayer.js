@@ -11,20 +11,23 @@ var HomeLayer = cc.Layer.extend({
             this.addChild(sp);
 
             var sunburst = cc.Sprite.create(s_menuSunburst);
-            sunburst.setAnchorPoint(cc.p(0,0));
             //sunburst.set
-            sunburst.setScale(1.8);
+            sunburst.setScale(2);
+            sunburst.setPosition(480,300);
             this.addChild(sunburst);
 
             var menuWindow = cc.Sprite.create(s_pauseScreenWindow);
-            menuWindow.setAnchorPoint(cc.p(0,0));
             menuWindow.setPosition(480,250);
             this.addChild(menuWindow);
 
             var logo = cc.Sprite.create(s_menuLogo);
-            logo.setAnchorPoint(cc.p(0,0));
-            logo.setPosition(200,450);
+            logo.setPosition(480,530);
             this.addChild(logo);
+
+            var title = cc.Sprite.create(s_menuTitle);
+            title.setPosition(480,410);
+            title.setScale(1.5);
+            this.addChild(title);
 
             var newGameNormal = cc.Sprite.create(s_menu, cc.rect(0, 0, 126, 33));
             var newGameSelected = cc.Sprite.create(s_menu, cc.rect(0, 33, 126, 33));
@@ -94,11 +97,4 @@ HomeLayer.create = function () {
 		return sg;
 	}
 	return null;
-};
-
-HomeLayer.scene = function() {
-	var scene = cc.Scene.create();
-	var layer = HomeLayer.create();
-	scene.addChild(layer);
-	return scene;
 };

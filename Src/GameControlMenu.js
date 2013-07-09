@@ -53,6 +53,7 @@ var GameControlMenu = cc.Layer.extend({
         return bRet;
     },
     update: function(dt, gameUpdates){
+        cc.log("hud layer");
         this.lbScore.setString(gameUpdates.score);
         this.lbQuestion.setString(gameUpdates.question);
         this._currentScale = gameUpdates.health/100;

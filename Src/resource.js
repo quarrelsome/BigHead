@@ -7,8 +7,8 @@ var dirPlayer = "Player/";
 var s_menuBackground = dirArt + "main-menu/BH-MM-Bg.png";
 var s_menuSunburst = dirArt + "main-menu/BH-MM-Sunburst.png";
 var s_menuLogo = dirArt + "main-menu/BH-MM-logo.png";
+var s_menuTitle = dirArt + "main-menu/BH-MM-Menu-text.png";
 var s_menu = dirArt + "menu.png";
-var s_menuTitle = dirArt + "menuTitle.png";
 var s_flare = dirArt + "flare.jpg";
 
 //player
@@ -121,9 +121,9 @@ var g_mainmenu = [
     {src:s_menuBackground},
     {src:s_menuSunburst},
     {src:s_menuLogo},
+    {src:s_menuTitle},
     {src:s_flare},
-    {src:s_menu},
-    {src:s_menuTitle}
+    {src:s_menu}
 ];
 
 var g_ressources = [
