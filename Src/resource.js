@@ -13,9 +13,6 @@ var s_player_die = dirArt + "player_die.png";
 var s_enemy = dirArt + "enemy.png";
 var s_enemy_stick1 = dirArt + "enemy-stick1.png";
 var s_enemy_stick2 = dirArt + "enemy-stick2.png";
-
-var s_enemy1 = dirArt + "enemy1.png";
-var s_enemy2 = dirArt + "enemy2.png";
 var s_player_bullet = dirArt + "bullet.png";
 var s_enemy_bullet = dirArt + "bullet-enemy.png";
 
@@ -91,6 +88,15 @@ var s_healthBar = dirArt + "hud/BH-Health-bar.png";
 var s_targetNumberContainer = dirArt + "hud/BH-Targetnumber-container.png";
 var s_scoreFont = dirArt + "hud/hud-font.fnt";
 var s_scoreFontImage = dirArt + "hud/hud-font.png";
+var s_scoreFontHd = dirArt + "hud/hud-font-hd.fnt";
+var s_scoreFontImageHd = dirArt + "hud/hud-font-hd.png";
+
+//pause screen
+var s_pauseScreenBackground = dirArt +"pause-screen/BH-PM-SemiBlack-bg.png";
+var s_pauseScreenWindow = dirArt +"pause-screen/BH-PM-window.png";
+var s_pauseTitle = dirArt +"pause-screen/BH-PM-Paused-text.png";
+var s_pauseScreenResumeBtn = dirArt +"pause-screen/BH-PM-Resume-BT.png";
+var s_pauseScreenResumeBtnPress = dirArt +"pause-screen/BH-PM-Resume-BT-Press.png";
 
 var g_mainmenu = [
     {src:s_splashScreen},
@@ -113,8 +119,6 @@ var g_ressources = [
     {src:s_enemy},
     {src:s_enemy_stick1},
     {src:s_enemy_stick2},
-    {src:s_enemy1},
-	{src:s_enemy2},
     {src:s_playerShootEffect},
     {src:s_enemyDestroyedEffect},
     {src:s_playerGetsHitEffect},
@@ -168,7 +172,14 @@ var g_ressources = [
     {src:s_healthBar},
     {src:s_targetNumberContainer},
     {src:s_scoreFont},
-    {src:s_scoreFontImage}
+    {src:s_scoreFontImage},
+    {src:s_scoreFontHd},
+    {src:s_scoreFontImageHd},
+    {src:s_pauseScreenBackground},
+    {src:s_pauseScreenWindow},
+    {src:s_pauseTitle},
+    {src:s_pauseScreenResumeBtn},
+    {src:s_pauseScreenResumeBtnPress}
 ];
 
 var g_clouds = [
