@@ -195,6 +195,7 @@ var GameLayer = cc.Layer.extend({
                 }
                 else if (this._enemyLifeTime > 6) {
                         this._isEnemyInAttackMode = true;
+                        this._enemyTotalFireWait = 0.75;
                 }
 
                 //this.detectCollision(dt);
@@ -310,6 +311,7 @@ var GameLayer = cc.Layer.extend({
 
             this._isEnemyFireEnabled = false;
             this._isWrongEnemyDestroyed = false;
+            this._enemyTotalFireWait = 2;
             ENEMY_WAIT_TIME_FACTOR += ENEMY_VERTICAL_SPEED_INCREASE_FACTOR;
             this._enemiesDestroyed = 0;
         },
@@ -336,7 +338,7 @@ var GameLayer = cc.Layer.extend({
                     }
 
                     if (this._isEnemyInAttackMode) {
-                        bullet.setPositionX(bullet.getPositionX() - (enemy.bulletSpeed * dt * 1.25));
+                        bullet.setPositionX(bullet.getPositionX() - (enemy.bulletSpeed * dt * 1.5));
                     } else {
                         bullet.setPositionX(bullet.getPositionX() - (enemy.bulletSpeed * dt));
                     }
@@ -348,24 +350,14 @@ var GameLayer = cc.Layer.extend({
             if (this._isEnemyFireEnabled) {
                 for (var i = 0; i < this._enemies.length; i++) {
                     var enemy = this._enemies[i];
-                    if (this._isEnemyInAttackMode) {
-                        if (this._enemyLifeTime % 0.5 < 0.025) {
-                            this.addChild(enemy.shoot());
-                        }
-                    }
-                    else {
                         if (enemy.fireWaitCompleted < this._enemyTotalFireWait) {
                             enemy.fireWaitCompleted += dt;
                         }
                         else {
                             this.addChild(enemy.shoot());
                             cc.AudioEngine.getInstance().playEffect(s_enemyShootEffect);
-//                            var minWait = -0.25;
-//                            var maxWait = 0;
-//                            enemy.fireWaitCompleted = getRandomInt(minWait, maxWait);
                             enemy.fireWaitCompleted = 0;
                         }
-                    }
                 }
             }
         },
@@ -375,10 +367,10 @@ var GameLayer = cc.Layer.extend({
                 var bullet = this._player.bullets[i];
                 //var bulletRect = bullet.getBoundingBox();
                 var bulletRect = new cc.Rect(
-                    bullet.getPositionX(),
-                    bullet.getPositionY(),
-                    bullet.getContentSize().width - 20,
-                    bullet.getContentSize().height - 44
+                    bullet.getPositionX() - bullet.getContentSize().width/2 + 20,
+                    bullet.getPositionY() - bullet.getContentSize().height/2 + 10,
+                    bullet.getContentSize().width - 40,
+                    bullet.getContentSize().height - 20
                 );
                 for (var j = 0; j < this._enemies.length; j++) {
                     var enemy = this._enemies[j];
@@ -477,10 +469,10 @@ var GameLayer = cc.Layer.extend({
                     var bullet = enemy.bullets[j];
                     //var bulletRect = bullet.getBoundingBox();
                     var bulletRect = new cc.Rect(
-                        bullet.getPositionX(),
-                        bullet.getPositionY(),
-                        bullet.getContentSize().width - 20,
-                        bullet.getContentSize().height - 44
+                        bullet.getPositionX() - bullet.getContentSize().width/2 + 20,
+                        bullet.getPositionY() - bullet.getContentSize().height/2 + 10,
+                        bullet.getContentSize().width - 40,
+                        bullet.getContentSize().height - 20
                     );
 
                     if ((cc.rectIntersectsRect(playerRect, bulletRect)) && (this._player.blinkNumber == 0)) {
@@ -488,7 +480,6 @@ var GameLayer = cc.Layer.extend({
                         bullet.removeFromParent();
                         cc.AudioEngine.getInstance().playEffect(s_playerGetsHitEffect);
                         playerHit = true;
-
                     }
                 }
 
