@@ -54,6 +54,7 @@ var GameControlMenu = cc.Layer.extend({
     },
     update: function(dt, gameUpdates){
         this.lbScore.setString(gameUpdates.score);
+        this.lbQuestion.setString(gameUpdates.question);
         this._currentScale = gameUpdates.health/100;
         this._healthBar.setScaleX(this._currentScale);
 //        if(this._previousScale!=this._currentScale){
