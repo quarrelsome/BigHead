@@ -10,7 +10,7 @@ var GameControlMenu = cc.Layer.extend({
             cc.MenuItemFont.setFontSize(18);
             cc.MenuItemFont.setFontName("Arial");
             var pauseButton = cc.Sprite.create(s_pauseButton);
-            var pauseButton3 = cc.Sprite.create(s_enemy1);
+            var pauseButton3 = cc.Sprite.create(s_explosion);
             var item1_pause = cc.MenuItemSprite.create(pauseButton);
             var item1_resume = cc.MenuItemSprite.create(pauseButton3);
             var item1 = cc.MenuItemToggle.create(item1_pause, item1_resume);

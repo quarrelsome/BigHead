@@ -1,24 +1,32 @@
 var dirArt = "Art/";
 var dirSounds = "Sounds/";
+var dirEnemy = "Enemy/";
+var dirPlayer = "Player/";
 
 //image
 var s_splashScreen = dirArt + "splash-screen.jpg";
 var s_menu = dirArt + "menu.png";
 var s_menuTitle = dirArt + "menuTitle.png";
 var s_flare = dirArt + "flare.jpg";
-var s_player = dirArt + "player.png";
-var s_player_spawn = dirArt + "player_spawn.png";
-var s_player_fire = dirArt + "player_fire.png";
-var s_player_die = dirArt + "player_die.png";
-var s_enemy = dirArt + "enemy.png";
-var s_enemy_stick1 = dirArt + "enemy-stick1.png";
-var s_enemy_stick2 = dirArt + "enemy-stick2.png";
 
-var s_enemy1 = dirArt + "enemy1.png";
-var s_enemy2 = dirArt + "enemy2.png";
-var s_player_bullet = dirArt + "bullet.png";
-var s_enemy_bullet = dirArt + "bullet-enemy.png";
+var s_player = dirArt + dirPlayer + "player.png";
+var s_player_spawn = dirArt + dirPlayer + "player_spawn.png";
+var s_player_fire = dirArt + dirPlayer + "player_fire.png";
+var s_player_die = dirArt + dirPlayer + "player_die.png";
+var s_player_bullet = dirArt + dirPlayer + "bullet.png";
 
+var s_enemy = dirArt + dirEnemy + "enemy.png";
+var s_enemy_stick0 = dirArt + dirEnemy + "enemy-stick0.png";
+var s_enemy_stick1 = dirArt + dirEnemy + "enemy-stick1.png";
+var s_enemy_stick2 = dirArt + dirEnemy + "enemy-stick2.png";
+var s_enemy_stick3 = dirArt + dirEnemy + "enemy-stick3.png";
+var s_enemy_stick4 = dirArt + dirEnemy + "enemy-stick4.png";
+var s_enemy_stick5 = dirArt + dirEnemy + "enemy-stick5.png";
+var s_enemy_stick6 = dirArt + dirEnemy + "enemy-stick6.png";
+var s_enemy_stick7 = dirArt + dirEnemy + "enemy-stick7.png";
+var s_enemy_stick8 = dirArt + dirEnemy + "enemy-stick8.png";
+var s_enemy_stick9 = dirArt + dirEnemy + "enemy-stick9.png";
+var s_enemy_bullet = dirArt + dirEnemy + "bullet-enemy.png";
 
 var s_explosion = dirArt + "explosion-particle.png";
 
@@ -36,10 +44,10 @@ var s_playerLowLifeEffect = dirSounds + "player-Lowlife.mp3";
 var s_mainMainMusic = dirSounds + "backgroundMusic.mp3";
 
 //plist
-var s_player_plist = dirArt + "player.plist";
-var s_player_spawn_plist = dirArt + "player_spawn.plist";
-var s_player_fire_plist = dirArt + "player_fire.plist";
-var s_player_die_plist = dirArt + "player_die.plist";
+var s_player_plist = dirArt +  dirPlayer + "player.plist";
+var s_player_spawn_plist = dirArt + dirPlayer + "player_spawn.plist";
+var s_player_fire_plist = dirArt + dirPlayer + "player_fire.plist";
+var s_player_die_plist = dirArt + dirPlayer + "player_die.plist";
 
 //parallax
 var s_backgeound = dirArt + "parallax/common/BG-common.png";
@@ -111,10 +119,16 @@ var g_ressources = [
     {src:s_player_fire_plist},
     {src:s_player_die_plist},
     {src:s_enemy},
+    {src:s_enemy_stick0},
     {src:s_enemy_stick1},
     {src:s_enemy_stick2},
-    {src:s_enemy1},
-	{src:s_enemy2},
+    {src:s_enemy_stick3},
+    {src:s_enemy_stick4},
+    {src:s_enemy_stick5},
+    {src:s_enemy_stick6},
+    {src:s_enemy_stick7},
+    {src:s_enemy_stick8},
+    {src:s_enemy_stick9},
     {src:s_playerShootEffect},
     {src:s_enemyDestroyedEffect},
     {src:s_playerGetsHitEffect},
