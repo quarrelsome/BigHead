@@ -375,10 +375,10 @@ var GameLayer = cc.Layer.extend({
                 var bullet = this._player.bullets[i];
                 //var bulletRect = bullet.getBoundingBox();
                 var bulletRect = new cc.Rect(
-                    bullet.getPositionX(),
-                    bullet.getPositionY(),
-                    bullet.getContentSize().width - 20,
-                    bullet.getContentSize().height - 44
+                    bullet.getPositionX() - bullet.getContentSize().width/2 + 20,
+                    bullet.getPositionY() - bullet.getContentSize().height/2 + 10,
+                    bullet.getContentSize().width - 40,
+                    bullet.getContentSize().height - 20
                 );
                 for (var j = 0; j < this._enemies.length; j++) {
                     var enemy = this._enemies[j];
@@ -477,10 +477,10 @@ var GameLayer = cc.Layer.extend({
                     var bullet = enemy.bullets[j];
                     //var bulletRect = bullet.getBoundingBox();
                     var bulletRect = new cc.Rect(
-                        bullet.getPositionX(),
-                        bullet.getPositionY(),
-                        bullet.getContentSize().width - 20,
-                        bullet.getContentSize().height - 44
+                        bullet.getPositionX() - bullet.getContentSize().width/2 + 20,
+                        bullet.getPositionY() - bullet.getContentSize().height/2 + 10,
+                        bullet.getContentSize().width - 40,
+                        bullet.getContentSize().height - 20
                     );
 
                     if ((cc.rectIntersectsRect(playerRect, bulletRect)) && (this._player.blinkNumber == 0)) {
@@ -488,7 +488,6 @@ var GameLayer = cc.Layer.extend({
                         bullet.removeFromParent();
                         cc.AudioEngine.getInstance().playEffect(s_playerGetsHitEffect);
                         playerHit = true;
-
                     }
                 }
 
