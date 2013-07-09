@@ -30,6 +30,7 @@ var GameLayer = cc.Layer.extend({
         _time: 0,
         _enemies: [],
         _blasts: [],
+        _currentQuestion: 0,
 
         _enemiesDestroyed: 0,
         _targetsDestroyed: 0,
@@ -41,7 +42,6 @@ var GameLayer = cc.Layer.extend({
         _isEnemyPresent: false,
         _isEnemyFireEnabled: false,
         _isEnemyInAttackMode: false,
-
 
         _playerHitLocationY: 0,
         _cloudParallax: null,
@@ -160,7 +160,12 @@ var GameLayer = cc.Layer.extend({
             }
 
             if(this._gameSate.state != STATE_GAMEOVER)
-                this._gameSate.state = this._hudLayer.update(dt,{score:this._gameSate.score,travelledDistance:this._distanceTravelled,health:this._player.health});
+                this._gameSate.state = this._hudLayer.update(dt,{
+                    score:this._gameSate.score,
+                    travelledDistance:this._distanceTravelled,
+                    health:this._player.health,
+                    question: this._currentQuestion
+                });
 
             if(this._gameSate.state == STATE_PLAYING){
                 this._time += dt;
@@ -290,10 +295,30 @@ var GameLayer = cc.Layer.extend({
             }
 
             var totalEnemies = getRandomInt(2, 3);
+            var targetEnemy = getRandomInt(0,totalEnemies-1);
+            var enemyValues = [];
+            var unique = true;
+
             for (i = 0; i < totalEnemies; i++) {
                 var xDisplacement = Math.floor((Math.random() * winSize.width * 0.15 + 1) + 0);
-                var enemyType = getRandomInt(1, 2);
-                var enemy = new Enemy(enemyType);
+                var enemyValue = 0;
+
+                do {
+                    unique = true;
+                    if (this._targetsDestroyed < 5)
+                        enemyValue = getRandomInt(0, 9);
+                    else
+                        enemyValue = getRandomInt(10, 99);
+
+                    for (i = 0; i < enemyValues.length; i++) {
+                        if (enemyValues[i] == enemyValue)
+                            unique = false;
+                    }
+                }
+                while (!unique);
+
+                enemyValues.push(enemyValue);
+                var enemy = new Enemy(enemyValue);
 
                 //var minY = enemy.getContentSize().height / 2 + BarSize.bottomBar.height + ((winSize.height - BarSize.bottomBar.height - BarSize.topBar.height) / totalEnemies * i) + 30;
                 //var maxY = BarSize.bottomBar.height + ((winSize.height - BarSize.bottomBar.height - BarSize.topBar.height - enemy.getContentSize().height / 2) / totalEnemies * (i + 1)) - 30;
@@ -302,8 +327,10 @@ var GameLayer = cc.Layer.extend({
                 var maxY = ((winSize.height / totalEnemies) * (i + 1)) - enemy.getContentSize().height - 30;
                 var actualY = getRandomInt(minY, maxY);
                 enemy.setPosition(this._player.getPositionX() + (winSize.width * 1.25) + enemy.getContentSize().width + xDisplacement, actualY);
-                if (i == 0)
+                if (i == targetEnemy) {
+                    this._currentQuestion = enemy.value;
                     enemy.isTarget = true;
+                }
                 enemy.configure();
                 this.addChild(enemy);
                 this._enemies.push(enemy);
