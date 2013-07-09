@@ -4,17 +4,21 @@ var dirEnemy = "Enemy/";
 var dirPlayer = "Player/";
 
 //image
-var s_splashScreen = dirArt + "splash-screen.jpg";
+var s_menuBackground = dirArt + "main-menu/BH-MM-Bg.png";
+var s_menuSunburst = dirArt + "main-menu/BH-MM-Sunburst.png";
+var s_menuLogo = dirArt + "main-menu/BH-MM-logo.png";
 var s_menu = dirArt + "menu.png";
 var s_menuTitle = dirArt + "menuTitle.png";
 var s_flare = dirArt + "flare.jpg";
 
+//player
 var s_player = dirArt + dirPlayer + "player.png";
 var s_player_spawn = dirArt + dirPlayer + "player_spawn.png";
 var s_player_fire = dirArt + dirPlayer + "player_fire.png";
 var s_player_die = dirArt + dirPlayer + "player_die.png";
 var s_player_bullet = dirArt + dirPlayer + "bullet.png";
 
+//enemy
 var s_enemy = dirArt + dirEnemy + "enemy.png";
 var s_enemy_stick0 = dirArt + dirEnemy + "enemy-stick0.png";
 var s_enemy_stick1 = dirArt + dirEnemy + "enemy-stick1.png";
@@ -114,7 +118,9 @@ var s_pauseScreenMenuBtn = dirArt +"pause-screen/BH-PM-Menu-BT.png";
 var s_pauseScreenMenuBtnPress = dirArt +"pause-screen/BH-PM-Menu-BT-Press.png";
 
 var g_mainmenu = [
-    {src:s_splashScreen},
+    {src:s_menuBackground},
+    {src:s_menuSunburst},
+    {src:s_menuLogo},
     {src:s_flare},
     {src:s_menu},
     {src:s_menuTitle}

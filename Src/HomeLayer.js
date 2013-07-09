@@ -6,9 +6,25 @@ var HomeLayer = cc.Layer.extend({
         var bRet = false;
         if (this._super()) {
             winSize = cc.Director.getInstance().getWinSize();
-            var sp = cc.Sprite.create(s_splashScreen);
+            var sp = cc.Sprite.create(s_menuBackground);
             sp.setAnchorPoint(cc.p(0,0));
-            this.addChild(sp, 0, 1);
+            this.addChild(sp);
+
+            var sunburst = cc.Sprite.create(s_menuSunburst);
+            sunburst.setAnchorPoint(cc.p(0,0));
+            //sunburst.set
+            sunburst.setScale(1.8);
+            this.addChild(sunburst);
+
+            var menuWindow = cc.Sprite.create(s_pauseScreenWindow);
+            menuWindow.setAnchorPoint(cc.p(0,0));
+            menuWindow.setPosition(480,250);
+            this.addChild(menuWindow);
+
+            var logo = cc.Sprite.create(s_menuLogo);
+            logo.setAnchorPoint(cc.p(0,0));
+            logo.setPosition(200,450);
+            this.addChild(logo);
 
             var newGameNormal = cc.Sprite.create(s_menu, cc.rect(0, 0, 126, 33));
             var newGameSelected = cc.Sprite.create(s_menu, cc.rect(0, 33, 126, 33));
@@ -34,12 +50,6 @@ var HomeLayer = cc.Layer.extend({
             this.addChild(menu, 1, 2);
             menu.setPosition(winSize.width / 2, winSize.height / 2 - 80);
             this.schedule(this.update, 0.1);
-
-//            this._ship = cc.Sprite.create(s_enemy1);
-//            this.addChild(this._ship, 0, 4);
-//            var pos = cc.p(winSize.width-10, Math.random() * winSize.height);
-//            this._ship.setPosition( pos );
-//            this._ship.runAction(cc.MoveBy.create(5, cc.p(0-pos.x, pos.y + winSize.height + 100)));
 
             cc.AudioEngine.getInstance().setMusicVolume(0.5);
             cc.AudioEngine.getInstance().playMusic(s_mainMainMusic, true);
@@ -70,16 +80,6 @@ var HomeLayer = cc.Layer.extend({
 //        var scene = cc.Scene.create();
 //        scene.addChild(AboutLayer.create());
 //        cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
-    },
-    update:function () {
-        //alert(JSON.stringify(this._ship.getPosition()));
-//        if (this._ship.getPosition().y > 640) {
-//            var pos = cc.p(Math.random() * winSize.width, 10);
-//            this._ship.setPosition( pos );
-//            this._ship.runAction( cc.MoveBy.create(
-//                parseInt(5 * Math.random(), 10),
-//                cc.p(Math.random() * winSize.width, pos.y + 640)));
-//        }
     },
     onButtonEffect:function(){
         if (MW.SOUND) {
