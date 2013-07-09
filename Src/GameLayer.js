@@ -67,8 +67,8 @@ var GameLayer = cc.Layer.extend({
                 this.initCloudLayer(scene);
                 this.initCommonLayer(scene);
                 this.initBuildingLayer(scene);
-                this.initTreeLayer(scene);
                 this.initPlayer();
+                this.initTreeLayer(scene);
                 this.initRainLayer(scene);
                 this.initHudLayer(scene);
                 this.enableEvents();
@@ -125,7 +125,7 @@ var GameLayer = cc.Layer.extend({
         initTreeLayer: function(scene){
             this._trees2Parallax = CommonParallaxLayer.create(s_tree2);
             this._trees2Parallax.setAnchorPoint(cc.p(0,0));
-            scene.addChild(this._trees2Parallax);
+            scene.addChild(this._trees2Parallax,90);
         },
 
         initRainLayer: function(scene){
@@ -144,7 +144,7 @@ var GameLayer = cc.Layer.extend({
         initHudLayer: function(scene){
             this._hudLayer = GameControlMenu.create(STATE_PLAYING);
             this._hudLayer.setAnchorPoint(cc.p(0,0));
-            scene.addChild(this._hudLayer);
+            scene.addChild(this._hudLayer,this._hudLayer._tag);
         },
 
         update: function (dt) {

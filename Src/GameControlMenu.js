@@ -1,6 +1,7 @@
 var GameControlMenu = cc.Layer.extend({
 
     _gameSate:0,
+    _tag: 100,
     lbScore: null,
     _healthBar: null,
     lbQuestion: null,
