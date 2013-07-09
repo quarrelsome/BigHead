@@ -1,6 +1,7 @@
 var GameControlMenu = cc.Layer.extend({
 
     _gameSate:0,
+    _tag: 100,
     lbScore: null,
     _healthBar: null,
     lbQuestion: null,
@@ -45,7 +46,6 @@ var GameControlMenu = cc.Layer.extend({
             this.addChild(this.lbQuestion);
             this.lbQuestion.setPosition(487 , winSize.height - 40);
 
-            //this.initPauseLayer();
             bRet = true;
         }
         sys.dumpRoot();
@@ -86,9 +86,21 @@ var GameControlMenu = cc.Layer.extend({
         var resumeButtonSelected = cc.Sprite.create(s_pauseScreenResumeBtnPress);
         var resumeButtonDisabled = cc.Sprite.create(s_pauseScreenResumeBtnPress);
         var item_resume = cc.MenuItemSprite.create(resumeButton,resumeButtonSelected,resumeButtonDisabled,this.onPause,this);
-        var menu = cc.Menu.create(item_resume);
+
+        var restartButton = cc.Sprite.create(s_pauseScreenRestartBtn);
+        var restartButtonSelected = cc.Sprite.create(s_pauseScreenRestartBtnPress);
+        var restartButtonDisabled = cc.Sprite.create(s_pauseScreenRestartBtnPress);
+        var item_restart = cc.MenuItemSprite.create(restartButton,restartButtonSelected,restartButtonDisabled,this.onRestart,this);
+
+        var menuButton = cc.Sprite.create(s_pauseScreenMenuBtn);
+        var menuButtonSelected = cc.Sprite.create(s_pauseScreenMenuBtnPress);
+        var menuButtonDisabled = cc.Sprite.create(s_pauseScreenMenuBtnPress);
+        var item_menu = cc.MenuItemSprite.create(menuButton,menuButtonSelected,menuButtonDisabled,this.onMenu,this);
+
+        var menu = cc.Menu.create(item_resume,item_restart, item_menu);
         menu.setAnchorPoint(cc.p(0,0));
-        menu.setPosition(470,340);
+        menu.setPosition(475,270);
+        menu.alignItemsVertically();
         this._pauseLayer.addChild(menu);
 
         this.addChild(this._pauseLayer);
@@ -96,20 +108,23 @@ var GameControlMenu = cc.Layer.extend({
     },
 
     onPause:function (sender) {
-        this._pauseLayer.removeFromParent(true);
-        cc.log(this._children.length);
         if (this._gameSate == STATE_PAUSED){
             this._gameSate = STATE_PLAYING;
-            //this._pauseLayer.setOpacity(0);
-            cc.log("here");
+            this._pauseLayer.removeFromParent(true);
         }
         else{
-            //this._pauseLayer.setOpacity(100);
+            this.initPauseLayer();
             this._gameSate = STATE_PAUSED;
         }
-
     },
-    onSysMenu:function (pSender) {
+
+    onRestart:function(sender){
+        var scene = cc.Scene.create();
+        scene.addChild(GameLayer.create(scene));
+        cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));
+    },
+
+    onMenu:function (pSender) {
         var scene = cc.Scene.create();
         scene.addChild(HomeLayer.create());
         cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5,scene));
