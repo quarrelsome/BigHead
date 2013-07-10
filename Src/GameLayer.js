@@ -430,6 +430,7 @@ var GameLayer = cc.Layer.extend({
                                     this._enemyLifeTime = 6;
                                     this._isWrongEnemyDestroyed = true;
                                 }
+                                enemy.blinkNumber = 16;
                             }
                             cc.ArrayRemoveObject(this._player.bullets, bullet);
                             bullet.removeFromParent();
