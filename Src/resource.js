@@ -19,9 +19,6 @@ var s_menuProfileBtnPress = dirArt + "main-menu/BH-MM-Profile-BT-Press.png";
 
 //player
 var s_player = dirArt + dirPlayer + "player.png";
-var s_player_spawn = dirArt + dirPlayer + "player_spawn.png";
-var s_player_fire = dirArt + dirPlayer + "player_fire.png";
-var s_player_die = dirArt + dirPlayer + "player_die.png";
 var s_player_bullet = dirArt + dirPlayer + "bullet.png";
 
 //enemy
@@ -55,9 +52,6 @@ var s_mainMainMusic = dirSounds + "backgroundMusic.ogg";
 
 //plist
 var s_player_plist = dirArt +  dirPlayer + "player.plist";
-var s_player_spawn_plist = dirArt + dirPlayer + "player_spawn.plist";
-var s_player_fire_plist = dirArt + dirPlayer + "player_fire.plist";
-var s_player_die_plist = dirArt + dirPlayer + "player_die.plist";
 
 //parallax
 var s_backgeound = dirArt + "parallax/common/BG-common.png";
@@ -142,13 +136,7 @@ var g_ressources = [
     {src:s_backgeound},
     {src:s_mainMainMusic},
     {src:s_player},
-    {src:s_player_spawn},
-    {src:s_player_fire},
-    {src:s_player_die},
     {src:s_player_plist},
-    {src:s_player_spawn_plist},
-    {src:s_player_fire_plist},
-    {src:s_player_die_plist},
     {src:s_enemy},
     {src:s_enemy_stick0},
     {src:s_enemy_stick1},

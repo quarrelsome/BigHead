@@ -19,10 +19,6 @@ var Player = cc.Sprite.extend({
         this.setTag(this.tag);
 
         cc.SpriteFrameCache.getInstance().addSpriteFrames(s_player_plist, s_player);
-        cc.SpriteFrameCache.getInstance().addSpriteFrames(s_player_spawn_plist, s_player_spawn);
-        cc.SpriteFrameCache.getInstance().addSpriteFrames(s_player_fire_plist, s_player_fire);
-        cc.SpriteFrameCache.getInstance().addSpriteFrames(s_player_die_plist, s_player_die);
-
         this.initWithSpriteFrameName("player_spawn_0.png");
 
         var spawnAnimationFrames = [];

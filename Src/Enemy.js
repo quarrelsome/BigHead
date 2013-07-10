@@ -14,7 +14,7 @@ var Enemy = cc.LayerColor.extend({
     displacementTop: 0,
     displacementBottom: 0,
     displacementDirection: 0,
-    bulletAngle: 0,
+    blinkNumber: 0,
 
 	ctor: function (enemyValue) {
         this._super();
@@ -60,6 +60,9 @@ var Enemy = cc.LayerColor.extend({
 
     update: function(dt) {
         this.verticalMovement(dt);
+        if (this.blinkNumber > 0) {
+            this.blink();
+        }
     },
 
     verticalMovement: function (dt) {
@@ -89,6 +92,22 @@ var Enemy = cc.LayerColor.extend({
         bullet.setTag(4);
         this.bullets.push(bullet);
         return bullet;
+    },
+
+    blink: function() {
+        if ((this.blinkNumber / 0.5) % 8 < 1) {
+            this.setColor(new cc.Color3B(255,255,255));
+            this.setVisible(false);
+        }
+        else {
+            this.setColor(new cc.Color3B(0,255,0));
+            this.setVisible(true);
+        }
+        this.blinkNumber -= 0.5;
+
+        if (this.blinkNumber == 0) {
+            this.setColor(new cc.Color3B(255,255,255));
+        }
     },
 
     getStickName: function (stickNumber) {
