@@ -10,6 +10,12 @@ var s_menuLogo = dirArt + "main-menu/BH-MM-logo.png";
 var s_menuTitle = dirArt + "main-menu/BH-MM-Menu-text.png";
 var s_menu = dirArt + "menu.png";
 var s_flare = dirArt + "flare.jpg";
+var s_menuStartBtn = dirArt + "main-menu/BH-MM-Start-BT.png";
+var s_menuStartBtnPress = dirArt + "main-menu/BH-MM-Start-BT-Press.png";
+var s_menuInstructionBtn = dirArt + "main-menu/BH-MM-Instruct-BT.png";
+var s_menuInstructionBtnPress = dirArt + "main-menu/BH-MM-Instruct-BT-press.png";
+var s_menuProfileBtn = dirArt + "main-menu/BH-MM-Profile-BT.png";
+var s_menuProfileBtnPress = dirArt + "main-menu/BH-MM-Profile-BT-Press.png";
 
 //player
 var s_player = dirArt + dirPlayer + "player.png";
@@ -123,7 +129,13 @@ var g_mainmenu = [
     {src:s_menuLogo},
     {src:s_menuTitle},
     {src:s_flare},
-    {src:s_menu}
+    {src:s_menu},
+    {src:s_menuStartBtn},
+    {src:s_menuStartBtnPress},
+    {src:s_menuInstructionBtn},
+    {src:s_menuInstructionBtnPress},
+    {src:s_menuProfileBtn},
+    {src:s_menuProfileBtnPress}
 ];
 
 var g_ressources = [

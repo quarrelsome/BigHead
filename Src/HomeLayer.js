@@ -13,33 +13,33 @@ var HomeLayer = cc.Layer.extend({
             var sunburst = cc.Sprite.create(s_menuSunburst);
             //sunburst.set
             sunburst.setScale(2);
-            sunburst.setPosition(480,300);
+            sunburst.setPosition(winSize.width / 2,winSize.height / 2 - 20);
             this.addChild(sunburst);
 
             var menuWindow = cc.Sprite.create(s_pauseScreenWindow);
-            menuWindow.setPosition(480,250);
+            menuWindow.setPosition(winSize.width / 2,winSize.height / 2 - 70);
             this.addChild(menuWindow);
 
             var logo = cc.Sprite.create(s_menuLogo);
-            logo.setPosition(480,530);
+            logo.setPosition(winSize.width / 2,winSize.height / 2 + 210);
             this.addChild(logo);
 
             var title = cc.Sprite.create(s_menuTitle);
-            title.setPosition(480,410);
+            title.setPosition(winSize.width / 2,winSize.height / 2 + 90);
             title.setScale(1.5);
             this.addChild(title);
 
-            var newGameNormal = cc.Sprite.create(s_menu, cc.rect(0, 0, 126, 33));
-            var newGameSelected = cc.Sprite.create(s_menu, cc.rect(0, 33, 126, 33));
-            var newGameDisabled = cc.Sprite.create(s_menu, cc.rect(0, 33 * 2, 126, 33));
+            var newGameNormal = cc.Sprite.create(s_menuStartBtn);
+            var newGameSelected = cc.Sprite.create(s_menuStartBtnPress);
+            var newGameDisabled = cc.Sprite.create(s_menuStartBtnPress);
 
-            var gameSettingsNormal = cc.Sprite.create(s_menu, cc.rect(126, 0, 126, 33));
-            var gameSettingsSelected = cc.Sprite.create(s_menu, cc.rect(126, 33, 126, 33));
-            var gameSettingsDisabled = cc.Sprite.create(s_menu, cc.rect(126, 33 * 2, 126, 33));
+            var gameSettingsNormal = cc.Sprite.create(s_menuInstructionBtn);
+            var gameSettingsSelected = cc.Sprite.create(s_menuInstructionBtnPress);
+            var gameSettingsDisabled = cc.Sprite.create(s_menuInstructionBtnPress);
 
-            var aboutNormal = cc.Sprite.create(s_menu, cc.rect(252, 0, 126, 33));
-            var aboutSelected = cc.Sprite.create(s_menu, cc.rect(252, 33, 126, 33));
-            var aboutDisabled = cc.Sprite.create(s_menu, cc.rect(252, 33 * 2, 126, 33));
+            var aboutNormal = cc.Sprite.create(s_menuProfileBtn);
+            var aboutSelected = cc.Sprite.create(s_menuProfileBtnPress);
+            var aboutDisabled = cc.Sprite.create(s_menuProfileBtnPress);
 
             var newGame = cc.MenuItemSprite.create(newGameNormal, newGameSelected, newGameDisabled, function () {
                 this.onButtonEffect();
@@ -49,9 +49,9 @@ var HomeLayer = cc.Layer.extend({
             var about = cc.MenuItemSprite.create(aboutNormal, aboutSelected, aboutDisabled, this.onAbout, this);
 
             var menu = cc.Menu.create(newGame, gameSettings, about);
-            menu.alignItemsVerticallyWithPadding(10);
-            this.addChild(menu, 1, 2);
-            menu.setPosition(winSize.width / 2, winSize.height / 2 - 80);
+            menu.alignItemsVertically();
+            this.addChild(menu);
+            menu.setPosition(winSize.width / 2, winSize.height / 2 - 90);
             this.schedule(this.update, 0.1);
 
             cc.AudioEngine.getInstance().setMusicVolume(0.5);
