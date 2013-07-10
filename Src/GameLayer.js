@@ -339,8 +339,11 @@ var GameLayer = cc.Layer.extend({
             this._isEnemyFireEnabled = false;
             this._isWrongEnemyDestroyed = false;
             this._enemyTotalFireWait = 2;
-            ENEMY_WAIT_TIME_FACTOR += ENEMY_VERTICAL_SPEED_INCREASE_FACTOR;
             this._enemiesDestroyed = 0;
+            this._layerSpeed += this._layerSpeedIncreaseFactor;
+            ENEMY_WAIT_TIME_FACTOR += ENEMY_VERTICAL_SPEED_INCREASE_FACTOR;
+            ENEMY_VERTICAL_SPEED += ENEMY_VERTICAL_SPEED_INCREASE_FACTOR;
+            ENEMY_RUN_SPEED += ENEMY_RUN_SPEED_FACTOR;
         },
 
         updateBulletPosition: function (dt) {
@@ -432,9 +435,6 @@ var GameLayer = cc.Layer.extend({
 
                             if (this._enemiesDestroyed == 0) {
                                 this._playerHitLocationY = this._player.getPositionY();
-                                this._layerSpeed += this._layerSpeedIncreaseFactor;
-                                ENEMY_VERTICAL_SPEED += ENEMY_VERTICAL_SPEED_INCREASE_FACTOR;
-                                ENEMY_RUN_SPEED += ENEMY_RUN_SPEED_FACTOR;
                             }
                             this._isEnemyFireEnabled = false;
 
