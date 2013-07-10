@@ -41,17 +41,17 @@ var s_enemy_bullet = dirArt + dirEnemy + "bullet-enemy.png";
 var s_explosion = dirArt + "explosion-particle.png";
 
 //effect
-var s_buttonEffect_mp3 = dirSounds + "buttonEffet.mp3";
-var s_playerShootEffect = dirSounds + "player-fire.mp3";
-var s_enemyDestroyedEffect = dirSounds + "enemy-destroy.mp3";
-var s_playerGetsHitEffect = dirSounds + "player-hit.mp3";
-var s_enemyShootEffect = dirSounds + "enemy-fire.mp3";
-var s_playerFlying = dirSounds + "player-flying.mp3";
-var s_wildLaughEffect = dirSounds + "wild-laugh.mp3";
-var s_playerLowLifeEffect = dirSounds + "player-Lowlife.mp3";
+var s_buttonEffect_mp3 = dirSounds + "buttonEffet.ogg";
+var s_playerShootEffect = dirSounds + "player-fire.ogg";
+var s_enemyDestroyedEffect = dirSounds + "enemy-destroy.ogg";
+var s_playerGetsHitEffect = dirSounds + "player-hit.ogg";
+var s_enemyShootEffect = dirSounds + "enemy-fire.ogg";
+var s_playerFlying = dirSounds + "player-flying.ogg";
+var s_wildLaughEffect = dirSounds + "wild-laugh.ogg";
+var s_playerLowLifeEffect = dirSounds + "player-Lowlife.ogg";
 
 //music
-var s_mainMainMusic = dirSounds + "backgroundMusic.mp3";
+var s_mainMainMusic = dirSounds + "backgroundMusic.ogg";
 
 //plist
 var s_player_plist = dirArt +  dirPlayer + "player.plist";
