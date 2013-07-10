@@ -8,6 +8,7 @@ var GameControlMenu = cc.Layer.extend({
     _previousScale: 1,
     _currentScale: 1,
     _pauseLayer: null,
+    _lbQuestionTitle: null,
 
     init:function (gameState) {
         var bRet = false;
@@ -31,6 +32,7 @@ var GameControlMenu = cc.Layer.extend({
             this.addChild(healthContainer);
 
             this._healthBar = cc.Sprite.create(s_healthBar);
+            this._healthBar.setAnchorPoint(cc.p(0.5,0.5));
             this._healthBar.setPosition(120,winSize.height-(this._healthBar.getContentSize().height+46));
             this.addChild(this._healthBar);
 
@@ -46,6 +48,11 @@ var GameControlMenu = cc.Layer.extend({
             this.addChild(this.lbQuestion);
             this.lbQuestion.setPosition(487 , winSize.height - 40);
 
+            this._lbQuestionTitle = cc.LabelBMFont.create("0", s_scoreFontHd);
+            this._lbQuestionTitle.setScale(2);
+            this._lbQuestionTitle.setPosition(winSize.width/2 , winSize.height/2);
+            this.addChild(this._lbQuestionTitle);
+
             bRet = true;
         }
         sys.dumpRoot();
@@ -53,14 +60,15 @@ var GameControlMenu = cc.Layer.extend({
         return bRet;
     },
     update: function(dt, gameUpdates){
-        cc.log("hud layer");
+        //cc.log("hud layer");
         this.lbScore.setString(gameUpdates.score);
-        this.lbQuestion.setString(gameUpdates.question);
         this._currentScale = gameUpdates.health/100;
         this._healthBar.setScaleX(this._currentScale);
 //        if(this._previousScale!=this._currentScale){
-//            this._healthBar.setPositionX(120-(120*(1-gameUpdates.health/120)));
-//            cc.log(this._healthBar.getPosition());
+//            cc.log(((gameUpdates.playerHitImpact/100)/2));
+//            this._healthBar.setAnchorPoint(cc.p(0.5-((gameUpdates.playerHitImpact/100)/2),0.5));
+////            this._healthBar.setPositionX(120-(this._healthBar.getContentSize().width-(this._healthBar.getContentSize().width*this._currentScale)));
+////            cc.log(this._healthBar.getPosition());
 //            this._previousScale = this._currentScale;
 //        }
 
@@ -132,6 +140,16 @@ var GameControlMenu = cc.Layer.extend({
     },
     setQuestion:function(question){
         this.lbQuestion.setString(question);
+    },
+    setQuestionTitle:function(questionTitle){
+        this._lbQuestionTitle.setPosition(winSize.width/2 , winSize.height/2);
+        this._lbQuestionTitle.setScale(2);
+        this._lbQuestionTitle.setString(questionTitle);
+        this._lbQuestionTitle.runAction(cc.Sequence.create(cc.MoveTo.create(2, cc.p(winSize.width/2+8, winSize.height - 40)),
+            cc.CallFunc.create(function() {
+                this._lbQuestionTitle.setScale(1);
+            }, this)
+        ));
     }
 });
 

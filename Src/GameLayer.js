@@ -163,8 +163,7 @@ var GameLayer = cc.Layer.extend({
                 this._gameSate.state = this._hudLayer.update(dt,{
                     score:this._gameSate.score,
                     travelledDistance:this._distanceTravelled,
-                    health:this._player.health,
-                    question: this._currentQuestion
+                    health:this._player.health
                 });
 
             if(this._gameSate.state == STATE_PLAYING){
@@ -328,7 +327,9 @@ var GameLayer = cc.Layer.extend({
                 var actualY = getRandomInt(minY, maxY);
                 enemy.setPosition(this._player.getPositionX() + (winSize.width * 1.25) + enemy.getContentSize().width + xDisplacement, actualY);
                 if (i == targetEnemy) {
-                    this._currentQuestion = enemy.value;
+                    this._hudLayer.setQuestionTitle(enemy.value);
+                    this._hudLayer.setQuestion(enemy.value)
+                    //this._currentQuestion = enemy.value;
                     enemy.isTarget = true;
                 }
                 enemy.configure();
