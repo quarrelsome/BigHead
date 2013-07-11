@@ -74,6 +74,7 @@ var GameLayer = cc.Layer.extend({
                 this.enableEvents();
                 this.scheduleUpdate();
                 this._gameSate = game_state;
+                this._enemies = [];
 
                 bRet = true;
             }
