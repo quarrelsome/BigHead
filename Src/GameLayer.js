@@ -414,7 +414,17 @@ var GameLayer = cc.Layer.extend({
                                 this._targetsDestroyed++;
                                 if (this._targetsDestroyed > 0 && this._targetsDestroyed % 10 == 0)
                                     cc.AudioEngine.getInstance().playEffect(s_wildLaughEffect);
+                            } else {
+                                if (!this._isWrongEnemyDestroyed && this._enemiesHit == 0) {
+                                    this._enemyLifeTime = 6;
+                                    this._isWrongEnemyDestroyed = true;
+                                }
+                                enemy.blinkNumber = 16;
+                            }
+                            cc.ArrayRemoveObject(this._player.bullets, bullet);
+                            bullet.removeFromParent();
 
+                            if (this._isTargetDestroyed || this._enemyLifeTime > 8) {
                                 var blast = cc.Sprite.create(s_explosion);
                                 blast.setPosition(enemy.getPositionX(), enemy.getPositionY());
                                 this.addChild(blast);
@@ -426,15 +436,7 @@ var GameLayer = cc.Layer.extend({
                                 ));
                                 cc.ArrayRemoveObject(this._enemies, enemy);
                                 enemy.removeFromParent();
-                            } else {
-                                if (!this._isWrongEnemyDestroyed && this._enemiesHit == 0) {
-                                    this._enemyLifeTime = 6;
-                                    this._isWrongEnemyDestroyed = true;
-                                }
-                                enemy.blinkNumber = 16;
                             }
-                            cc.ArrayRemoveObject(this._player.bullets, bullet);
-                            bullet.removeFromParent();
 
                             if (this._enemiesHit == 0) {
                                 this._playerHitLocationY = this._player.getPositionY();

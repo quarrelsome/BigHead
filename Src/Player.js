@@ -144,7 +144,7 @@ var Player = cc.Sprite.extend({
         this.runAction(cc.Sequence.create(animate,
             cc.CallFunc.create(function() {
                 var scene = cc.Scene.create();
-                scene.addChild(GameOver.create(true));
+                scene.addChild(GameOver.create(false));
                 cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));
             }, this)
         ));
