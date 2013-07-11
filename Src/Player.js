@@ -1,5 +1,5 @@
 var Player = cc.Sprite.extend({
-    health : 100,
+    health : 10,
     hitImpact: 20,
     armour: 0,
 	speed: 150,
@@ -139,9 +139,13 @@ var Player = cc.Sprite.extend({
             dieAnimationFrames.push(frame);
         }
 
+        var moveDown = cc.MoveTo.create(1.5, cc.p(this.getPositionX(), 0-this.getContentSize().height/2));
+        var rotate = cc.RotateBy.create(1, -70.0);
         var animation = cc.Animation.create(dieAnimationFrames, 0.1);
         var animate = cc.Animate.create(animation);
-        this.runAction(cc.Sequence.create(animate,
+        this.runAction(cc.Sequence.create(animate));
+        this.runAction(cc.Sequence.create(cc.DelayTime.create(1.15), rotate));
+        this.runAction(cc.Sequence.create(cc.DelayTime.create(1.15), moveDown,
             cc.CallFunc.create(function() {
                 var scene = cc.Scene.create();
                 scene.addChild(GameOver.create(false));
