@@ -1,5 +1,5 @@
 var Player = cc.Sprite.extend({
-    health : 10,
+    health : 100,
     hitImpact: 20,
     armour: 0,
 	speed: 150,
