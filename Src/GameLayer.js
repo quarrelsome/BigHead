@@ -369,9 +369,9 @@ var GameLayer = cc.Layer.extend({
                     }
 
                     if (this._isEnemyInAttackMode) {
-                        bullet.setPositionX(bullet.getPositionX() - (enemy.bulletSpeed * dt * 1.5));
+                        bullet.setPositionX(bullet.getPositionX() - ((enemy.bulletSpeed + this._layerSpeed/4 * 0.1)* dt * 1.5));
                     } else {
-                        bullet.setPositionX(bullet.getPositionX() - (enemy.bulletSpeed * dt));
+                        bullet.setPositionX(bullet.getPositionX() - ((enemy.bulletSpeed + this._layerSpeed/4 * 0.1) * dt));
                     }
                 }
             }
