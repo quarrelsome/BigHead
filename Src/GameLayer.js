@@ -141,7 +141,7 @@ var GameLayer = cc.Layer.extend({
             this._player = new Player();
             this._player.setPosition(0 - this._player.getContentSize().width / 2, winSize.height / 2);
             this.addChild(this._player, this._player.tag);
-            this._player.runAction(cc.Sequence.create(cc.MoveTo.create(1.5, cc.p(this._player.getContentSize().width / 2 + 10, winSize.height / 2))));
+            this._player.runAction(cc.Sequence.create(cc.MoveTo.create(1.5, cc.p(this._player.getContentSize().width / 2 + 30, winSize.height / 2))));
         },
 
         initHudLayer: function(scene){
