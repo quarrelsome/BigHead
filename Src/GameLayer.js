@@ -34,6 +34,7 @@ var GameLayer = cc.Layer.extend({
 
         _enemiesHit: 0,
         _targetsDestroyed: 0,
+        _fireCount: 0,
         _enemyTotalFireWait: 2,
         _enemyLifeTime: 0,
 
@@ -237,6 +238,7 @@ var GameLayer = cc.Layer.extend({
                 KEYS[e] = true;
                 if (this._player.fireWait <= 0) {
                     this.addChild(this._player.shoot());
+                    this._fireCount++;
                     cc.AudioEngine.getInstance().playEffect(s_playerShootEffect);
                     this._player.fireWait = 0.3;
                 }
