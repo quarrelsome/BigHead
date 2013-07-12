@@ -5,8 +5,6 @@ var GameControlMenu = cc.Layer.extend({
     lbScore: null,
     _healthBar: null,
     lbQuestion: null,
-    _previousScale: 1,
-    _currentScale: 1,
     _pauseLayer: null,
     _lbQuestionTitle: null,
 
@@ -62,16 +60,7 @@ var GameControlMenu = cc.Layer.extend({
     update: function(dt, gameUpdates){
         //cc.log("hud layer");
         this.lbScore.setString(gameUpdates.score);
-        this._currentScale = gameUpdates.health/100;
-        this._healthBar.setScaleX(this._currentScale);
-//        if(this._previousScale!=this._currentScale){
-//            //this._healthBar.setAnchorPoint(cc.p(0.5,0));
-//            this._healthBar.setPositionX(this._healthBar.getPositionX()+this._healthBar.getContentSize().width/2);
-////            this._healthBar.setPositionX(120-(this._healthBar.getContentSize().width-(this._healthBar.getContentSize().width*this._currentScale)));
-////            cc.log(this._healthBar.getPosition());
-//            this._previousScale = this._currentScale;
-//        }
-
+        this._healthBar.setScaleX(gameUpdates.health/100);
         return this._gameSate;
     },
 
