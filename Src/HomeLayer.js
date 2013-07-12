@@ -5,41 +5,43 @@ var HomeLayer = cc.Layer.extend({
 	init:function() {
         var bRet = false;
         if (this._super()) {
+            cc.SpriteFrameCache.getInstance().addSpriteFrames(s_menuPlist);
+
             winSize = cc.Director.getInstance().getWinSize();
             var sp = cc.Sprite.create(s_menuBackground);
             sp.setAnchorPoint(cc.p(0,0));
             this.addChild(sp);
 
-            var sunburst = cc.Sprite.create(s_menuSunburst);
+            var sunburst = cc.Sprite.createWithSpriteFrameName("BH-MM-Sunburst.png");
             //sunburst.set
             sunburst.setScale(2);
             sunburst.setPosition(winSize.width / 2,winSize.height / 2 - 20);
             this.addChild(sunburst);
 
-            var menuWindow = cc.Sprite.create(s_pauseScreenWindow);
+            var menuWindow = cc.Sprite.createWithSpriteFrameName("BH-MM-window.png");
             menuWindow.setPosition(winSize.width / 2,winSize.height / 2 - 70);
             this.addChild(menuWindow);
 
-            var logo = cc.Sprite.create(s_menuLogo);
+            var logo = cc.Sprite.createWithSpriteFrameName("BH-MM-logo.png");
             logo.setPosition(winSize.width / 2,winSize.height / 2 + 210);
             this.addChild(logo);
 
-            var title = cc.Sprite.create(s_menuTitle);
+            var title = cc.Sprite.createWithSpriteFrameName("BH-MM-Menu-text.png");
             title.setPosition(winSize.width / 2,winSize.height / 2 + 90);
             title.setScale(1.5);
             this.addChild(title);
 
-            var newGameNormal = cc.Sprite.create(s_menuStartBtn);
-            var newGameSelected = cc.Sprite.create(s_menuStartBtnPress);
-            var newGameDisabled = cc.Sprite.create(s_menuStartBtnPress);
+            var newGameNormal = cc.Sprite.createWithSpriteFrameName("BH-MM-Start-BT.png");
+            var newGameSelected = cc.Sprite.createWithSpriteFrameName("BH-MM-Start-BT-Press.png");
+            var newGameDisabled = cc.Sprite.createWithSpriteFrameName("BH-MM-Start-BT-Press.png");
 
-            var gameSettingsNormal = cc.Sprite.create(s_menuInstructionBtn);
-            var gameSettingsSelected = cc.Sprite.create(s_menuInstructionBtnPress);
-            var gameSettingsDisabled = cc.Sprite.create(s_menuInstructionBtnPress);
+            var gameSettingsNormal = cc.Sprite.createWithSpriteFrameName("BH-MM-Instruct-BT.png");
+            var gameSettingsSelected = cc.Sprite.createWithSpriteFrameName("BH-MM-Instruct-BT-press.png");
+            var gameSettingsDisabled = cc.Sprite.createWithSpriteFrameName("BH-MM-Instruct-BT-press.png");
 
-            var aboutNormal = cc.Sprite.create(s_menuProfileBtn);
-            var aboutSelected = cc.Sprite.create(s_menuProfileBtnPress);
-            var aboutDisabled = cc.Sprite.create(s_menuProfileBtnPress);
+            var aboutNormal = cc.Sprite.createWithSpriteFrameName("BH-MM-Profile-BT.png");
+            var aboutSelected = cc.Sprite.createWithSpriteFrameName("BH-MM-Profile-BT-Press.png");
+            var aboutDisabled = cc.Sprite.createWithSpriteFrameName("BH-MM-Profile-BT-Press.png");
 
             var newGame = cc.MenuItemSprite.create(newGameNormal, newGameSelected, newGameDisabled, function () {
                 this.onButtonEffect();
