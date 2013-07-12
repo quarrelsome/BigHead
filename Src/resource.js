@@ -23,18 +23,7 @@ var s_player_bullet = dirArt + dirPlayer + "bullet.png";
 
 //enemy
 var s_enemy = dirArt + dirEnemy + "enemy.png";
-var s_enemy_stick0 = dirArt + dirEnemy + "enemy-stick0.png";
-var s_enemy_stick1 = dirArt + dirEnemy + "enemy-stick1.png";
-var s_enemy_stick2 = dirArt + dirEnemy + "enemy-stick2.png";
-var s_enemy_stick3 = dirArt + dirEnemy + "enemy-stick3.png";
-var s_enemy_stick4 = dirArt + dirEnemy + "enemy-stick4.png";
-var s_enemy_stick5 = dirArt + dirEnemy + "enemy-stick5.png";
-var s_enemy_stick6 = dirArt + dirEnemy + "enemy-stick6.png";
-var s_enemy_stick7 = dirArt + dirEnemy + "enemy-stick7.png";
-var s_enemy_stick8 = dirArt + dirEnemy + "enemy-stick8.png";
-var s_enemy_stick9 = dirArt + dirEnemy + "enemy-stick9.png";
 var s_enemy_bullet = dirArt + dirEnemy + "bullet-enemy.png";
-
 var s_explosion = dirArt + "explosion-particle.png";
 
 //effect
@@ -52,6 +41,9 @@ var s_mainMainMusic = dirSounds + "backgroundMusic.ogg";
 
 //plist
 var s_player_plist = dirArt +  dirPlayer + "player.plist";
+var s_enemy_plist = dirArt +  dirEnemy + "enemy.plist";
+var s_explosionFire = dirArt + dirEnemy + "explosionFire.plist";
+var s_explosionSmoke = dirArt + dirEnemy + "explosionSmoke.plist";
 
 //parallax
 var s_backgeound = dirArt + "parallax/common/BG-common.png";
@@ -138,16 +130,8 @@ var g_ressources = [
     {src:s_player},
     {src:s_player_plist},
     {src:s_enemy},
-    {src:s_enemy_stick0},
-    {src:s_enemy_stick1},
-    {src:s_enemy_stick2},
-    {src:s_enemy_stick3},
-    {src:s_enemy_stick4},
-    {src:s_enemy_stick5},
-    {src:s_enemy_stick6},
-    {src:s_enemy_stick7},
-    {src:s_enemy_stick8},
-    {src:s_enemy_stick9},
+    {src:s_enemy_plist},
+    {src:s_explosionFire},
     {src:s_playerShootEffect},
     {src:s_enemyDestroyedEffect},
     {src:s_playerGetsHitEffect},
@@ -158,6 +142,7 @@ var g_ressources = [
     {src:s_player_bullet},
     {src:s_enemy_bullet},
 	{src:s_explosion},
+    {src:s_explosionSmoke},
     {src:s_iranSky},
     {src:s_kazakhstanSky},
     {src:s_malaysiaSky},
