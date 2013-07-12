@@ -34,6 +34,7 @@ var GameLayer = cc.Layer.extend({
 
         _enemiesHit: 0,
         _targetsDestroyed: 0,
+        _totalEnemiesDestroyed: 0,
         _fireCount: 0,
         _enemyTotalFireWait: 2,
         _enemyLifeTime: 0,
@@ -429,6 +430,7 @@ var GameLayer = cc.Layer.extend({
 
                             if (this._isTargetDestroyed || this._enemyLifeTime > 8) {
                                 enemy.die();
+                                this._totalEnemiesDestroyed++;
                                 cc.ArrayRemoveObject(this._enemies, enemy);
                                 enemy.removeFromParent();
                             }
