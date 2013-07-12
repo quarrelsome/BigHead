@@ -426,15 +426,7 @@ var GameLayer = cc.Layer.extend({
                             bullet.removeFromParent();
 
                             if (this._isTargetDestroyed || this._enemyLifeTime > 8) {
-                                var blast = cc.Sprite.create(s_explosion);
-                                blast.setPosition(enemy.getPositionX(), enemy.getPositionY());
-                                this.addChild(blast);
-                                cc.AudioEngine.getInstance().playEffect(s_enemyDestroyedEffect);
-                                blast.runAction(cc.Sequence.create(cc.FadeOut.create(0.5),
-                                    cc.CallFunc.create(function (blast) {
-                                        blast.removeFromParent();
-                                    }, this)
-                                ));
+                                enemy.die();
                                 cc.ArrayRemoveObject(this._enemies, enemy);
                                 enemy.removeFromParent();
                             }

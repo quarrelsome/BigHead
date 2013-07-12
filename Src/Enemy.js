@@ -97,6 +97,29 @@ var Enemy = cc.LayerColor.extend({
         return bullet;
     },
 
+    die: function () {
+        cc.AudioEngine.getInstance().playEffect(s_enemyDestroyedEffect);
+
+        var blast = cc.ParticleSystem.create(s_explosionFire);
+        blast.setPosition(this.getPosition());
+        this._parent.addChild(blast);
+
+        var smoke = cc.ParticleSystem.create(s_explosionSmoke);
+        smoke.setPosition(this.getPosition());
+        this._parent.addChild(smoke);
+
+        blast.runAction(cc.Sequence.create(cc.DelayTime.create(1.5),
+            cc.CallFunc.create(function (blast) {
+                blast.removeFromParent();
+            }, this)
+        ));
+        smoke.runAction(cc.Sequence.create(cc.DelayTime.create(1.5),
+            cc.CallFunc.create(function (smoke) {
+                smoke.removeFromParent();
+            }, this)
+        ));
+    },
+
     blink: function() {
         if ((this.blinkNumber / 0.5) % 8 < 1) {
             this.setColor(new cc.Color3B(255,255,255));
