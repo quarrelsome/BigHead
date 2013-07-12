@@ -34,6 +34,8 @@ var GameLayer = cc.Layer.extend({
 
         _enemiesHit: 0,
         _targetsDestroyed: 0,
+        _totalEnemiesDestroyed: 0,
+        _fireCount: 0,
         _enemyTotalFireWait: 2,
         _enemyLifeTime: 0,
 
@@ -237,6 +239,7 @@ var GameLayer = cc.Layer.extend({
                 KEYS[e] = true;
                 if (this._player.fireWait <= 0) {
                     this.addChild(this._player.shoot());
+                    this._fireCount++;
                     cc.AudioEngine.getInstance().playEffect(s_playerShootEffect);
                     this._player.fireWait = 0.3;
                 }
@@ -426,15 +429,8 @@ var GameLayer = cc.Layer.extend({
                             bullet.removeFromParent();
 
                             if (this._isTargetDestroyed || this._enemyLifeTime > 8) {
-                                var blast = cc.Sprite.create(s_explosion);
-                                blast.setPosition(enemy.getPositionX(), enemy.getPositionY());
-                                this.addChild(blast);
-                                cc.AudioEngine.getInstance().playEffect(s_enemyDestroyedEffect);
-                                blast.runAction(cc.Sequence.create(cc.FadeOut.create(0.5),
-                                    cc.CallFunc.create(function (blast) {
-                                        blast.removeFromParent();
-                                    }, this)
-                                ));
+                                enemy.die();
+                                this._totalEnemiesDestroyed++;
                                 cc.ArrayRemoveObject(this._enemies, enemy);
                                 enemy.removeFromParent();
                             }

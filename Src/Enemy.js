@@ -21,7 +21,10 @@ var Enemy = cc.LayerColor.extend({
 
         this.setTag(this.tag);
         this.value = enemyValue;
-        this.ship = cc.Sprite.create(s_enemy);
+
+        cc.SpriteFrameCache.getInstance().addSpriteFrames(s_enemy_plist, s_enemy);
+
+        this.ship = cc.Sprite.createWithSpriteFrameName("enemy_ship.png");
         this.ship.setAnchorPoint(this.getAnchorPoint());
 
         var currentValue = enemyValue;
@@ -30,7 +33,7 @@ var Enemy = cc.LayerColor.extend({
             currentValue = Math.floor(enemyValue / 10);
         }
 
-        this.stick1 = cc.Sprite.create(this.getStickName(currentValue));
+        this.stick1 = cc.Sprite.createWithSpriteFrameName("enemy_stick_" + currentValue + ".png");
         if (enemyValue > 9)
             this.stick1.setPosition(this.ship.getContentSize().width/2 + 10, this.ship.getContentSize().height/2);
         else
@@ -40,7 +43,7 @@ var Enemy = cc.LayerColor.extend({
 
         if (enemyValue > 9) {
             currentValue = enemyValue % 10;
-            this.stick2 = cc.Sprite.create(this.getStickName(currentValue));
+            this.stick2 = cc.Sprite.createWithSpriteFrameName("enemy_stick_" + currentValue + ".png");
             this.stick2.setPosition(this.ship.getContentSize().width/2 + 28, this.ship.getContentSize().height/2);
             this.addChild(this.stick2);
         }
@@ -94,6 +97,29 @@ var Enemy = cc.LayerColor.extend({
         return bullet;
     },
 
+    die: function () {
+        cc.AudioEngine.getInstance().playEffect(s_enemyDestroyedEffect);
+
+        var blast = cc.ParticleSystem.create(s_explosionFire);
+        blast.setPosition(this.getPosition());
+        this._parent.addChild(blast);
+
+        var smoke = cc.ParticleSystem.create(s_explosionSmoke);
+        smoke.setPosition(this.getPosition());
+        this._parent.addChild(smoke);
+
+        blast.runAction(cc.Sequence.create(cc.DelayTime.create(1.5),
+            cc.CallFunc.create(function (blast) {
+                blast.removeFromParent();
+            }, this)
+        ));
+        smoke.runAction(cc.Sequence.create(cc.DelayTime.create(1.5),
+            cc.CallFunc.create(function (smoke) {
+                smoke.removeFromParent();
+            }, this)
+        ));
+    },
+
     blink: function() {
         if ((this.blinkNumber / 0.5) % 8 < 1) {
             this.setColor(new cc.Color3B(255,255,255));
@@ -107,22 +133,6 @@ var Enemy = cc.LayerColor.extend({
 
         if (this.blinkNumber == 0) {
             this.setColor(new cc.Color3B(255,255,255));
-        }
-    },
-
-    getStickName: function (stickNumber) {
-        switch(stickNumber) {
-            case 0: return s_enemy_stick0;
-            case 1: return s_enemy_stick1;
-            case 2: return s_enemy_stick2;
-            case 3: return s_enemy_stick3;
-            case 4: return s_enemy_stick4;
-            case 5: return s_enemy_stick5;
-            case 6: return s_enemy_stick6;
-            case 7: return s_enemy_stick7;
-            case 8: return s_enemy_stick8;
-            case 9: return s_enemy_stick9;
-            default: return -1;
         }
     }
 });
