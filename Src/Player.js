@@ -13,6 +13,7 @@ var Player = cc.Sprite.extend({
     spriteFrameIndex: 0,
     fireWait: 0.75,
     currentState: 0,
+    alive: true,
 
 	ctor: function() {
         this._super();
@@ -132,7 +133,8 @@ var Player = cc.Sprite.extend({
     },
 
     die: function() {
-        this.currentState = 3;
+        this.alive = false;
+//        this.currentState = 3;
         var dieAnimationFrames = [];
         for (var i = 0; i < 15; i++) {
             var frame = cc.SpriteFrameCache.getInstance().getSpriteFrame('player_die_'+ i +'.png');
@@ -147,6 +149,7 @@ var Player = cc.Sprite.extend({
         this.runAction(cc.Sequence.create(cc.DelayTime.create(1.15), rotate));
         this.runAction(cc.Sequence.create(cc.DelayTime.create(1.15), moveDown,
             cc.CallFunc.create(function() {
+                this.currentState = 3;
                 var scene = cc.Scene.create();
                 scene.addChild(GameOver.create(false));
                 cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));

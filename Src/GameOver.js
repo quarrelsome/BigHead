@@ -5,24 +5,46 @@ var GameOver = cc.Layer.extend({
     init: function(){
         var bRet = false;
         if (this._super()) {
-            var message;
+
+            //raheel you can change music from here just replace the file.
+            cc.AudioEngine.getInstance().setMusicVolume(0.5);
+            cc.AudioEngine.getInstance().playMusic(s_mainMainMusic, true);
+
+            var staticBackground = cc.Sprite.create(s_menuBackground);
+            staticBackground.setAnchorPoint(cc.p(0,0));
+            this.addChild(staticBackground);
+
+            var pauseWindow = cc.Sprite.create(s_pauseScreenWindow);
+            pauseWindow.setAnchorPoint(cc.p(0,0));
+            pauseWindow.setPosition(180,100);
+            this.addChild(pauseWindow);
+
+            var pauseTitle = cc.Sprite.create(s_gameOverTitle);
+            pauseTitle.setAnchorPoint(cc.p(0,0));
+            pauseTitle.setPosition(290,433);
+            pauseTitle.setScale(1.2);
+            this.addChild(pauseTitle);
+
+            var restartButton = cc.Sprite.create(s_pauseScreenRestartBtn);
+            var restartButtonSelected = cc.Sprite.create(s_pauseScreenRestartBtnPress);
+            var restartButtonDisabled = cc.Sprite.create(s_pauseScreenRestartBtnPress);
+            var item_restart = cc.MenuItemSprite.create(restartButton,restartButtonSelected,restartButtonDisabled,this.onRestart,this);
+
             if (this._won) {
-                message = "You Won!";
+                var message = cc.Sprite.create(s_gameOverWin);
+                message.setAnchorPoint(cc.p(0,0));
+                message.setPosition(winSize.width/2,300);
+                this.addChild(message);
             } else {
-                message = "You Lose :[";
+                var message = cc.Sprite.create(s_gameOverLost);
+                message.setAnchorPoint(cc.p(0,0));
+                message.setPosition(335,240);
+                this.addChild(message);
             }
 
-            var label = cc.LabelTTF.create(message, "Arial", 32);
-            label.setColor(cc.c3b(255, 255, 255));
-            label.setPosition(winSize.width/2, winSize.height/2);
-            this.addChild(label);
-
-            cc.MenuItemFont.setFontSize(18);
-            cc.MenuItemFont.setFontName("Arial");
-            var systemMenu = cc.MenuItemFont.create("Replay Game", this.onSysMenu);
-            var menu = cc.Menu.create(systemMenu);
-            //menu.setAnchorPoint(cc.p(0, 0));
-            menu.setPosition(winSize.width/2, winSize.height/2-100);
+            var menu = cc.Menu.create(item_restart);
+            menu.setAnchorPoint(cc.p(0,0));
+            menu.setPosition(475,200);
             this.addChild(menu);
 
             bRet = true;
@@ -32,7 +54,7 @@ var GameOver = cc.Layer.extend({
         return bRet;
     },
 
-    onSysMenu:function (pSender) {
+    onRestart:function (pSender) {
         var scene = cc.Scene.create();
         scene.addChild(GameLayer.create(scene));
         cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));

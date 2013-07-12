@@ -101,6 +101,11 @@ var s_pauseScreenRestartBtnPress = dirArt +"pause-screen/BH-PM-Restart-BT-Press.
 var s_pauseScreenMenuBtn = dirArt +"pause-screen/BH-PM-Menu-BT.png";
 var s_pauseScreenMenuBtnPress = dirArt +"pause-screen/BH-PM-Menu-BT-Press.png";
 
+//game over
+var s_gameOverTitle = dirArt +"game-over/EM-gameover-text.png";
+var s_gameOverWin = dirArt +"game-over/EM-Win-text.png";
+var s_gameOverLost = dirArt +"game-over/EM-Lost-text.png";
+
 var g_mainmenu = [
     {src:s_menuBackground},
     {src:s_flare},
@@ -181,7 +186,10 @@ var g_ressources = [
     {src:s_pauseScreenRestartBtn},
     {src:s_pauseScreenRestartBtnPress},
     {src:s_pauseScreenMenuBtn},
-    {src:s_pauseScreenMenuBtnPress}
+    {src:s_pauseScreenMenuBtnPress},
+    {src:s_gameOverTitle},
+    {src:s_gameOverWin},
+    {src:s_gameOverLost}
 ];
 
 var g_clouds = [

@@ -180,12 +180,16 @@ var GameLayer = cc.Layer.extend({
                 this._buildingParallax.update(dt*(this._layerSpeed-20),this._distanceTravelled);
                 this._trees2Parallax.update(dt*(this._layerSpeed-10));
 
-                if (this._enemies.length == 0) {
+                if (this._enemies.length == 0 && this._player.alive) {
                     this.addEnemy();
                 }
 
-                this.moveLayer(dt);
-                this._player.update(dt);
+                if(this._player.alive){
+                    this.moveLayer(dt);
+                    this._player.update(dt);
+                    this.detectPlayerCollision(dt);
+                }
+
                 for (var i=0; i < this._enemies.length; i++) {
                     this._enemies[i].update(dt);
                 }
@@ -209,8 +213,6 @@ var GameLayer = cc.Layer.extend({
                 this.enemyFire(dt);
                 this.updateBulletPosition(dt);
                 this.updateEnemyBulletPosition(dt);
-
-                this.detectPlayerCollision(dt);
                 this.detectEnemyCollision(dt);
                 if (this._isTargetDestroyed) {
                     this.enemyRun(dt);
@@ -332,8 +334,6 @@ var GameLayer = cc.Layer.extend({
                 enemy.setPosition(this._player.getPositionX() + (winSize.width * 1.25) + enemy.getContentSize().width + xDisplacement, actualY);
                 if (i == targetEnemy) {
                     this._hudLayer.setQuestionTitle(enemy.value);
-                    this._hudLayer.setQuestion(enemy.value)
-                    //this._currentQuestion = enemy.value;
                     enemy.isTarget = true;
                 }
                 enemy.configure();

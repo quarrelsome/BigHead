@@ -42,9 +42,9 @@ var GameControlMenu = cc.Layer.extend({
             this.addChild(this.lbScore);
             this.lbScore.setPosition(160 , winSize.height - 20);
 
-            this.lbQuestion = cc.LabelBMFont.create("0", s_scoreFontHd);
-            this.addChild(this.lbQuestion);
-            this.lbQuestion.setPosition(487 , winSize.height - 40);
+//            this.lbQuestion = cc.LabelBMFont.create("0", s_scoreFontHd);
+//            this.addChild(this.lbQuestion);
+//            this.lbQuestion.setPosition(487 , winSize.height - 40);
 
             this._lbQuestionTitle = cc.LabelBMFont.create("0", s_scoreFontHd);
             this._lbQuestionTitle.setScale(2);
@@ -126,9 +126,6 @@ var GameControlMenu = cc.Layer.extend({
         var scene = cc.Scene.create();
         scene.addChild(HomeLayer.create());
         cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5,scene));
-    },
-    setQuestion:function(question){
-        this.lbQuestion.setString(question);
     },
     setQuestionTitle:function(questionTitle){
         this._lbQuestionTitle.setPosition(winSize.width/2 , winSize.height/2);
