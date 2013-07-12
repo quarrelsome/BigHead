@@ -28,12 +28,12 @@ var GameControlMenu = cc.Layer.extend({
             this.addChild(scoreContainer);
 
             var healthContainer = cc.Sprite.create(s_healthContainer);
-            healthContainer.setPosition((healthContainer.getContentSize().width/2)+10,winSize.height-(healthContainer.getContentSize().height+25));
+            healthContainer.setPosition((healthContainer.getContentSize().width/2)+24,winSize.height-63);
             this.addChild(healthContainer);
 
             this._healthBar = cc.Sprite.create(s_healthBar);
-            this._healthBar.setAnchorPoint(cc.p(0.5,0.5));
-            this._healthBar.setPosition(120,winSize.height-(this._healthBar.getContentSize().height+46));
+            this._healthBar.setAnchorPoint(cc.p(0,0.5));
+            this._healthBar.setPosition(this._healthBar.getContentSize().width/2,winSize.height-58);
             this.addChild(this._healthBar);
 
             var targetNumberContainer = cc.Sprite.create(s_targetNumberContainer);
@@ -65,8 +65,8 @@ var GameControlMenu = cc.Layer.extend({
         this._currentScale = gameUpdates.health/100;
         this._healthBar.setScaleX(this._currentScale);
 //        if(this._previousScale!=this._currentScale){
-//            cc.log(((gameUpdates.playerHitImpact/100)/2));
-//            this._healthBar.setAnchorPoint(cc.p(0.5-((gameUpdates.playerHitImpact/100)/2),0.5));
+//            //this._healthBar.setAnchorPoint(cc.p(0.5,0));
+//            this._healthBar.setPositionX(this._healthBar.getPositionX()+this._healthBar.getContentSize().width/2);
 ////            this._healthBar.setPositionX(120-(this._healthBar.getContentSize().width-(this._healthBar.getContentSize().width*this._currentScale)));
 ////            cc.log(this._healthBar.getPosition());
 //            this._previousScale = this._currentScale;
