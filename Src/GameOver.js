@@ -33,7 +33,7 @@ var GameOver = cc.Layer.extend({
             if (this._won) {
                 var message = cc.Sprite.create(s_gameOverWin);
                 message.setAnchorPoint(cc.p(0,0));
-                message.setPosition(winSize.width/2,300);
+                message.setPosition(335,240);
                 this.addChild(message);
             } else {
                 var message = cc.Sprite.create(s_gameOverLost);

@@ -280,7 +280,7 @@ var GameLayer = cc.Layer.extend({
                         enemyLocation = otherEnemyLocation;
                 }
             }
-            if (this._player.getPositionX() - this._player.getContentSize().width / 2 + winSize.width <= enemyLocation) {
+            if (this._player.getPositionX() - this._player.getContentSize().width / 2 + winSize.width - 30 <= enemyLocation) {
                 this.setPositionX(this.getPositionX() - (this._layerSpeed * dt));
                 this._player.setPositionX(this._player.getPositionX() + (this._layerSpeed * dt));
                 if (this._enemiesHit == 0) {
