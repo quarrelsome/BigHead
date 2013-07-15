@@ -25,6 +25,7 @@ var GameLayer = cc.Layer.extend({
         _enemies: [],
         _blasts: [],
         _currentQuestion: 0,
+        _powerUp: null,
 
         _enemiesHit: 0,
         _targetsDestroyed: 0,
@@ -183,6 +184,11 @@ var GameLayer = cc.Layer.extend({
                     this.addEnemy();
                 }
 
+                if ((Math.floor(this._distanceTravelled) % 4000 == 0) && (Math.floor(this._distanceTravelled) > 0)
+                    && this._powerUp == null) {
+                    this.addPowerUp();
+                }
+
                 if(this._player.alive){
                     this.moveLayer(dt);
                     this._player.update(dt);
@@ -289,6 +295,12 @@ var GameLayer = cc.Layer.extend({
                 if (!this._isTargetDestroyed)
                     this._isEnemyFireEnabled = true;
             }
+        },
+
+        addPowerUp: function() {
+            this._powerUp = cc.Sprite.create(s_explosion);
+            this._powerUp.setPosition(this._player.getPositionX() - this._player.getContentSize().width/2 + 1000, getRandomInt(30, 600));
+            this.addChild(this._powerUp);
         },
 
         addEnemy: function () {
