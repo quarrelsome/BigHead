@@ -7,12 +7,6 @@ MOVEMENT_SPEED = 0.05;
 LOCATION_CHANGE_FACTOR = 10000;
 LANDMARK_PLACEMENT_FACTOR = 2000;
 
-ENEMY_VERTICAL_SPEED = 80;
-ENEMY_VERTICAL_SPEED_INCREASE_FACTOR = 2;
-ENEMY_WAIT_TIME_FACTOR = 0;
-ENEMY_RUN_SPEED = 700;
-ENEMY_RUN_SPEED_FACTOR = 50;
-
 //
 // Game State
 //
@@ -36,8 +30,13 @@ var GameLayer = cc.Layer.extend({
         _targetsDestroyed: 0,
         _totalEnemiesDestroyed: 0,
         _fireCount: 0,
+
         _enemyTotalFireWait: 2,
         _enemyLifeTime: 0,
+        _enemyVerticalSpeed: 80,
+        _enemyVerticalSpeedIncreaseFactor: 2,
+        _enemyRunSpeed: 700,
+        _enemyRunSpeedFactor: 50,
 
         _isTargetDestroyed: false,
         _isWrongEnemyDestroyed: false,
@@ -346,9 +345,8 @@ var GameLayer = cc.Layer.extend({
             this._enemyTotalFireWait = 2;
             this._enemiesHit = 0;
             this._layerSpeed += this._layerSpeedIncreaseFactor;
-            ENEMY_WAIT_TIME_FACTOR += ENEMY_VERTICAL_SPEED_INCREASE_FACTOR;
-            ENEMY_VERTICAL_SPEED += ENEMY_VERTICAL_SPEED_INCREASE_FACTOR;
-            ENEMY_RUN_SPEED += ENEMY_RUN_SPEED_FACTOR;
+            this._enemyVerticalSpeed += this._enemyVerticalSpeedIncreaseFactor;
+            this._enemyRunSpeed += this._enemyRunSpeedFactor;
         },
 
         updateBulletPosition: function (dt) {
@@ -457,11 +455,11 @@ var GameLayer = cc.Layer.extend({
                 }
                 else {
                     if (enemy.getPositionY() >= this._playerHitLocationY) {
-                        enemy.setPositionY(enemy.getPositionY() - (enemy.getPositionY() - this._playerHitLocationY) / (ENEMY_RUN_SPEED * dt));
+                        enemy.setPositionY(enemy.getPositionY() - (enemy.getPositionY() - this._playerHitLocationY) / (this._enemyRunSpeed * dt));
                     } else {
-                        enemy.setPositionY(enemy.getPositionY() + (this._playerHitLocationY - enemy.getPositionY()) / (ENEMY_RUN_SPEED * dt));
+                        enemy.setPositionY(enemy.getPositionY() + (this._playerHitLocationY - enemy.getPositionY()) / (this._enemyRunSpeed * dt));
                     }
-                    enemy.setPositionX(enemy.getPositionX() - (ENEMY_RUN_SPEED * dt));
+                    enemy.setPositionX(enemy.getPositionX() - (this._enemyRunSpeed * dt));
                 }
             }
 
@@ -517,121 +515,6 @@ var GameLayer = cc.Layer.extend({
                 this._player.hit();
             }
         }
-
-        /*detectCollision: function (dt) {
-         var isTargetHitNow = false;
-         for (var i = 0; i < this._player.bullets.length; i++) {
-         var bullet = this._player.bullets[i];
-         var bulletRect = bullet.getBoundingBox();
-         for (var j = 0; j < this._enemies.length; j++) {
-         var enemy = this._enemies[j];
-         var enemyRect = enemy.getBoundingBox();
-         if (cc.rectIntersectsRect(bulletRect, enemyRect)) {
-         this._gameSate.score += 25;
-         if (enemy.isTarget) {
-         this._isTargetDestroyed = true;
-         isTargetHitNow = true;
-         this._targetsDestroyed++;
-         }
-         cc.ArrayRemoveObject(this._player.bullets, bullet);
-         bullet.removeFromParent();
-         var blast = cc.Sprite.create(s_explosion);
-         blast.setPosition(enemy.getPositionX(), enemy.getPositionY());
-         this.addChild(blast);
-         cc.AudioEngine.getInstance().playEffect(s_enemyDestroyedEffect);
-         blast.runAction(cc.Sequence.create(cc.FadeOut.create(0.5),
-         cc.CallFunc.create(function(blast) {
-         blast.removeFromParent();
-         }, this)
-         ));
-         cc.ArrayRemoveObject(this._enemies, enemy);
-         enemy.removeFromParent();
-
-         this._enemiesHit++;
-         this._layerSpeed+=this._layerSpeed_INCREASE_FACTOR;
-         ENEMY_VERTICAL_SPEED += ENEMY_SPEED_INCREASE_FACTOR;
-         ENEMY_RUN_SPEED += ENEMY_RUN_SPEED_FACTOR;
-         }
-         }
-         }
-
-         if (this._isTargetDestroyed) {
-         this._isEnemyFireEnabled = false;
-         if (isTargetHitNow) {
-         if (this._enemies.length > 0) {
-         var closestEnemy = 0;
-         for (j = 0; j < this._enemies.length; j++) {
-         enemy = this._enemies[j];
-         enemy.playerHitLocationY = this._player.getPositionY();
-         enemy.runMoveRatioY = 0.03;
-         if (Math.abs(this._enemies[closestEnemy].playerHitLocationY - this._enemies[closestEnemy].getPositionY()) >
-         Math.abs(enemy.playerHitLocationY - enemy.getPositionY())) {
-         closestEnemy = j;
-         }
-         }
-         this._enemies[closestEnemy].runMoveRatioY = 0.07;
-         }
-         }
-
-         for (j = 0; j < this._enemies.length; j++) {
-         enemy = this._enemies[j];
-         if (enemy.getPositionX() + enemy.getContentSize().width / 2 < this._player.getPositionX() - this._player.getContentSize().width / 2) {
-         enemy.removeFromParent();
-         cc.ArrayRemoveObject(this._enemies, enemy);
-         }
-         else {
-         if (enemy.getPositionY() > enemy.playerHitLocationY) {
-         enemy.setPositionY(enemy.getPositionY() - (enemy.getPositionY() - enemy.playerHitLocationY) * enemy.runMoveRatioY);
-         } else {
-         enemy.setPositionY(enemy.getPositionY() + (enemy.playerHitLocationY - enemy.getPositionY()) * enemy.runMoveRatioY);
-         }
-         enemy.setPositionX(enemy.getPositionX() - (ENEMY_RUN_SPEED * dt));
-         }
-         }
-
-         if (this._enemies.length == 0) {
-         this._isTargetDestroyed = false;
-         }
-         }
-
-         var playerRect = this._player.getBoundingBox();
-         for (i = 0; i < this._enemies.length; i++) {
-         enemy = this._enemies[i];
-         enemyRect = enemy.getBoundingBox();
-         if ((cc.rectIntersectsRect(playerRect, enemyRect)) && (this._player.blinkNumber == 0)) {
-         this._player.hit();
-         cc.AudioEngine.getInstance().playEffect(s_playerGetsHitEffect);
-         enemy.removeFromParent();
-         cc.ArrayRemoveObject(this._enemies, enemy);
-         if (this._enemies.length == 0) {
-         this._isTargetDestroyed = false;
-         }
-         blast = cc.Sprite.create(s_explosion);
-         blast.setPosition(enemy.getPositionX(), enemy.getPositionY());
-         this.addChild(blast);
-         blast.runAction(cc.Sequence.create(cc.FadeOut.create(0.5),
-         cc.CallFunc.create(function(blast) {
-         blast.removeFromParent();
-         })
-         ));
-         this._player.life -= 1;
-         this._player.blinkNumber = 16;
-         }
-
-         for (j = 0; j < enemy.bullets.length; j++) {
-         bullet = enemy.bullets[j];
-         bulletRect = bullet.getBoundingBox();
-         if ((cc.rectIntersectsRect(playerRect, bulletRect))  && (this._player.blinkNumber == 0)) {
-         this._player.hit();
-         cc.AudioEngine.getInstance().playEffect(s_playerGetsHitEffect);
-         cc.ArrayRemoveObject(enemy.bullets, bullet);
-         bullet.removeFromParent();
-         this._player.life -= 1;
-         this._player.blinkNumber = 16;
-         }
-         }
-         }
-         }*/
     }
 );
 

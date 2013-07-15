@@ -70,7 +70,7 @@ var Enemy = cc.LayerColor.extend({
 
     verticalMovement: function (dt) {
         if (this.displacementDirection == 0) {
-            var positionY = this.getPositionY() + dt * ENEMY_VERTICAL_SPEED;
+            var positionY = this.getPositionY() + dt * this._parent._enemyVerticalSpeed;
             if (positionY > this.displacementTop) {
                 this.displacementDirection = 1;
             }
@@ -79,7 +79,7 @@ var Enemy = cc.LayerColor.extend({
             }
         }
         else {
-            positionY = this.getPositionY() - dt * ENEMY_VERTICAL_SPEED/2;
+            positionY = this.getPositionY() - dt * this._parent._enemyVerticalSpeed/2;
             if (positionY < this.displacementBottom) {
                 this.displacementDirection = 0;
             }
