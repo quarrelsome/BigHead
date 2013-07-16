@@ -26,6 +26,7 @@ var MW = MW || {};
 			'./Src/resource.js',
 			'./Src/config/GameConfig.js',
 			'./Src/Enemy.js',
+            './Src/PowerUp.js',
             './Src/GameOver.js',
             './Src/Effect.js',
             './Src/GameControlMenu.js',
