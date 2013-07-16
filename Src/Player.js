@@ -1,7 +1,7 @@
 var Player = cc.Sprite.extend({
     health : 100,
     hitImpact: 20,
-    armour: 0,
+    armour: 1,
 	speed: 150,
     speedBoost: 0,
     dropSpeed: 30,
@@ -124,8 +124,9 @@ var Player = cc.Sprite.extend({
     },
 
     hit: function() {
-        this.health = this.health - (this.hitImpact - this.armour * 2);
+        this.health = this.health - (this.hitImpact - (this.armour-1)*2 + ((Math.floor((this.armour-1)/6)) * (this.armour)%6 * 1.25));
         if (this.health <= 0) {
+            this.health = 0;
             this.die();
         } else {
             this.blinkNumber = 16;
