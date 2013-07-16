@@ -8,7 +8,6 @@ var Player = cc.Sprite.extend({
 	bulletSpeed: 900,
 	tag: 1,
     bullets: [],
-    //isBlinking: false,
     blinkNumber: 0,
     spriteFrameIndex: 0,
     fireWait: 0.75,
@@ -19,7 +18,8 @@ var Player = cc.Sprite.extend({
         this._super();
         this.setTag(this.tag);
 
-        cc.SpriteFrameCache.getInstance().addSpriteFrames(s_player_plist, s_player);
+        var fileNames = this.getSpriteFileNames(this.armour);
+        cc.SpriteFrameCache.getInstance().addSpriteFrames(fileNames.plist, fileNames.sprite);
         this.initWithSpriteFrameName("player_spawn_0.png");
 
         var spawnAnimationFrames = [];
@@ -116,7 +116,7 @@ var Player = cc.Sprite.extend({
     shoot: function () {
         this.currentState = 2;
         this.spriteFrameIndex = 0;
-        var bullet = cc.Sprite.create(s_player_bullet);
+        var bullet = cc.Sprite.create(this.getBulletFileName(this.armour));
         bullet.setPosition(this.getPositionX() + 20, this.getPositionY() - 20);
         bullet.setTag(2);
         this.bullets.push(bullet);
@@ -157,5 +157,21 @@ var Player = cc.Sprite.extend({
             }, this)
         ));
 
+    },
+
+    getSpriteFileNames: function(armourLevel) {
+        switch (armourLevel) {
+            case 1: return {'sprite': s_player, 'plist': s_player_plist};
+            case 2: return {'sprite': s_player2, 'plist': s_player2_plist};
+            default: return {'sprite': s_player, 'plist': s_player_plist};
+        }
+    },
+
+    getBulletFileName: function (armourLevel) {
+        switch (armourLevel) {
+            case 1: return s_player_bullet;
+            case 2: return s_player2_bullet;
+            default: return s_player_bullet;
+        }
     }
 });

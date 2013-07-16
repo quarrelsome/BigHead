@@ -14,7 +14,9 @@ var s_menuImages = dirArt + "main-menu/menu.png";
 
 //player
 var s_player = dirArt + dirPlayer + "player.png";
+var s_player2 = dirArt + dirPlayer + "player2.png";
 var s_player_bullet = dirArt + dirPlayer + "bullet.png";
+var s_player2_bullet = dirArt + dirPlayer + "bullet2.png";
 
 //enemy
 var s_enemy = dirArt + dirEnemy + "enemy.png";
@@ -36,6 +38,8 @@ var s_mainMainMusic = dirSounds + "backgroundMusic.ogg";
 
 //plist
 var s_player_plist = dirArt +  dirPlayer + "player.plist";
+var s_player2_plist = dirArt +  dirPlayer + "player2.plist";
+
 var s_enemy_plist = dirArt +  dirEnemy + "enemy.plist";
 var s_explosionFire = dirArt + dirEnemy + "explosionFire.plist";
 var s_explosionSmoke = dirArt + dirEnemy + "explosionSmoke.plist";
@@ -120,7 +124,9 @@ var g_ressources = [
     {src:s_backgeound},
     {src:s_mainMainMusic},
     {src:s_player},
+    {src:s_player2},
     {src:s_player_plist},
+    {src:s_player2_plist},
     {src:s_enemy},
     {src:s_enemy_plist},
     {src:s_explosionFire},
@@ -132,6 +138,7 @@ var g_ressources = [
     {src:s_wildLaughEffect},
     {src:s_playerLowLifeEffect},
     {src:s_player_bullet},
+    {src:s_player2_bullet},
     {src:s_enemy_bullet},
 	{src:s_explosion},
     {src:s_explosionSmoke},
