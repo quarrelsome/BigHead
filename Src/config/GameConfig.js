@@ -3,6 +3,12 @@ KEYS = [];
 //sound
 MW.SOUND = true;
 
+//url
+URL = "http://172.16.16.34:3000/";
+
+//
+
+
 var EnemyType = [
     {
         type:1,

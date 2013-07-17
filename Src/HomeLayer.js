@@ -1,5 +1,3 @@
-XmlHttp = null;
-
 var HomeLayer = cc.Layer.extend({
 	player: 0,
 	winSize: 0,
@@ -77,30 +75,28 @@ var HomeLayer = cc.Layer.extend({
         staticParallaxLayer.addChild(staticBackground);
         scene.addChild(staticParallaxLayer);
         cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));
-//        var url = 'http://localhost:3333/api/user/1/details';
-//        GetDataUsingXmlHttpRequest(url, function(){
-//            if (XmlHttp.readyState == 4 && XmlHttp.status == 200) {
-//                alert("here");
-                cc.Loader.preload(g_ressources, function () {
-                    scene = cc.Scene.create();
-                    scene.addChild(GameLayer.create(scene));
-                    cc.AudioEngine.getInstance().setMusicVolume(0.2);
-                    cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.3, scene));
-                }, this);
-//                try{
-//                    UserInfo = JSON.parse(XmlHttp.responseText);
-//                    if(UserInfo.requiredLogin){
-//                        window.location.href = "index.html";
-//                    }else{
-//                        $('#user-image').attr('src', UserInfo.image);
-//                        $('#user-name').html(UserInfo.name + '<i class="icon-chevron-down icon-white" style="margin-left: 2px;"></i>');
-//                    }
-//                }
-//                catch(e) {
-//                    window.location.href = "postnik/index.html";
-//                }
-//            }
-//        })
+
+        var url = URL+'api/user/1/details';
+        GetDataUsingXmlHttpRequest(url, function(){
+            var userInfo = {level:1};
+            if (XmlHttp.readyState == 4 && XmlHttp.status == 200) {
+                try{
+                    userInfo = JSON.parse(XmlHttp.responseText);
+                }
+                catch(e) {
+                    alert("Unable to get your level");
+                }
+            }
+            else
+                alert("Unable to get your level");
+
+            cc.Loader.preload(g_ressources, function () {
+                scene = cc.Scene.create();
+                scene.addChild(GameLayer.create(scene));
+                cc.AudioEngine.getInstance().setMusicVolume(0.2);
+                cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.3, scene));
+            }, this);
+        })
     },
     onSettings:function (pSender) {
 //        this.onButtonEffect();
