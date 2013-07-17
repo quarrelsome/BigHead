@@ -26,6 +26,7 @@ var GameLayer = cc.Layer.extend({
         _blasts: [],
         _currentQuestion: 0,
         _powerUp: null,
+        _powerUpDistance: -1,
 
         _enemiesHit: 0,
         _targetsDestroyed: 0,
@@ -184,15 +185,17 @@ var GameLayer = cc.Layer.extend({
                     this.addEnemy();
                 }
 
-                if ((Math.floor(this._distanceTravelled) % 4000 < 10) && (Math.floor(this._distanceTravelled) > 10)
-                    && this._powerUp == null) {
+                if (this._powerUpDistance == 0 && this._powerUp == null) {
                     this.addPowerUp();
                 }
                 else if (this._powerUp != null) {
                     this._powerUp.update(dt);
-                    if (this._powerUp.getPositionX() < this._player.getPositionX() - this._player.getContentSize().width/2 - 30) {
-                        this._powerUp.removeFromParent();
-                        this._powerUp = null;
+                    this.detectPlayerPowerUpCollision();
+                    if (this._powerUp != null) {
+                        if (this._powerUp.getPositionX() < this._player.getPositionX() - this._player.getContentSize().width/2 - 30) {
+                            this._powerUp.removeFromParent();
+                            delete this._powerUp;
+                        }
                     }
                 }
 
@@ -217,8 +220,13 @@ var GameLayer = cc.Layer.extend({
                     this._isEnemyFireEnabled = false;
                 }
                 else if (this._enemyLifeTime > 6) {
-                        this._isEnemyInAttackMode = true;
-                        this._enemyTotalFireWait = 0.75;
+                    this._isEnemyInAttackMode = true;
+                    this._enemyTotalFireWait = 0.75;
+                    if (this._player.powerUp != null) {
+                        if (this._player.powerUp.type == 1) {
+                            this._enemyTotalFireWait = 1.25;
+                        }
+                    }
                 }
 
                 //this.detectCollision(dt);
@@ -252,7 +260,7 @@ var GameLayer = cc.Layer.extend({
             if (e == cc.KEY.space) {
                 KEYS[e] = true;
                 if (this._player.fireWait <= 0) {
-                    this.addChild(this._player.shoot());
+                    this._player.shoot();
                     this._fireCount++;
                     cc.AudioEngine.getInstance().playEffect(s_playerShootEffect);
                     this._player.fireWait = 0.3;
@@ -308,9 +316,10 @@ var GameLayer = cc.Layer.extend({
         },
 
         addPowerUp: function() {
-            this._powerUp = new PowerUp();
+            this._powerUp = new PowerUp(2, 10);
             this._powerUp.setPosition(this._player.getPositionX() - this._player.getContentSize().width/2 + 1000, getRandomInt(60, 580));
             this.addChild(this._powerUp);
+            this._powerUpDistance--;
         },
 
         addEnemy: function () {
@@ -364,11 +373,23 @@ var GameLayer = cc.Layer.extend({
 
             this._isEnemyFireEnabled = false;
             this._isWrongEnemyDestroyed = false;
-            this._enemyTotalFireWait = 2;
             this._enemiesHit = 0;
+            this._enemyTotalFireWait = 2;
             this._layerSpeed += this._layerSpeedIncreaseFactor;
             this._enemyVerticalSpeed += this._enemyVerticalSpeedIncreaseFactor;
             this._enemyRunSpeed += this._enemyRunSpeedFactor;
+            this._powerUpDistance--;
+
+            if (this._powerUpDistance < 0) {
+                this._powerUpDistance = getRandomInt(4,6);
+            }
+            cc.log('distance' + this._powerUpDistance);
+
+            if (this._player._powerUp != null) {
+                if (this._player._powerUp.type == 1) {
+                    this._enemyTotalFireWait = 3;
+                }
+            }
         },
 
         updateBulletPosition: function (dt) {
@@ -383,6 +404,12 @@ var GameLayer = cc.Layer.extend({
         },
 
         updateEnemyBulletPosition: function (dt) {
+            var reductionFactor = 1;
+            if (this._player.powerUp != null) {
+                if (this._player.powerUp.type == 1) {
+                    reductionFactor = 4;
+                }
+            }
             for (var i = 0; i < this._enemies.length; i++) {
                 var enemy = this._enemies[i];
                 for (var j = 0; j < enemy.bullets.length; j++) {
@@ -393,9 +420,9 @@ var GameLayer = cc.Layer.extend({
                     }
 
                     if (this._isEnemyInAttackMode) {
-                        bullet.setPositionX(bullet.getPositionX() - ((enemy.bulletSpeed + this._layerSpeed/4 * 0.1)* dt * 1.5));
+                        bullet.setPositionX(bullet.getPositionX() - ((enemy.bulletSpeed + this._layerSpeed/4 * 0.1)* dt * 1.5)/reductionFactor);
                     } else {
-                        bullet.setPositionX(bullet.getPositionX() - ((enemy.bulletSpeed + this._layerSpeed/4 * 0.1) * dt));
+                        bullet.setPositionX(bullet.getPositionX() - ((enemy.bulletSpeed + this._layerSpeed/4 * 0.1) * dt)/reductionFactor);
                     }
                 }
             }
@@ -469,6 +496,12 @@ var GameLayer = cc.Layer.extend({
 
         enemyRun: function (dt) {
             this._isEnemyFireEnabled = false;
+            var reductionFactor = 1;
+            if (this._player.powerUp != null) {
+                if (this._player.powerUp.type == 1) {
+                    reductionFactor = 4;
+                }
+            }
             for (var j = 0; j < this._enemies.length; j++) {
                 var enemy = this._enemies[j];
                 if (enemy.getPositionX() + enemy.getContentSize().width / 2 < this._player.getPositionX() - this._player.getContentSize().width / 2) {
@@ -477,11 +510,11 @@ var GameLayer = cc.Layer.extend({
                 }
                 else {
                     if (enemy.getPositionY() >= this._playerHitLocationY) {
-                        enemy.setPositionY(enemy.getPositionY() - (enemy.getPositionY() - this._playerHitLocationY) / (this._enemyRunSpeed * dt));
+                        enemy.setPositionY(enemy.getPositionY() - (enemy.getPositionY() - this._playerHitLocationY) / (this._enemyRunSpeed * dt)/reductionFactor);
                     } else {
-                        enemy.setPositionY(enemy.getPositionY() + (this._playerHitLocationY - enemy.getPositionY()) / (this._enemyRunSpeed * dt));
+                        enemy.setPositionY(enemy.getPositionY() + (this._playerHitLocationY - enemy.getPositionY()) / (this._enemyRunSpeed * dt)/reductionFactor);
                     }
-                    enemy.setPositionX(enemy.getPositionX() - (this._enemyRunSpeed * dt));
+                    enemy.setPositionX(enemy.getPositionX() - (this._enemyRunSpeed * dt)/reductionFactor);
                 }
             }
 
@@ -535,6 +568,18 @@ var GameLayer = cc.Layer.extend({
             }
             if (playerHit) {
                 this._player.hit();
+            }
+        },
+
+        detectPlayerPowerUpCollision: function() {
+            var playerRect = this._player.getBoundingBox();
+            var powerUpRect = this._powerUp.getBoundingBox();
+
+            if (cc.rectIntersectsRect(playerRect, powerUpRect)) {
+                this._player.powerUp = this._powerUp;
+                this._player.consumePowerUp(this._powerUp);
+                this._powerUp.removeFromParent();
+                delete this._powerUp;
             }
         }
     }
