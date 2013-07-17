@@ -16,6 +16,23 @@ var cocos2dApp = cc.Application.extend({
         director.setDisplayStats(this.config['showFPS']);
         director.setAnimationInterval(1.0 / this.config['frameRate']);
 
+        var url = URL+'api/user/1/details';
+        GetDataUsingXmlHttpRequest(url, function(){
+            var userInfo = {level:1};
+            if (XmlHttp.readyState == 4 && XmlHttp.status == 200) {
+                try{
+                    userInfo = JSON.parse(XmlHttp.responseText);
+                }
+                catch(e) {
+                    alert("Unable to get your level");
+                }
+            }
+            else
+                alert("Unable to get your level");
+
+            PLAYERLEVEL = userInfo.level;
+        })
+
         cc.LoaderScene.preload(g_mainmenu, function () {
             var scene = cc.Scene.create();
             scene.addChild(HomeLayer.create());
@@ -26,3 +43,10 @@ var cocos2dApp = cc.Application.extend({
 });
 
 var myApp = new cocos2dApp(HomeLayer.scene);
+
+function GetDataUsingXmlHttpRequest(url, callbackFunction){
+    XmlHttp = new XMLHttpRequest();
+    XmlHttp.open("GET", url, false);
+    XmlHttp.onreadystatechange=callbackFunction;
+    XmlHttp.send(null);
+}

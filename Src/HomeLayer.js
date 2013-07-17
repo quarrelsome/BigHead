@@ -75,28 +75,14 @@ var HomeLayer = cc.Layer.extend({
         staticParallaxLayer.addChild(staticBackground);
         scene.addChild(staticParallaxLayer);
         cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));
+        cc.Loader.preload(g_ressources, function () {
+            scene = cc.Scene.create();
+            scene.addChild(GameLayer.create(scene));
+            cc.AudioEngine.getInstance().setMusicVolume(0.2);
+            cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.3, scene));
+        }, this);
 
-        var url = URL+'api/user/1/details';
-        GetDataUsingXmlHttpRequest(url, function(){
-            var userInfo = {level:1};
-            if (XmlHttp.readyState == 4 && XmlHttp.status == 200) {
-                try{
-                    userInfo = JSON.parse(XmlHttp.responseText);
-                }
-                catch(e) {
-                    alert("Unable to get your level");
-                }
-            }
-            else
-                alert("Unable to get your level");
 
-            cc.Loader.preload(g_ressources, function () {
-                scene = cc.Scene.create();
-                scene.addChild(GameLayer.create(scene));
-                cc.AudioEngine.getInstance().setMusicVolume(0.2);
-                cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.3, scene));
-            }, this);
-        })
     },
     onSettings:function (pSender) {
 //        this.onButtonEffect();
@@ -125,9 +111,3 @@ HomeLayer.create = function () {
 	return null;
 };
 
-function GetDataUsingXmlHttpRequest(url, callbackFunction){
-    XmlHttp = new XMLHttpRequest();
-    XmlHttp.open("GET", url, false);
-    XmlHttp.onreadystatechange=callbackFunction;
-    XmlHttp.send(null);
-}

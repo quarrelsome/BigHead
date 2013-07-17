@@ -4,10 +4,10 @@ KEYS = [];
 MW.SOUND = true;
 
 //url
-URL = "http://172.16.16.34:3000/";
+URL = "http://abacus-server.herokuapp.com/";
 
 //
-
+PLAYERLEVEL = 0;
 
 var EnemyType = [
     {
