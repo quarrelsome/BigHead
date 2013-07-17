@@ -12,6 +12,7 @@ var Player = cc.Sprite.extend({
     spriteFrameIndex: 0,
     fireWait: 0.75,
     currentState: 0,
+    powerUp: null,
     alive: true,
 
 	ctor: function() {
@@ -54,6 +55,13 @@ var Player = cc.Sprite.extend({
 
         if(this.health>0 && this.health<=20)
             cc.AudioEngine.getInstance().playEffect(s_playerLowLifeEffect);
+
+        if (this.powerUp != null) {
+            this.powerUp.update(dt);
+            if (this.powerUp.timeRemaining <= 0) {
+                delete this.powerUp;
+            }
+        }
 	},
 
     updatePosition: function(dt) {
@@ -120,16 +128,28 @@ var Player = cc.Sprite.extend({
         bullet.setPosition(this.getPositionX() + 20, this.getPositionY() - 20);
         bullet.setTag(2);
         this.bullets.push(bullet);
-        return bullet;
+        this._parent.addChild(bullet);
+
+        if (this.powerUp != null) {
+            if (this.powerUp.type == 2) {
+                var bullet2 = cc.Sprite.create(this.getBulletFileName(this.armour));
+                bullet2.setPosition(this.getPositionX() - 80, this.getPositionY() - 20);
+                bullet2.setTag(2);
+                this.bullets.push(bullet2);
+                this._parent.addChild(bullet2);
+            }
+        }
     },
 
     hit: function() {
-        this.health = this.health - (this.hitImpact - (this.armour-1)*2 + ((Math.floor((this.armour-1)/6)) * (this.armour)%6 * 1.25));
-        if (this.health <= 0) {
-            this.health = 0;
-            this.die();
-        } else {
-            this.blinkNumber = 16;
+        if (this.powerUp == null || this.powerUp.type != 3) {
+            this.health = this.health - (this.hitImpact - (this.armour-1)*2 + ((Math.floor((this.armour-1)/6)) * (this.armour)%6 * 1.25));
+            if (this.health <= 0) {
+                this.health = 0;
+                this.die();
+            } else {
+                this.blinkNumber = 16;
+            }
         }
     },
 
@@ -172,6 +192,14 @@ var Player = cc.Sprite.extend({
             case 1: return s_player_bullet;
             case 2: return s_player2_bullet;
             default: return s_player_bullet;
+        }
+    },
+
+    consumePowerUp: function (powerUp) {
+        powerUp.isConsumed = true;
+        this._powerUp = powerUp;
+        if (this._powerUp.type == 1) {
+            this._parent._enemyTotalFireWait = 3;
         }
     }
 });

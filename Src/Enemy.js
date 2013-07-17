@@ -69,8 +69,14 @@ var Enemy = cc.LayerColor.extend({
     },
 
     verticalMovement: function (dt) {
+        var reductionFactor = 1;
+        if (this._parent._player.powerUp != null) {
+            if (this._parent._player.powerUp.type == 1) {
+                reductionFactor = 4;
+            }
+        }
         if (this.displacementDirection == 0) {
-            var positionY = this.getPositionY() + dt * this._parent._enemyVerticalSpeed;
+            var positionY = this.getPositionY() + dt * (this._parent._enemyVerticalSpeed) / reductionFactor;
             if (positionY > this.displacementTop) {
                 this.displacementDirection = 1;
             }
@@ -79,7 +85,7 @@ var Enemy = cc.LayerColor.extend({
             }
         }
         else {
-            positionY = this.getPositionY() - dt * this._parent._enemyVerticalSpeed/2;
+            positionY = this.getPositionY() - dt * (this._parent._enemyVerticalSpeed/2) / reductionFactor;
             if (positionY < this.displacementBottom) {
                 this.displacementDirection = 0;
             }
