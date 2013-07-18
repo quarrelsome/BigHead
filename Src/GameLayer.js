@@ -41,7 +41,6 @@ var GameLayer = cc.Layer.extend({
         _enemyRunSpeedFactor: 50,
 
         _isTargetDestroyed: false,
-        _isWrongEnemyDestroyed: false,
         _isEnemyPresent: false,
         _isEnemyFireEnabled: false,
         _isEnemyInAttackMode: false,
@@ -373,7 +372,6 @@ var GameLayer = cc.Layer.extend({
             }
 
             this._isEnemyFireEnabled = false;
-            this._isWrongEnemyDestroyed = false;
             this._enemiesHit = 0;
             this._enemyTotalFireWait = 2;
             this._layerSpeed += this._layerSpeedIncreaseFactor;
@@ -467,9 +465,8 @@ var GameLayer = cc.Layer.extend({
                                 if (this._targetsDestroyed > 0 && this._targetsDestroyed % 10 == 0)
                                     cc.AudioEngine.getInstance().playEffect(s_wildLaughEffect);
                             } else {
-                                if (!this._isWrongEnemyDestroyed && this._enemiesHit == 0 && this._enemyLifeTime < 6) {
+                                if (this._enemyLifeTime < 6) {
                                     this._enemyLifeTime = 6;
-                                    this._isWrongEnemyDestroyed = true;
                                 }
                                 enemy.blinkNumber = 16;
                             }
