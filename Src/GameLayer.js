@@ -375,7 +375,6 @@ var GameLayer = cc.Layer.extend({
             if (this._powerUpDistance < 0) {
                 this._powerUpDistance = getRandomInt(4,6);
             }
-            cc.log('distance' + this._powerUpDistance);
 
             if (this._player._powerUp != null) {
                 if (this._player._powerUp.type == 1) {
