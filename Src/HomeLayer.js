@@ -1,13 +1,11 @@
 var HomeLayer = cc.Layer.extend({
 	player: 0,
-	winSize: 0,
+
 	
 	init:function() {
         var bRet = false;
         if (this._super()) {
             cc.SpriteFrameCache.getInstance().addSpriteFrames(s_menuPlist);
-
-            winSize = cc.Director.getInstance().getWinSize();
             var sp = cc.Sprite.create(s_menuBackground);
             sp.setAnchorPoint(cc.p(0,0));
             this.addChild(sp);

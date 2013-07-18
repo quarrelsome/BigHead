@@ -30,7 +30,9 @@ var MW = MW || {};
             './Src/GameOver.js',
             './Src/Effect.js',
             './Src/GameControlMenu.js',
-            './Src/EnvironmentLayer.js'
+            './Src/EnvironmentLayer.js',
+            './Src/SplashLayer.js',
+            './Src/StagesLayer.js'
         ]
     };
  

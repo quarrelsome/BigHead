@@ -5,7 +5,18 @@ var dirPlayer = "Player/";
 
 //loading screen
 var s_splashScreen = dirArt+"splash-screen.jpg";
-var s_loading = dirArt+"loading_large.gif";
+
+//splash screen
+var s_splashBg = dirArt+"splash/splash-bg.jpg";
+var s_splashLogo = dirArt+"splash/splash-logo.png";
+var s_splashMusic = dirSounds+"splash-sound.ogg";
+
+//map screen
+var s_mapBg = dirArt+"map-screen/map-bg.png";
+var s_mapMusic = dirSounds+"map-sound.ogg";
+var s_mapButton = dirArt+"map-screen/map-button.png";
+var s_mapButtonPress = dirArt+"map-screen/map-button-press.png";
+
 //menu
 var s_menuBackground = dirArt + "main-menu/BH-MM-Bg.png";
 var s_flare = dirArt + "flare.jpg";
@@ -112,6 +123,19 @@ var s_pauseScreenMenuBtnPress = dirArt +"pause-screen/BH-PM-Menu-BT-Press.png";
 var s_gameOverTitle = dirArt +"game-over/EM-gameover-text.png";
 var s_gameOverWin = dirArt +"game-over/EM-Win-text.png";
 var s_gameOverLost = dirArt +"game-over/EM-Lost-text.png";
+
+var g_splashScreen = [
+    {src:s_splashBg},
+    {src:s_splashLogo},
+    {src:s_splashMusic}
+];
+
+var g_mapScreen = [
+    {src:s_mapBg},
+    {src:s_mapMusic},
+    {src:s_mapButton},
+    {src:s_mapButtonPress}
+];
 
 var g_mainmenu = [
     {src:s_menuBackground},

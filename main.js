@@ -33,9 +33,9 @@ var cocos2dApp = cc.Application.extend({
             PLAYERLEVEL = userInfo.level;
         })
 
-        cc.LoaderScene.preload(g_mainmenu, function () {
+        cc.LoaderScene.preload(g_splashScreen, function () {
             var scene = cc.Scene.create();
-            scene.addChild(HomeLayer.create());
+            scene.addChild(SplashLayer.create());
             cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5,scene));
         }, this);
         return true;
