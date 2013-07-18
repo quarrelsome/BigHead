@@ -18,6 +18,7 @@ var Player = cc.Sprite.extend({
 	ctor: function() {
         this._super();
         this.setTag(this.tag);
+        this.armour = PLAYERLEVEL;
 
         var fileNames = this.getSpriteFileNames(this.armour);
         cc.SpriteFrameCache.getInstance().addSpriteFrames(fileNames.plist, fileNames.sprite);

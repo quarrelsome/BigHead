@@ -2,6 +2,7 @@ var dirArt = "Art/";
 var dirSounds = "Sounds/";
 var dirEnemy = "Enemy/";
 var dirPlayer = "Player/";
+var dirPowerUp = "PowerUp/";
 
 //loading screen
 var s_splashScreen = dirArt+"splash-screen.jpg";
@@ -33,6 +34,13 @@ var s_player2_bullet = dirArt + dirPlayer + "bullet2.png";
 var s_enemy = dirArt + dirEnemy + "enemy.png";
 var s_enemy_bullet = dirArt + dirEnemy + "bullet-enemy.png";
 var s_explosion = dirArt + "explosion-particle.png";
+
+//power-ups
+var s_sloMo = dirArt + dirPowerUp + "slo_mo.png";
+var s_doubleShot = dirArt + dirPowerUp + "double_shot.png";
+var s_armour = dirArt + dirPowerUp + "armour.png";
+
+
 
 //effect
 var s_buttonEffect_mp3 = dirSounds + "buttonEffet.ogg";
@@ -166,6 +174,9 @@ var g_ressources = [
     {src:s_enemy_bullet},
 	{src:s_explosion},
     {src:s_explosionSmoke},
+    {src:s_sloMo},
+    {src:s_doubleShot},
+    {src:s_armour},
     {src:s_iranSky},
     {src:s_kazakhstanSky},
     {src:s_malaysiaSky},

@@ -1,14 +1,19 @@
 var PowerUp = cc.Sprite.extend({
     type: 0,
     displacementDirection: 0,
-    verticalSpeed: 200,
+    verticalSpeed: 350,
     timeRemaining: 0,
     isConsumed: false,
 
     ctor: function(powerType, timeRemaining) {
         this._super();
-        this.initWithFile(s_explosion);
-        this.setScale(0.5);
+        switch (powerType) {
+            case 1: this.initWithFile(s_sloMo); break;
+            case 2: this.initWithFile(s_doubleShot); break;
+            case 3: this.initWithFile(s_armour); break;
+        }
+
+        this.setScale(0.25);
         this.type = powerType;
         this.timeRemaining = timeRemaining;
     },
