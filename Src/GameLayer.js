@@ -317,7 +317,7 @@ var GameLayer = cc.Layer.extend({
 
         addPowerUp: function() {
             var powerType = getRandomInt(1,3);
-            this._powerUp = new PowerUp(powerType, 10);
+            this._powerUp = new PowerUp(powerType, 15);
             this._powerUp.setPosition(this._player.getPositionX() - this._player.getContentSize().width/2 + 1000, getRandomInt(60, 580));
             this.addChild(this._powerUp);
             this._powerUpDistance--;
