@@ -228,14 +228,10 @@ var GameLayer = cc.Layer.extend({
                     }
                 }
 
-                //this.detectCollision(dt);
                 this.enemyFire(dt);
                 this.updateBulletPosition(dt);
                 this.updateEnemyBulletPosition(dt);
                 this.detectEnemyCollision(dt);
-                if (this._isTargetDestroyed) {
-                    this.enemyRun(dt);
-                }
 
                 this._distanceTravelled = this._distanceTravelled + Math.round(this._layerSpeed * dt);
             }
@@ -355,9 +351,6 @@ var GameLayer = cc.Layer.extend({
                 enemyValues.push(enemyValue);
                 var enemy = new Enemy(enemyValue);
 
-                //var minY = enemy.getContentSize().height / 2 + BarSize.bottomBar.height + ((winSize.height - BarSize.bottomBar.height - BarSize.topBar.height) / totalEnemies * i) + 30;
-                //var maxY = BarSize.bottomBar.height + ((winSize.height - BarSize.bottomBar.height - BarSize.topBar.height - enemy.getContentSize().height / 2) / totalEnemies * (i + 1)) - 30;
-
                 var minY = ((winSize.height / totalEnemies) * i) + 30;
                 var maxY = ((winSize.height / totalEnemies) * (i + 1)) - enemy.getContentSize().height - 30;
                 var actualY = getRandomInt(minY, maxY);
@@ -461,6 +454,7 @@ var GameLayer = cc.Layer.extend({
                             if (enemy.isTarget) {
                                 this._gameSate.score += 25;
                                 this._isTargetDestroyed = true;
+                                this._enemyLifeTime = 9;
                                 this._targetsDestroyed++;
                                 if (this._targetsDestroyed > 0 && this._targetsDestroyed % 10 == 0)
                                     cc.AudioEngine.getInstance().playEffect(s_wildLaughEffect);
@@ -528,20 +522,13 @@ var GameLayer = cc.Layer.extend({
                 var enemy = this._enemies[i];
                 var enemyRect = enemy.getBoundingBox();
                 if ((cc.rectIntersectsRect(playerRect, enemyRect)) && (this._player.blinkNumber == 0)) {
+                    enemy.die();
                     enemy.removeFromParent();
                     cc.ArrayRemoveObject(this._enemies, enemy);
                     cc.AudioEngine.getInstance().playEffect(s_playerGetsHitEffect);
                     if (this._enemies.length == 0) {
                         this._isTargetDestroyed = false;
                     }
-                    var blast = cc.Sprite.create(s_explosion);
-                    blast.setPosition(enemy.getPositionX(), enemy.getPositionY());
-                    this.addChild(blast);
-                    blast.runAction(cc.Sequence.create(cc.FadeOut.create(0.5),
-                        cc.CallFunc.create(function (blast) {
-                            blast.removeFromParent();
-                        })
-                    ));
                     playerHit = true;
                 }
 
