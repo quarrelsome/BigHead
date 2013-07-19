@@ -117,12 +117,14 @@ var GameControlMenu = cc.Layer.extend({
     },
 
     onRestart:function(sender){
+        PostDataUsingXmlHttpRequest(this.lbScore.getString());
         var scene = cc.Scene.create();
         scene.addChild(GameLayer.create(scene));
         cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));
     },
 
     onMenu:function (pSender) {
+        PostDataUsingXmlHttpRequest(this.lbScore.getString());
         var scene = cc.Scene.create();
         scene.addChild(HomeLayer.create());
         cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5,scene));

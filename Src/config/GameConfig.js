@@ -8,6 +8,7 @@ URL = "http://abacus-server.herokuapp.com/";
 
 //
 PLAYERLEVEL = 0;
+PLAYERID = 1;
 
 var EnemyType = [
     {
@@ -27,3 +28,17 @@ var BarSize = {
 };
 
 DISTANCELIMIT = 10000;
+
+var PostDataUsingXmlHttpRequest = function(score){
+    var url = URL+'api/user/'+PLAYERID+'/score/'+score;
+    var XmlHttp = new XMLHttpRequest();
+    XmlHttp.open("PUT", url, false);
+    XmlHttp.onreadystatechange=function(){
+        if (XmlHttp.readyState == 4 && XmlHttp.status == 200) {
+        }
+        else
+            alert("Unable to update your score");
+
+    };
+    XmlHttp.send(null);
+}

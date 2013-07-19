@@ -200,7 +200,7 @@ var GameLayer = cc.Layer.extend({
 
                 if(this._player.alive){
                     this.moveLayer(dt);
-                    this._player.update(dt);
+                    this._player.update(dt,this._gameSate.score);
                     this.detectPlayerCollision(dt);
                 }
 

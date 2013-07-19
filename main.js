@@ -16,7 +16,7 @@ var cocos2dApp = cc.Application.extend({
         director.setDisplayStats(this.config['showFPS']);
         director.setAnimationInterval(1.0 / this.config['frameRate']);
 
-        var url = URL+'api/user/1/details';
+        var url = URL+'api/user/'+PLAYERID+'/details';
         GetDataUsingXmlHttpRequest(url, function(){
             var userInfo = {level:1};
             if (XmlHttp.readyState == 4 && XmlHttp.status == 200) {

@@ -14,6 +14,7 @@ var Player = cc.Sprite.extend({
     currentState: 0,
     powerUp: null,
     alive: true,
+    score:0,
 
 	ctor: function() {
         this._super();
@@ -39,13 +40,13 @@ var Player = cc.Sprite.extend({
         ));
 	},
 	
-	update:function (dt) {
+	update:function (dt,score) {
         if (this._parent._time % 0.1 < 0.05) {
             if (this.currentState == 1 || this.currentState == 2)
                 this.changeFrame();
         }
 
-        this.updatePosition(dt);
+        this.updatePosition(dt,score);
 
         if (this.fireWait > 0) {
             this.fireWait -= dt;
@@ -60,6 +61,8 @@ var Player = cc.Sprite.extend({
                 delete this.powerUp;
             }
         }
+
+        this.score = score;
 	},
 
     updatePosition: function(dt) {
@@ -171,6 +174,7 @@ var Player = cc.Sprite.extend({
         this.runAction(cc.Sequence.create(cc.DelayTime.create(1.15), moveDown,
             cc.CallFunc.create(function() {
                 this.currentState = 3;
+                PostDataUsingXmlHttpRequest(this.score);
                 var scene = cc.Scene.create();
                 scene.addChild(GameOver.create(false));
                 cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));
