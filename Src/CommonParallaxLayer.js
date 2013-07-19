@@ -28,6 +28,12 @@ var CommonParallaxLayer = cc.Layer.extend({
             if(this._children[key].getPositionX()+winSize.width<=0)
                 this._children[key].setPosition(winSize.width+a, 0);
         }
+    },
+    changeHorizon : function(horizonImage){
+        for(var key in this._children){
+            var horizonTexture = cc.TextureCache.getInstance().addImage(horizonImage);
+            this._children[key].setTexture(horizonTexture);
+        }
     }
 });
 

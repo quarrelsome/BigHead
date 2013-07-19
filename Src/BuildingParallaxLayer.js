@@ -1,19 +1,20 @@
 var BuildingParallaxLayer = cc.Layer.extend({
-    _level:1,
     _buildings:null,
+    _specialBuildings:null,
     _screenWidth:0,
     _landMarkPlacementChangeFactor: 0,
     _landMarkPlacementCurrentFactor: 0,
+    _distanceBtwBuildings: 50,
 
-    init:function(buildings,level,landMarkPlacementFactor) {
+    init:function(buildings,specialbuildings,landMarkPlacementFactor) {
         var bRet = false;
         if (this._super()) {
             this._buildings = buildings;
+            this._specialBuildings = specialbuildings;
             this._landMarkPlacementChangeFactor = landMarkPlacementFactor;
             this._landMarkPlacementCurrentFactor = landMarkPlacementFactor;
-            this._level = level;
-            while(this._screenWidth<=(winSize.width+winSize.width/2)){
-                this._screenWidth = this._screenWidth + this.createBuilding();
+            while(this._screenWidth<=(winSize.width+winSize.width)){
+                this._screenWidth = this._screenWidth + this.createBuilding() + this._distanceBtwBuildings;
             }
 
             bRet = true;
@@ -32,16 +33,16 @@ var BuildingParallaxLayer = cc.Layer.extend({
                 this.removeChild(child);
                 if(distanceTravelled>this._landMarkPlacementCurrentFactor){
                     this._landMarkPlacementCurrentFactor = this._landMarkPlacementCurrentFactor + this._landMarkPlacementChangeFactor;
-                    this._screenWidth = this._screenWidth + this.createSpecialBuilding();
+                    this._screenWidth = this._screenWidth + this.createSpecialBuilding() + this._distanceBtwBuildings;
                 }
                 else
-                    this._screenWidth = this._screenWidth + this.createBuilding();
+                    this._screenWidth = this._screenWidth + this.createBuilding() + this._distanceBtwBuildings;
             }
         }
     },
     createBuilding: function(){
-        var buildings = this._buildings["location"+this._level];
-        var buildingTexture = cc.TextureCache.getInstance().addImage(buildings[getRandomInt(0,buildings.length-1)]);
+        //var buildings = this._buildings["location"+this._level];
+        var buildingTexture = cc.TextureCache.getInstance().addImage(this._buildings[getRandomInt(0,this._buildings.length-1)]);
         var buildingSprite = cc.Sprite.createWithTexture(buildingTexture);
         buildingSprite.setAnchorPoint(cc.p(0,0));
         buildingSprite.setPosition(this._screenWidth,0);
@@ -49,22 +50,19 @@ var BuildingParallaxLayer = cc.Layer.extend({
         return buildingSprite.getContentSize().width;
     },
     createSpecialBuilding: function(){
-        var buildings = this._buildings["location"+this._level+"special"];
-        var buildingTexture = cc.TextureCache.getInstance().addImage(buildings[getRandomInt(0,buildings.length-1)]);
+        //var buildings = this._buildings["location"+this._level+"special"];
+        var buildingTexture = cc.TextureCache.getInstance().addImage(this._specialBuildings[getRandomInt(0,this._specialBuildings.length-1)]);
         var buildingSprite = cc.Sprite.createWithTexture(buildingTexture);
         buildingSprite.setAnchorPoint(cc.p(0,0));
         buildingSprite.setPosition(this._screenWidth,0);
         this.addChild(buildingSprite);
         return buildingSprite.getContentSize().width;
-    },
-    incrementLevel: function(){
-       this._level+=1;
     }
 });
 
-BuildingParallaxLayer.create = function (buildings, level, landMarkPlacementFactor) {
+BuildingParallaxLayer.create = function (buildings, specialBuildings, landMarkPlacementFactor) {
     var sg = new BuildingParallaxLayer();
-    if (sg && sg.init(buildings, level, landMarkPlacementFactor)) {
+    if (sg && sg.init(buildings, specialBuildings, landMarkPlacementFactor)) {
         return sg;
     }
     return null;

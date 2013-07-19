@@ -20,6 +20,7 @@ var MW = MW || {};
             './Src/InterchangeableParallaxLayer.js',
             './Src/CommonParallaxLayer.js',
             './Src/BuildingParallaxLayer.js',
+            './Src/Building1ParallaxLayer.js',
 			'./Src/ScoreLayer.js',
 			'./Src/GameLayer.js',
 			'./Src/Player.js',

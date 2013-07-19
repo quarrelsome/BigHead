@@ -9,6 +9,7 @@ URL = "http://abacus-server.herokuapp.com/";
 //
 PLAYERLEVEL = 0;
 PLAYERID = 1;
+PLAYERCURRENTLOCATION = 0;
 
 var EnemyType = [
     {

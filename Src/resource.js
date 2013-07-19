@@ -8,8 +8,10 @@ var dirPowerUp = "PowerUp/";
 var s_splashScreen = dirArt+"splash-screen.jpg";
 
 //splash screen
-var s_splashBg = dirArt+"splash/splash-bg.jpg";
-var s_splashLogo = dirArt+"splash/splash-logo.png";
+var s_splashBg = dirArt+"splash/Splash-Bg.png";
+var s_splashLogo = dirArt+"splash/BeattheBeads-logo.png";
+var s_splashBigHeadLogo = dirArt+"splash/BigHead-logo.png";
+var s_splashSunburst = dirArt+"splash/sunburst.png";
 var s_splashMusic = dirSounds+"splash-sound.ogg";
 
 //map screen
@@ -64,43 +66,19 @@ var s_explosionFire = dirArt + dirEnemy + "explosionFire.plist";
 var s_explosionSmoke = dirArt + dirEnemy + "explosionSmoke.plist";
 
 //Parallax
-var s_backgeound = dirArt + "Parallax/Common/BG-common.png";
 var s_cloud1 = dirArt + "Parallax/Common/Cloud1-common.png";
 var s_cloud2 = dirArt + "Parallax/Common/Cloud2-common.png";
 var s_cloud3 = dirArt + "Parallax/Common/Cloud3-common.png";
-var s_horizon1 = dirArt +"Parallax/Common/Horizon2-common.png";
-var s_horizon2 = dirArt +"Parallax/Common/Horizon1-common.png";
-var s_tree1 = dirArt +"Parallax/Common/Trees1.png";
-var s_tree2 = dirArt +"Parallax/Common/trees-foreground.png";
-var s_iranSky = dirArt + "Parallax/iran/Sky-IR.png";
-var s_location1Building1 = dirArt + "Parallax/iran/building-IR-1.png";
-var s_location1Building2 = dirArt + "Parallax/iran/building-IR-2.png";
-var s_location1Building3 = dirArt + "Parallax/iran/building-ir-3.png";
-var s_location1Building4 = dirArt + "Parallax/iran/building-ir-4.png";
-var s_location1Building5 = dirArt + "Parallax/iran/building-ir-5.png";
-var s_location1Building6 = dirArt + "Parallax/iran/building-ir-6.png";
-var s_location1Building7 = dirArt + "Parallax/iran/building-ir-7.png";
-var s_location1Building8 = dirArt + "Parallax/iran/building-ir-8.png";
-var s_location1Building9 = dirArt + "Parallax/iran/building-ir-9.png";
-var s_location1Special1 = dirArt + "Parallax/iran/Special-Ir-1.png";
-var s_kazakhstanSky = dirArt + "Parallax/kazakhstan/Sky-KH.png";
-var s_location2Building1 = dirArt + "Parallax/kazakhstan/Building-KH-1.png";
-var s_location2Building2 = dirArt + "Parallax/kazakhstan/Building-KH-2.png";
-var s_location2Building3 = dirArt + "Parallax/kazakhstan/Building-KH-3.png";
-var s_location2Building4 = dirArt + "Parallax/kazakhstan/Building-KH-4.png";
-var s_location2Building5 = dirArt + "Parallax/kazakhstan/Building-KH-5.png";
-var s_location2Building6 = dirArt + "Parallax/kazakhstan/Building-KH-6.png";
-var s_location2Special1 = dirArt + "Parallax/kazakhstan/Special-Kazakhstan-1.png";
-var s_location2Special2 = dirArt + "Parallax/kazakhstan/Special-Kazakhstan-2.png";
-var s_malaysiaSky = dirArt + "Parallax/Malaysia/Sky-MY.png";
-var s_location3Building1 = dirArt + "Parallax/Malaysia/Building-MY-1.png";
-var s_location3Building2 = dirArt + "Parallax/Malaysia/Building-MY-2.png";
-var s_location3Building3 = dirArt + "Parallax/Malaysia/Building-MY-3.png";
-var s_location3Building4 = dirArt + "Parallax/Malaysia/Building-MY-4.png";
-var s_location3Building5 = dirArt + "Parallax/Malaysia/Building-MY-5.png";
-var s_location3Building6 = dirArt + "Parallax/Malaysia/Building-MY-6.png";
-var s_location3Special1 = dirArt + "Parallax/Malaysia/Special-MY-1.png";
-var s_location3Special2 = dirArt + "Parallax/Malaysia/Special-MY-2.png";
+
+// Malaysia - KL
+var s_location1Background = dirArt + "Parallax/Malaysia/KL/bg.png";
+var s_location1Horizon = dirArt +"Parallax/Malaysia/KL/horizon.png";
+var s_location1Building11 = dirArt + "Parallax/Malaysia/KL/building1-1.png";
+var s_location1Building12 = dirArt + "Parallax/Malaysia/KL/building1-2.png";
+var s_location1Building21 = dirArt + "Parallax/Malaysia/KL/building2-1.png";
+var s_location1Building22 = dirArt + "Parallax/Malaysia/KL/building2-2.png";
+var s_location1Special1 = dirArt + "Parallax/Malaysia/KL/Petronas.png";
+var s_location1Front1 = dirArt + "Parallax/Malaysia/KL/buildingF-1.png";
 
 //environment
 var s_rainEnvironment = dirArt + "environment/rain.plist";
@@ -135,6 +113,8 @@ var s_gameOverLost = dirArt +"game-over/EM-Lost-text.png";
 var g_splashScreen = [
     {src:s_splashBg},
     {src:s_splashLogo},
+    {src:s_splashBigHeadLogo},
+    {src:s_splashSunburst},
     {src:s_splashMusic}
 ];
 
@@ -153,7 +133,6 @@ var g_mainmenu = [
 ];
 
 var g_ressources = [
-    {src:s_backgeound},
     {src:s_mainMainMusic},
     {src:s_player},
     {src:s_player2},
@@ -177,42 +156,17 @@ var g_ressources = [
     {src:s_sloMo},
     {src:s_doubleShot},
     {src:s_armour},
-    {src:s_iranSky},
-    {src:s_kazakhstanSky},
-    {src:s_malaysiaSky},
     {src:s_cloud1},
     {src:s_cloud2},
     {src:s_cloud3},
-	{src:s_horizon1},
-    {src:s_horizon2},
-    {src:s_tree1},
-    {src:s_tree2},
-    {src:s_location1Building1},
-    {src:s_location1Building2},
-    {src:s_location1Building3},
-    {src:s_location1Building4},
-    {src:s_location1Building5},
-    {src:s_location1Building6},
-    {src:s_location1Building7},
-    {src:s_location1Building8},
-    {src:s_location1Building9},
-    {src:s_location2Building1},
-    {src:s_location2Building2},
-    {src:s_location2Building3},
-    {src:s_location2Building4},
-    {src:s_location2Building5},
-    {src:s_location2Building6},
-    {src:s_location3Building1},
-    {src:s_location3Building2},
-    {src:s_location3Building3},
-    {src:s_location3Building4},
-    {src:s_location3Building5},
-    {src:s_location3Building6},
+    {src:s_location1Background},
+	{src:s_location1Horizon},
+    {src:s_location1Building11},
+    {src:s_location1Building12},
+    {src:s_location1Building21},
+    {src:s_location1Building22},
     {src:s_location1Special1},
-    {src:s_location2Special1},
-    {src:s_location2Special2},
-    {src:s_location3Special1},
-    {src:s_location3Special2},
+    {src:s_location1Front1},
     {src:s_rainEnvironment},
     {src:s_pauseButton},
     {src:s_scoreContainer},
@@ -243,52 +197,16 @@ var g_clouds = [
     {src:s_cloud3}
 ];
 
-var g_sky = [
-    {src:s_iranSky},
-    {src:s_kazakhstanSky},
-    {src:s_malaysiaSky}
+var g_locations=[
+    {
+        background:s_location1Background,
+        horizon:s_location1Horizon,
+        building1: [s_location1Building11,s_location1Building12],
+        building2: [s_location1Building21,s_location1Building22],
+        specialBuilding: [s_location1Special1],
+        buildingFront: [s_location1Front1]
+    }
 ];
-
-var g_buildings = {
-    "location1":[
-        s_location1Building1,
-        s_location1Building2,
-        s_location1Building3,
-        s_location1Building4,
-        s_location1Building5,
-        s_location1Building6,
-        s_location1Building7,
-        s_location1Building8,
-        s_location1Building9
-    ],
-    "location1special":[
-       s_location1Special1
-    ],
-    "location2":[
-        s_location2Building1,
-        s_location2Building2,
-        s_location2Building3,
-        s_location2Building4,
-        s_location2Building5,
-        s_location2Building6
-    ],
-    "location2special":[
-        s_location2Special1,
-        s_location2Special2
-    ],
-    "location3":[
-        s_location3Building1,
-        s_location3Building2,
-        s_location3Building3,
-        s_location3Building4,
-        s_location3Building5,
-        s_location3Building6
-    ],
-    "location3special":[
-        s_location3Special1,
-        s_location3Special2
-    ]
-}
 
 var g_environments = [
     {src:s_rainEnvironment}
