@@ -26,16 +26,16 @@ var GameControlMenu = cc.Layer.extend({
             this.addChild(scoreContainer);
 
             var healthContainer = cc.Sprite.create(s_healthContainer);
-            healthContainer.setPosition((healthContainer.getContentSize().width/2)+24,winSize.height-63);
+            healthContainer.setPosition((healthContainer.getContentSize().width/2)+24,winSize.height-60);
             this.addChild(healthContainer);
 
             this._healthBar = cc.Sprite.create(s_healthBar);
             this._healthBar.setAnchorPoint(cc.p(0,0.5));
-            this._healthBar.setPosition(this._healthBar.getContentSize().width/2,winSize.height-58);
+            this._healthBar.setPosition(this._healthBar.getContentSize().width/2,winSize.height-57);
             this.addChild(this._healthBar);
 
             var targetNumberContainer = cc.Sprite.create(s_targetNumberContainer);
-            targetNumberContainer.setPosition(targetNumberContainer.getContentSize().width/2+430,winSize.height-(targetNumberContainer.getContentSize().height/2));
+            targetNumberContainer.setPosition(targetNumberContainer.getContentSize().width/2+427,winSize.height-(targetNumberContainer.getContentSize().height/2));
             this.addChild(targetNumberContainer);
 
             this.lbScore = cc.LabelBMFont.create("0", s_scoreFont);
@@ -133,7 +133,7 @@ var GameControlMenu = cc.Layer.extend({
         this._lbQuestionTitle.setPosition(winSize.width/2 , winSize.height/2);
         this._lbQuestionTitle.setScale(2);
         this._lbQuestionTitle.setString(questionTitle);
-        this._lbQuestionTitle.runAction(cc.Sequence.create(cc.MoveTo.create(2, cc.p(winSize.width/2+8, winSize.height - 40)),
+        this._lbQuestionTitle.runAction(cc.Sequence.create(cc.MoveTo.create(2, cc.p(winSize.width/2+5, winSize.height - 45)),
             cc.CallFunc.create(function() {
                 this._lbQuestionTitle.setScale(1);
             }, this)

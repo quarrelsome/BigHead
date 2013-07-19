@@ -10,19 +10,19 @@ var HomeLayer = cc.Layer.extend({
             sp.setAnchorPoint(cc.p(0,0));
             this.addChild(sp);
 
-            var sunburst = cc.Sprite.createWithSpriteFrameName("BH-MM-Sunburst.png");
+            var sunburst = cc.Sprite.create(s_splashSunburst);
             //sunburst.set
             sunburst.setScale(2);
-            sunburst.setPosition(winSize.width / 2,winSize.height / 2 - 20);
+            sunburst.setPosition(winSize.width / 2,winSize.height / 2);
             this.addChild(sunburst);
+
+            var logo = cc.Sprite.create(s_menuLogo);
+            logo.setPosition(winSize.width / 2,winSize.height / 2 + 190);
+            this.addChild(logo);
 
             var menuWindow = cc.Sprite.createWithSpriteFrameName("BH-MM-window.png");
             menuWindow.setPosition(winSize.width / 2,winSize.height / 2 - 70);
             this.addChild(menuWindow);
-
-            var logo = cc.Sprite.createWithSpriteFrameName("BH-MM-logo.png");
-            logo.setPosition(winSize.width / 2,winSize.height / 2 + 210);
-            this.addChild(logo);
 
             var title = cc.Sprite.createWithSpriteFrameName("BH-MM-Menu-text.png");
             title.setPosition(winSize.width / 2,winSize.height / 2 + 90);

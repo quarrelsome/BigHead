@@ -22,6 +22,7 @@ var s_mapButtonPress = dirArt+"map-screen/map-button-press.png";
 
 //menu
 var s_menuBackground = dirArt + "main-menu/BH-MM-Bg.png";
+var s_menuLogo = dirArt + "main-menu/BH-MM-logo.png";
 var s_flare = dirArt + "flare.jpg";
 var s_menuPlist = dirArt + "main-menu/menu.plist";
 var s_menuImages = dirArt + "main-menu/menu.png";
@@ -127,6 +128,7 @@ var g_mapScreen = [
 
 var g_mainmenu = [
     {src:s_menuBackground},
+    {src:s_menuLogo},
     {src:s_flare},
     {src:s_menuPlist},
     {src:s_menuImages}
