@@ -333,6 +333,8 @@ var GameLayer = cc.Layer.extend({
             for (i = 0; i < totalEnemies; i++) {
                 var xDisplacement = Math.floor((Math.random() * winSize.width * 0.15 + 1) + 0);
                 var enemyValue = 0;
+                var enemyLife = Math.floor(this._currentQuestion / 7) + 1;
+                enemyLife = (enemyLife > 3) ? 3 : enemyLife;
 
                 do {
                     unique = true;
@@ -349,7 +351,7 @@ var GameLayer = cc.Layer.extend({
                 while (!unique);
 
                 enemyValues.push(enemyValue);
-                var enemy = new Enemy(enemyValue);
+                var enemy = new Enemy(enemyValue, enemyLife);
 
                 var minY = ((winSize.height / totalEnemies) * i) + 30;
                 var maxY = ((winSize.height / totalEnemies) * (i + 1)) - enemy.getContentSize().height - 30;
@@ -370,6 +372,7 @@ var GameLayer = cc.Layer.extend({
             this._layerSpeed += this._layerSpeedIncreaseFactor;
             this._enemyVerticalSpeed += this._enemyVerticalSpeedIncreaseFactor;
             this._enemyRunSpeed += this._enemyRunSpeedFactor;
+            this._currentQuestion++;
             this._powerUpDistance--;
 
             if (this._powerUpDistance < 0) {
@@ -450,13 +453,22 @@ var GameLayer = cc.Layer.extend({
                     var enemyRect = enemy.getBoundingBox();
                     if (this._player.getPositionX() - this._player.getContentSize().width / 2 + winSize.width > enemy.getPositionX()) {
                         if (cc.rectIntersectsRect(bulletRect, enemyRect)) {
-                            if (enemy.isTarget) {
-                                this._gameSate.score += 25;
-                                this._isTargetDestroyed = true;
-                                this._enemyLifeTime = 9;
-                                this._targetsDestroyed++;
-                                if (this._targetsDestroyed > 0 && this._targetsDestroyed % 10 == 0)
-                                    cc.AudioEngine.getInstance().playEffect(s_wildLaughEffect);
+                            if (enemy.isTarget || this._enemyLifeTime > 8) {
+                                if (!enemy.hitSurvive()) {
+                                    if (enemy.isTarget) {
+                                        this._gameSate.score += 25;
+                                        this._isTargetDestroyed = true;
+                                        this._enemyLifeTime = 9;
+                                        this._targetsDestroyed++;
+
+                                        if (this._targetsDestroyed > 0 && this._targetsDestroyed % 10 == 0)
+                                            cc.AudioEngine.getInstance().playEffect(s_wildLaughEffect);
+                                    }
+                                    enemy.die();
+                                    this._totalEnemiesDestroyed++;
+                                    cc.ArrayRemoveObject(this._enemies, enemy);
+                                    enemy.removeFromParent();
+                                }
                             } else {
                                 if (this._enemyLifeTime < 6) {
                                     this._enemyLifeTime = 6;
@@ -465,13 +477,6 @@ var GameLayer = cc.Layer.extend({
                             }
                             cc.ArrayRemoveObject(this._player.bullets, bullet);
                             bullet.removeFromParent();
-
-                            if (this._isTargetDestroyed || this._enemyLifeTime > 8) {
-                                enemy.die();
-                                this._totalEnemiesDestroyed++;
-                                cc.ArrayRemoveObject(this._enemies, enemy);
-                                enemy.removeFromParent();
-                            }
 
                             if (this._enemiesHit == 0) {
                                 this._playerHitLocationY = this._player.getPositionY();

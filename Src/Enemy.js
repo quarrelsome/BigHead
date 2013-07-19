@@ -3,6 +3,7 @@ var Enemy = cc.LayerColor.extend({
     ship: null,
     stick1: null,
     stick2: null,
+    life: 1,
     value: -1,
 	speed: 100,
 	bulletSpeed: 500,
@@ -15,12 +16,14 @@ var Enemy = cc.LayerColor.extend({
     displacementBottom: 0,
     displacementDirection: 0,
     blinkNumber: 0,
+    isHit: false,
 
-	ctor: function (enemyValue) {
+	ctor: function (enemyValue, enemyLife) {
         this._super();
 
         this.setTag(this.tag);
         this.value = enemyValue;
+        this.life = enemyLife;
 
         cc.SpriteFrameCache.getInstance().addSpriteFrames(s_enemy_plist, s_enemy);
 
@@ -103,6 +106,15 @@ var Enemy = cc.LayerColor.extend({
         return bullet;
     },
 
+    hitSurvive: function () {
+        this.life--;
+        if (this.life > 0) {
+            this.isHit = true;
+            this.blinkNumber = 16;
+        }
+        return !(this.life == 0);
+    },
+
     die: function () {
         cc.AudioEngine.getInstance().playEffect(s_enemyDestroyedEffect);
 
@@ -128,17 +140,21 @@ var Enemy = cc.LayerColor.extend({
 
     blink: function() {
         if ((this.blinkNumber / 0.5) % 8 < 1) {
-            this.setColor(new cc.Color3B(255,255,255));
+            this.ship.setColor(new cc.Color3B(255,255,255));
             this.setVisible(false);
         }
         else {
-            this.setColor(new cc.Color3B(0,255,0));
+            if (this.isHit)
+                this.ship.setColor(new cc.Color3B(255,0,0));
+            else
+                this.ship.setColor(new cc.Color3B(0,255,0));
             this.setVisible(true);
         }
         this.blinkNumber -= 0.5;
 
         if (this.blinkNumber == 0) {
-            this.setColor(new cc.Color3B(255,255,255));
+            this.ship.setColor(new cc.Color3B(255,255,255));
+            this.isHit = false;
         }
     }
 });
