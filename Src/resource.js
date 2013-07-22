@@ -15,7 +15,7 @@ var s_splashSunburst = dirArt+"splash/sunburst.png";
 var s_splashMusic = dirSounds+"splash-sound.ogg";
 
 //map screen
-var s_mapBg = dirArt+"map-screen/map-bg.png";
+var s_mapBg = dirArt+"map-screen/map-bg.PNG";
 var s_mapMusic = dirSounds+"map-sound.ogg";
 var s_mapButton = dirArt+"map-screen/map-button.png";
 var s_mapButtonPress = dirArt+"map-screen/map-button-press.png";
