@@ -123,7 +123,7 @@ var GameLayer = cc.Layer.extend({
         },
 
         initRainLayer: function(scene){
-            var rainLayer = EnvironmentLayer.create(g_environments[0].src);
+            var rainLayer = EnvironmentLayer.create(this._location.environment);
             rainLayer.setAnchorPoint(cc.p(0,0));
             scene.addChild(rainLayer,60);
         },

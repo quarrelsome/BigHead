@@ -15,10 +15,16 @@ var s_splashSunburst = dirArt+"splash/sunburst.png";
 var s_splashMusic = dirSounds+"splash-sound.ogg";
 
 //map screen
-var s_mapBg = dirArt+"map-screen/map-bg.PNG";
+var s_mapWindow = dirArt+"map-screen/BH-WM-Window.png";
+var s_mapWorld = dirArt+"map-screen/BH-WM-worldmap.png";
+var s_mapWorldTxt = dirArt+"map-screen/BH-WM-worldmap-txt.png";
+var s_mapLogo = dirArt+"map-screen/BH-WM-BTB-logo.png";
+var s_mapCompletedLevel = dirArt+"map-screen/BH-WM-Reddot.png";
+var s_mapCurrentLevel = dirArt+"map-screen/BH-WM-Greendot.png";
+var s_mapCurrentLevelPressed = dirArt+"map-screen/BH-WM-Greendot-Mouseover.png";
+var s_mapLockedLevel =  dirArt+"map-screen/BH-WM-Greydot.png";
+var s_mapLocation1Name = dirArt+"map-screen/BH-WM-KualalumpurSign.png";
 var s_mapMusic = dirSounds+"map-sound.ogg";
-var s_mapButton = dirArt+"map-screen/map-button.png";
-var s_mapButtonPress = dirArt+"map-screen/map-button-press.png";
 
 //menu
 var s_menuBackground = dirArt + "main-menu/BH-MM-Bg.png";
@@ -120,14 +126,21 @@ var g_splashScreen = [
 ];
 
 var g_mapScreen = [
-    {src:s_mapBg},
-    {src:s_mapMusic},
-    {src:s_mapButton},
-    {src:s_mapButtonPress}
+    {src:s_mapWindow},
+    {src:s_mapWorld},
+    {src:s_mapLogo},
+    {src:s_mapWorldTxt},
+    {src:s_mapCompletedLevel},
+    {src:s_mapCurrentLevel},
+    {src:s_mapCurrentLevelPressed},
+    {src:s_mapLockedLevel},
+    {src:s_mapLocation1Name},
+    {src:s_mapMusic}
 ];
 
 var g_mainmenu = [
     {src:s_menuBackground},
+    {src:s_splashScreen},
     {src:s_menuLogo},
     {src:s_flare},
     {src:s_menuPlist},
@@ -206,10 +219,128 @@ var g_locations=[
         building1: [s_location1Building11,s_location1Building12],
         building2: [s_location1Building21,s_location1Building22],
         specialBuilding: [s_location1Special1],
-        buildingFront: [s_location1Front1]
+        buildingFront: [s_location1Front1],
+        environment: s_rainEnvironment,
+        map: {
+            position: [700,280],
+            locationName : s_mapLocation1Name
+        }
+    },
+    {
+        background:s_location1Background,
+        horizon:s_location1Horizon,
+        building1: [s_location1Building11,s_location1Building12],
+        building2: [s_location1Building21,s_location1Building22],
+        specialBuilding: [s_location1Special1],
+        buildingFront: [s_location1Front1],
+        environment: s_rainEnvironment,
+        map: {
+            position: [680,310],
+            locationName : s_mapLocation1Name
+        }
+    },
+    {
+        background:s_location1Background,
+        horizon:s_location1Horizon,
+        building1: [s_location1Building11,s_location1Building12],
+        building2: [s_location1Building21,s_location1Building22],
+        specialBuilding: [s_location1Special1],
+        buildingFront: [s_location1Front1],
+        environment: s_rainEnvironment,
+        map: {
+            position: [680,350],
+            locationName : s_mapLocation1Name
+        }
+    },
+    {
+        background:s_location1Background,
+        horizon:s_location1Horizon,
+        building1: [s_location1Building11,s_location1Building12],
+        building2: [s_location1Building21,s_location1Building22],
+        specialBuilding: [s_location1Special1],
+        buildingFront: [s_location1Front1],
+        environment: s_rainEnvironment,
+        map: {
+            position: [750,190],
+            locationName : s_mapLocation1Name
+        }
+    },
+    {
+        background:s_location1Background,
+        horizon:s_location1Horizon,
+        building1: [s_location1Building11,s_location1Building12],
+        building2: [s_location1Building21,s_location1Building22],
+        specialBuilding: [s_location1Special1],
+        buildingFront: [s_location1Front1],
+        environment: s_rainEnvironment,
+        map: {
+            position: [500,210],
+            locationName : s_mapLocation1Name
+        }
+    },
+    {
+        background:s_location1Background,
+        horizon:s_location1Horizon,
+        building1: [s_location1Building11,s_location1Building12],
+        building2: [s_location1Building21,s_location1Building22],
+        specialBuilding: [s_location1Special1],
+        buildingFront: [s_location1Front1],
+        environment: s_rainEnvironment,
+        map: {
+            position: [460,340],
+            locationName : s_mapLocation1Name
+        }
+    },
+    {
+        background:s_location1Background,
+        horizon:s_location1Horizon,
+        building1: [s_location1Building11,s_location1Building12],
+        building2: [s_location1Building21,s_location1Building22],
+        specialBuilding: [s_location1Special1],
+        buildingFront: [s_location1Front1],
+        environment: s_rainEnvironment,
+        map: {
+            position: [600,460],
+            locationName : s_mapLocation1Name
+        }
+    },
+    {
+        background:s_location1Background,
+        horizon:s_location1Horizon,
+        building1: [s_location1Building11,s_location1Building12],
+        building2: [s_location1Building21,s_location1Building22],
+        specialBuilding: [s_location1Special1],
+        buildingFront: [s_location1Front1],
+        environment: s_rainEnvironment,
+        map: {
+            position: [300,440],
+            locationName : s_mapLocation1Name
+        }
+    },
+    {
+        background:s_location1Background,
+        horizon:s_location1Horizon,
+        building1: [s_location1Building11,s_location1Building12],
+        building2: [s_location1Building21,s_location1Building22],
+        specialBuilding: [s_location1Special1],
+        buildingFront: [s_location1Front1],
+        environment: s_rainEnvironment,
+        map: {
+            position: [280,260],
+            locationName : s_mapLocation1Name
+        }
+    },
+    {
+        background:s_location1Background,
+        horizon:s_location1Horizon,
+        building1: [s_location1Building11,s_location1Building12],
+        building2: [s_location1Building21,s_location1Building22],
+        specialBuilding: [s_location1Special1],
+        buildingFront: [s_location1Front1],
+        environment: s_rainEnvironment,
+        map: {
+            position: [310,140],
+            locationName : s_mapLocation1Name
+        }
     }
 ];
-
-var g_environments = [
-    {src:s_rainEnvironment}
-]
