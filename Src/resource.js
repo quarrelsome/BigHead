@@ -41,6 +41,7 @@ var s_player2_bullet = dirArt + dirPlayer + "bullet2.png";
 
 //enemy
 var s_enemy = dirArt + dirEnemy + "enemy.png";
+var s_enemy1 = dirArt + dirEnemy + "enemy-ship-2.png";
 var s_enemy_bullet = dirArt + dirEnemy + "bullet-enemy.png";
 var s_explosion = dirArt + "explosion-particle.png";
 
@@ -84,7 +85,12 @@ var s_location1Building11 = dirArt + "Parallax/Malaysia/KL/building1-1.png";
 var s_location1Building12 = dirArt + "Parallax/Malaysia/KL/building1-2.png";
 var s_location1Building21 = dirArt + "Parallax/Malaysia/KL/building2-1.png";
 var s_location1Building22 = dirArt + "Parallax/Malaysia/KL/building2-2.png";
+var s_location1Building31 = dirArt + "Parallax/Malaysia/KL/Building3-1.png";
+var s_location1Building32 = dirArt + "Parallax/Malaysia/KL/Building3-2.png";
+var s_location1Building41 = dirArt + "Parallax/Malaysia/KL/Building4-1.png";
+var s_location1Building42 = dirArt + "Parallax/Malaysia/KL/Building4-2.png";
 var s_location1Special1 = dirArt + "Parallax/Malaysia/KL/Petronas.png";
+var s_location1Special2 = dirArt + "Parallax/Malaysia/KL/KL-Tower.png";
 var s_location1Front1 = dirArt + "Parallax/Malaysia/KL/buildingF-1.png";
 
 //environment
@@ -154,6 +160,7 @@ var g_ressources = [
     {src:s_player_plist},
     {src:s_player2_plist},
     {src:s_enemy},
+    {src:s_enemy1},
     {src:s_enemy_plist},
     {src:s_explosionFire},
     {src:s_playerShootEffect},
@@ -180,7 +187,12 @@ var g_ressources = [
     {src:s_location1Building12},
     {src:s_location1Building21},
     {src:s_location1Building22},
+    {src:s_location1Building31},
+    {src:s_location1Building32},
+    {src:s_location1Building41},
+    {src:s_location1Building42},
     {src:s_location1Special1},
+    {src:s_location1Special2},
     {src:s_location1Front1},
     {src:s_rainEnvironment},
     {src:s_pauseButton},
@@ -216,9 +228,9 @@ var g_locations=[
     {
         background:s_location1Background,
         horizon:s_location1Horizon,
-        building1: [s_location1Building11,s_location1Building12],
-        building2: [s_location1Building21,s_location1Building22],
-        specialBuilding: [s_location1Special1],
+        building1: [s_location1Building11,s_location1Building12,s_location1Building31,s_location1Building41],
+        building2: [s_location1Building21,s_location1Building22,s_location1Building32,s_location1Building42],
+        specialBuilding: [s_location1Special1,s_location1Special2],
         buildingFront: [s_location1Front1],
         environment: s_rainEnvironment,
         map: {

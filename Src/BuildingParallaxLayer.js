@@ -4,7 +4,7 @@ var BuildingParallaxLayer = cc.Layer.extend({
     _screenWidth:0,
     _landMarkPlacementChangeFactor: 0,
     _landMarkPlacementCurrentFactor: 0,
-    _distanceBtwBuildings: 50,
+    _distanceBtwBuildings: 80,
 
     init:function(buildings,specialbuildings,landMarkPlacementFactor) {
         var bRet = false;

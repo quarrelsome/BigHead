@@ -24,7 +24,7 @@ var ScoreLayer = cc.LayerColor.extend({
 		this.livesText = cc.Sprite.create(s_lives_text);
 		this.livesText.setPosition(5*winSize.width/6,  winSize.height - this.livesText.getContentSize().height);
 		this.addChild(this.livesText);
-	},
+	}
 	
 });
 

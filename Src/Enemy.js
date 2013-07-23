@@ -27,7 +27,16 @@ var Enemy = cc.LayerColor.extend({
 
         cc.SpriteFrameCache.getInstance().addSpriteFrames(s_enemy_plist, s_enemy);
 
-        this.ship = cc.Sprite.createWithSpriteFrameName("enemy_ship.png");
+        var enemyType = getRandomInt(1,2);
+        var stickPlacement = 10;
+
+        if(enemyType==1)
+            this.ship = cc.Sprite.createWithSpriteFrameName("enemy_ship.png");
+        else{
+            this.ship = cc.Sprite.create(s_enemy1);
+            stickPlacement = 20;
+        }
+
         this.ship.setAnchorPoint(this.getAnchorPoint());
 
         var currentValue = enemyValue;
@@ -37,17 +46,18 @@ var Enemy = cc.LayerColor.extend({
         }
 
         this.stick1 = cc.Sprite.createWithSpriteFrameName("enemy_stick_" + currentValue + ".png");
+
         if (enemyValue > 9)
-            this.stick1.setPosition(this.ship.getContentSize().width/2 + 10, this.ship.getContentSize().height/2);
+            this.stick1.setPosition(this.ship.getContentSize().width/2 + stickPlacement, this.ship.getContentSize().height/2);
         else
-            this.stick1.setPosition(this.ship.getContentSize().width/2 + 20, this.ship.getContentSize().height/2);
+            this.stick1.setPosition(this.ship.getContentSize().width/2 + (stickPlacement+10), this.ship.getContentSize().height/2);
 
         this.addChild(this.stick1);
 
         if (enemyValue > 9) {
             currentValue = enemyValue % 10;
             this.stick2 = cc.Sprite.createWithSpriteFrameName("enemy_stick_" + currentValue + ".png");
-            this.stick2.setPosition(this.ship.getContentSize().width/2 + 28, this.ship.getContentSize().height/2);
+            this.stick2.setPosition(this.ship.getContentSize().width/2 + (stickPlacement+20), this.ship.getContentSize().height/2);
             this.addChild(this.stick2);
         }
 
@@ -158,3 +168,7 @@ var Enemy = cc.LayerColor.extend({
         }
     }
 });
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
