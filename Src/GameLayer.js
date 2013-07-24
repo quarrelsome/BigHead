@@ -148,7 +148,7 @@ var GameLayer = cc.Layer.extend({
 
             boostEffect.runAction(cc.Sequence.create(
                 cc.MoveTo.create(1.9, cc.p(boostEffect.getContentSize().width + 50, winSize.height / 2)),
-                cc.DelayTime.create(0.25),
+                cc.FadeOut.create(0.25),
                 cc.CallFunc.create(function() {
                     boostEffect.removeFromParent();
                 }, this)
@@ -585,6 +585,7 @@ var GameLayer = cc.Layer.extend({
                         cc.Blink.create(0.8,5),
                         cc.CallFunc.create(function() {
                             this._damageRed.removeFromParent();
+                            this._damageRed = null;
                         }, this)
                     )
                 );

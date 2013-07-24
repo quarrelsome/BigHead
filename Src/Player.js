@@ -1,22 +1,22 @@
 var Player = cc.Sprite.extend({
-    health : 100,
+    health: 100,
     hitImpact: 20,
     armour: 1,
-	speed: 150,
+    speed: 150,
     speedBoost: 0,
     dropSpeed: 30,
-	bulletSpeed: 900,
-	tag: 1,
+    bulletSpeed: 900,
+    tag: 1,
     bullets: [],
     blinkNumber: 0,
     spriteFrameIndex: 0,
-    fireWait: 0.75,
+    fireWait: 2.25,
     currentState: 0,
     powerUp: null,
     alive: true,
-    score:0,
+    score: 0,
 
-	ctor: function() {
+    ctor: function () {
         this._super();
         this.setTag(this.tag);
         this.armour = PLAYERLEVEL;
@@ -27,26 +27,26 @@ var Player = cc.Sprite.extend({
 
         var spawnAnimationFrames = [];
         for (var i = 0; i < 36; i++) {
-            var frame = cc.SpriteFrameCache.getInstance().getSpriteFrame('player_spawn_'+ i +'.png');
+            var frame = cc.SpriteFrameCache.getInstance().getSpriteFrame('player_spawn_' + i + '.png');
             spawnAnimationFrames.push(frame);
         }
 
         var animation = cc.Animation.create(spawnAnimationFrames, 0.05);
         var animate = cc.Animate.create(animation);
         this.runAction(cc.Sequence.create(animate,
-            cc.CallFunc.create(function() {
+            cc.CallFunc.create(function () {
                 this.currentState = 1;
             }, this)
         ));
-	},
-	
-	update:function (dt,score) {
+    },
+
+    update: function (dt, score) {
         if (this._parent._time % 0.1 < 0.05) {
             if (this.currentState == 1 || this.currentState == 2)
                 this.changeFrame();
         }
 
-        this.updatePosition(dt,score);
+        this.updatePosition(dt, score);
 
         if (this.fireWait > 0) {
             this.fireWait -= dt;
@@ -63,23 +63,23 @@ var Player = cc.Sprite.extend({
         }
 
         this.score = score;
-	},
+    },
 
-    updatePosition: function(dt) {
+    updatePosition: function (dt) {
         var position = this.getPosition();
         if (KEYS[cc.KEY.up]) {
             var nextPositionY = position.y + (dt * this.speed) + (this.speedBoost * this.speed);
-            if (nextPositionY + this.getContentSize().height/2 <= winSize.height)
+            if (nextPositionY + this.getContentSize().height / 2 <= winSize.height)
                 position.y = nextPositionY;
         }
         else if (KEYS[cc.KEY.down]) {
             nextPositionY = position.y - (dt * this.speed) - (this.speedBoost * this.speed);
-            if (nextPositionY >= this.getContentSize().height/2)
+            if (nextPositionY >= this.getContentSize().height / 2)
                 position.y = nextPositionY;
         } else if (!KEYS[cc.KEY.space]) {
             if (this.currentState != 0) {
                 nextPositionY = position.y - (dt * this.dropSpeed);
-                if (nextPositionY >= this.getContentSize().height/2)
+                if (nextPositionY >= this.getContentSize().height / 2)
                     position.y = nextPositionY;
             }
         }
@@ -87,40 +87,40 @@ var Player = cc.Sprite.extend({
         this.setPosition(position);
     },
 
-    changeFrame: function() {
-         if (this.currentState == 1) {
+    changeFrame: function () {
+        if (this.currentState == 1) {
             var prefix = "player_fly_";
             if (this.spriteFrameIndex > 23) {
                 this.spriteFrameIndex = 0;
             }
             var frame = cc.SpriteFrameCache.getInstance().getSpriteFrame(prefix + this.spriteFrameIndex + ".png");
 
-         } else if (this.currentState == 2) {
-             prefix = "player_fire_";
-             frame = cc.SpriteFrameCache.getInstance().getSpriteFrame(prefix + this.spriteFrameIndex + ".png");
-             if (this.spriteFrameIndex == 4) {
-                 this.spriteFrameIndex = -1;
-                 this.currentState = 1;
-             }
-         }
+        } else if (this.currentState == 2) {
+            prefix = "player_fire_";
+            frame = cc.SpriteFrameCache.getInstance().getSpriteFrame(prefix + this.spriteFrameIndex + ".png");
+            if (this.spriteFrameIndex == 4) {
+                this.spriteFrameIndex = -1;
+                this.currentState = 1;
+            }
+        }
 
         this.setDisplayFrame(frame);
         this.spriteFrameIndex++;
     },
 
-    blink: function() {
+    blink: function () {
         if ((this.blinkNumber / 0.5) % 8 < 1) {
-            this.setColor(new cc.Color3B(255,255,255));
+            this.setColor(new cc.Color3B(255, 255, 255));
             this.setVisible(false);
         }
         else {
-            this.setColor(new cc.Color3B(255,0,0));
+            this.setColor(new cc.Color3B(255, 0, 0));
             this.setVisible(true);
         }
         this.blinkNumber -= 0.5;
 
         if (this.blinkNumber == 0) {
-            this.setColor(new cc.Color3B(255,255,255));
+            this.setColor(new cc.Color3B(255, 255, 255));
         }
     },
 
@@ -133,6 +133,17 @@ var Player = cc.Sprite.extend({
         this.bullets.push(bullet);
         this._parent.addChild(bullet);
 
+        var bulletEffect = cc.Sprite.create(s_player_bulletEffect);
+        bulletEffect.setPosition(this.getPositionX() + 70, this.getPositionY() - 20);
+        this._parent.addChild(bulletEffect);
+        bulletEffect.runAction(
+            cc.Sequence.create(
+                cc.FadeOut.create(0.25),
+                cc.CallFunc.create(function () {
+                    bulletEffect.removeFromParent();
+                })
+            )
+        );
         if (this.powerUp != null) {
             if (this.powerUp.type == 2) {
                 var bullet2 = cc.Sprite.create(this.getBulletFileName(this.armour));
@@ -144,10 +155,29 @@ var Player = cc.Sprite.extend({
         }
     },
 
-    hit: function() {
+    hit: function () {
+        var blast = cc.ParticleSystem.create(s_explosionFire);
+        blast.setPosition(this.getPosition());
+        this._parent.addChild(blast);
+
+        var smoke = cc.ParticleSystem.create(s_explosionSmoke);
+        smoke.setPosition(this.getPosition());
+        this._parent.addChild(smoke);
+
+        blast.runAction(cc.Sequence.create(cc.DelayTime.create(1.5),
+            cc.CallFunc.create(function (blast) {
+                blast.removeFromParent();
+            }, this)
+        ));
+        smoke.runAction(cc.Sequence.create(cc.DelayTime.create(1.5),
+            cc.CallFunc.create(function (smoke) {
+                smoke.removeFromParent();
+            }, this)
+        ));
+
         if (this.powerUp == null || this.powerUp.type != 3) {
-            this.health = this.health - (this.hitImpact - (this.armour-1)*2 + ((Math.floor((this.armour-1)/6)) * (this.armour)%6 * 1.25));
-            if(this.health>0 && this.health<=20)
+            this.health = this.health - (this.hitImpact - (this.armour - 1) * 2 + ((Math.floor((this.armour - 1) / 6)) * (this.armour) % 6 * 1.25));
+            if (this.health > 0 && this.health <= 20)
                 cc.AudioEngine.getInstance().playEffect(s_playerLowLifeEffect);
             if (this.health <= 0) {
                 this.health = 0;
@@ -158,23 +188,23 @@ var Player = cc.Sprite.extend({
         }
     },
 
-    die: function() {
+    die: function () {
         this.alive = false;
 //        this.currentState = 3;
         var dieAnimationFrames = [];
         for (var i = 0; i < 15; i++) {
-            var frame = cc.SpriteFrameCache.getInstance().getSpriteFrame('player_die_'+ i +'.png');
+            var frame = cc.SpriteFrameCache.getInstance().getSpriteFrame('player_die_' + i + '.png');
             dieAnimationFrames.push(frame);
         }
 
-        var moveDown = cc.MoveTo.create(1.5, cc.p(this.getPositionX(), 0-this.getContentSize().height/2));
+        var moveDown = cc.MoveTo.create(1.5, cc.p(this.getPositionX(), 0 - this.getContentSize().height / 2));
         var rotate = cc.RotateBy.create(1, -70.0);
         var animation = cc.Animation.create(dieAnimationFrames, 0.1);
         var animate = cc.Animate.create(animation);
         this.runAction(cc.Sequence.create(animate));
         this.runAction(cc.Sequence.create(cc.DelayTime.create(1.15), rotate));
         this.runAction(cc.Sequence.create(cc.DelayTime.create(1.15), moveDown,
-            cc.CallFunc.create(function() {
+            cc.CallFunc.create(function () {
                 this.currentState = 3;
                 PostDataUsingXmlHttpRequest(this.score);
                 var scene = cc.Scene.create();
@@ -185,19 +215,25 @@ var Player = cc.Sprite.extend({
 
     },
 
-    getSpriteFileNames: function(armourLevel) {
+    getSpriteFileNames: function (armourLevel) {
         switch (armourLevel) {
-            case 1: return {'sprite': s_player, 'plist': s_player_plist};
-            case 2: return {'sprite': s_player2, 'plist': s_player2_plist};
-            default: return {'sprite': s_player, 'plist': s_player_plist};
+            case 1:
+                return {'sprite': s_player, 'plist': s_player_plist};
+            case 2:
+                return {'sprite': s_player2, 'plist': s_player2_plist};
+            default:
+                return {'sprite': s_player, 'plist': s_player_plist};
         }
     },
 
     getBulletFileName: function (armourLevel) {
         switch (armourLevel) {
-            case 1: return s_player_bullet;
-            case 2: return s_player2_bullet;
-            default: return s_player_bullet;
+            case 1:
+                return s_player_bullet;
+            case 2:
+                return s_player2_bullet;
+            default:
+                return s_player_bullet;
         }
     },
 
