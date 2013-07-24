@@ -13,7 +13,7 @@ var PowerUp = cc.Sprite.extend({
             case 3: this.initWithFile(s_armour); break;
         }
 
-        this.setScale(0.25);
+        this.setScale(1);
         this.type = powerType;
         this.timeRemaining = timeRemaining;
     },
