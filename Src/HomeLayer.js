@@ -66,21 +66,24 @@ var HomeLayer = cc.Layer.extend({
 
     onNewGame:function (sender) {
         //load resources
-        var scene = cc.Scene.create();
-        var staticParallaxLayer = cc.Layer.create();
-        var staticBackground = cc.Sprite.create(s_splashScreen);
-        staticBackground.setPosition(winSize.width/2,winSize.height/2);
-        staticParallaxLayer.addChild(staticBackground);
-        scene.addChild(staticParallaxLayer);
-        cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));
-        cc.Loader.preload(g_ressources, function () {
-            scene = cc.Scene.create();
-            scene.addChild(GameLayer.create(scene));
-            cc.AudioEngine.getInstance().setMusicVolume(0.2);
-            cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.3, scene));
-        }, this);
-
-
+//        var scene = cc.Scene.create();
+//        var staticParallaxLayer = cc.Layer.create();
+//        var staticBackground = cc.Sprite.create(s_splashScreen);
+//        staticBackground.setPosition(winSize.width/2,winSize.height/2);
+//        staticParallaxLayer.addChild(staticBackground);
+//        scene.addChild(staticParallaxLayer);
+//        cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));
+        cc.Loader.preload(g_mapScreen, function () {
+            var scene = cc.Scene.create();
+            scene.addChild(StagesLayer.create());
+            cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5,scene));
+            cc.Loader.preload(g_ressources, function () {
+                scene = cc.Scene.create();
+                scene.addChild(GameLayer.create(scene));
+                cc.AudioEngine.getInstance().setMusicVolume(0.2);
+                cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1, scene));
+            }, this);
+        },this);
     },
     onSettings:function (pSender) {
 //        this.onButtonEffect();

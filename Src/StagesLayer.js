@@ -48,18 +48,23 @@ var StagesLayer = cc.Layer.extend({
                     this.addChild(locationName)
                 }
                 else if(i==PLAYERCURRENTLOCATION){
-                    var newGameNormal = cc.Sprite.create(s_mapCurrentLevel);
-                    var newGameSelected = cc.Sprite.create(s_mapCurrentLevelPressed);
-                    var newGameDisabled = cc.Sprite.create(s_mapCurrentLevelPressed);
+//                    var newGameNormal = cc.Sprite.create(s_mapCurrentLevel);
+//                    var newGameSelected = cc.Sprite.create(s_mapCurrentLevelPressed);
+//                    var newGameDisabled = cc.Sprite.create(s_mapCurrentLevelPressed);
+//
+//                    var newGame = cc.MenuItemSprite.create(newGameNormal, newGameSelected, newGameDisabled,this.stageOne,this);
+//                    var menu = cc.Menu.create(newGame);
+//                    this.addChild(menu);
+//                    menu.setPosition(locationDetails.map.position[0],locationDetails.map.position[1]);
 
-                    var newGame = cc.MenuItemSprite.create(newGameNormal, newGameSelected, newGameDisabled,this.stageOne,this);
-                    var menu = cc.Menu.create(newGame);
-                    this.addChild(menu);
-                    menu.setPosition(locationDetails.map.position[0],locationDetails.map.position[1]);
+                    var locationTexture = cc.TextureCache.getInstance().addImage(s_mapCurrentLevel);
+                    var location = cc.Sprite.createWithTexture(locationTexture);
+                    location.setPosition(locationDetails.map.position[0],locationDetails.map.position[1]);
+                    this.addChild(location)
 
                     locationNameTexture = cc.TextureCache.getInstance().addImage(s_mapLocation1Name);
                     locationName = cc.Sprite.createWithTexture(locationNameTexture);
-                    locationName.setPosition(locationDetails.map.position[0]+newGameNormal.getContentSize().width+35,locationDetails.map.position[1]);
+                    locationName.setPosition(locationDetails.map.position[0]+location.getContentSize().width+35,locationDetails.map.position[1]);
                     this.addChild(locationName)
                 }
                 else{

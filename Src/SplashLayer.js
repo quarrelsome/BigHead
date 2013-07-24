@@ -28,11 +28,11 @@ var SplashLayer = cc.Layer.extend({
 
             logo.runAction(cc.Sequence.create(cc.MoveTo.create(2, cc.p(winSize.width/2, winSize.height/2)),
                 cc.CallFunc.create(function() {
-                    cc.Loader.preload(g_mapScreen, function () {
-                        var scene = cc.Scene.create();
-                        scene.addChild(StagesLayer.create());
-                        cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.5,scene));
-                    },this);
+                    cc.Loader.preload(g_mainmenu, function () {
+                        scene = cc.Scene.create();
+                        scene.addChild(HomeLayer.create(scene));
+                        cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));
+                    }, this);
                 }, this)
             ));
 
