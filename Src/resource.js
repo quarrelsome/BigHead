@@ -41,12 +41,14 @@ var s_player2_bullet = dirArt + dirPlayer + "bullet2.png";
 var s_damageRed = dirArt + dirPlayer + "damageRed.png";
 var s_boostEffect = dirArt + dirPlayer + "boostEffect.png";
 var s_speedEffect = dirArt + dirPlayer + "speedEffect.png";
+var s_player_bulletEffect = dirArt + dirPlayer + "bulletEffect.png";
 
 //enemy
 var s_enemy = dirArt + dirEnemy + "enemy.png";
 var s_enemy1 = dirArt + dirEnemy + "enemy-ship-2.png";
 var s_enemy_bullet = dirArt + dirEnemy + "bullet-enemy.png";
 var s_explosion = dirArt + "explosion-particle.png";
+var s_enemy_bulletEffect = dirArt + dirEnemy + "bullet-enemy-effect.png";
 
 //power-ups
 var s_sloMo = dirArt + dirPowerUp + "slo_mo.png";
@@ -175,7 +177,9 @@ var g_ressources = [
     {src:s_playerLowLifeEffect},
     {src:s_player_bullet},
     {src:s_player2_bullet},
+    {src:s_player_bulletEffect},
     {src:s_enemy_bullet},
+    {src:s_enemy_bulletEffect},
     {src:s_damageRed},
     {src:s_boostEffect},
     {src:s_speedEffect},

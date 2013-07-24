@@ -109,6 +109,18 @@ var Enemy = cc.LayerColor.extend({
     },
 
     shoot: function () {
+        var bulletEffect = cc.Sprite.create(s_enemy_bulletEffect);
+        bulletEffect.setPosition(this.getPositionX() - 40, this.getPositionY() + this.getContentSize().height/2);
+        this._parent.addChild(bulletEffect);
+        bulletEffect.runAction(
+            cc.Sequence.create(
+                cc.FadeOut.create(0.25),
+                cc.CallFunc.create(function () {
+                    bulletEffect.removeFromParent();
+                })
+            )
+        );
+
         var bullet = cc.Sprite.create(s_enemy_bullet);
         bullet.setPosition(this.getPositionX() - 15, this.getPositionY() + this.getContentSize().height/2);
         bullet.setTag(4);
