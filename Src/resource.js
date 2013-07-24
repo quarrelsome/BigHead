@@ -38,6 +38,7 @@ var s_player = dirArt + dirPlayer + "player.png";
 var s_player2 = dirArt + dirPlayer + "player2.png";
 var s_player_bullet = dirArt + dirPlayer + "bullet.png";
 var s_player2_bullet = dirArt + dirPlayer + "bullet2.png";
+var s_damageRed = dirArt + dirPlayer + "damageRed.png";
 
 //enemy
 var s_enemy = dirArt + dirEnemy + "enemy.png";
@@ -173,6 +174,7 @@ var g_ressources = [
     {src:s_player_bullet},
     {src:s_player2_bullet},
     {src:s_enemy_bullet},
+    {src:s_damageRed},
 	{src:s_explosion},
     {src:s_explosionSmoke},
     {src:s_sloMo},

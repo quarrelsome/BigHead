@@ -21,6 +21,7 @@ GameState.prototype.reset = function () {
 
 var GameLayer = cc.Layer.extend({
         _player: null,
+        _damageRed: null,
         _time: 0,
         _enemies: [],
         _blasts: [],
@@ -287,6 +288,8 @@ var GameLayer = cc.Layer.extend({
             if (this._player.getPositionX() - this._player.getContentSize().width / 2 + winSize.width - 30 <= enemyLocation) {
                 this.setPositionX(this.getPositionX() - (this._layerSpeed * dt));
                 this._player.setPositionX(this._player.getPositionX() + (this._layerSpeed * dt));
+                if (this._damageRed)
+                    this._damageRed.setPositionX(this._damageRed.getPositionX() + (this._layerSpeed * dt));
                 if (this._enemiesHit == 0) {
                     this._enemyLifeTime = 0;
                 }
@@ -546,6 +549,20 @@ var GameLayer = cc.Layer.extend({
             }
             if (playerHit) {
                 this._player.hit();
+                this._damageRed = cc.Sprite.create(s_damageRed);
+                this._damageRed.setAnchorPoint(new cc.p(0,0));
+                this._damageRed.setPositionX(this._player.getPositionX() - this._player.getContentSize().width/2 - 30);
+                this.addChild(this._damageRed);
+
+                this._damageRed.runAction(
+                    cc.Sequence.create(
+                        cc.Blink.create(0.8,5),
+                        cc.CallFunc.create(function() {
+                            this._damageRed.removeFromParent();
+                        }, this)
+                    )
+                );
+
             }
         },
 
