@@ -77,9 +77,11 @@ var Player = cc.Sprite.extend({
             if (nextPositionY >= this.getContentSize().height/2)
                 position.y = nextPositionY;
         } else if (!KEYS[cc.KEY.space]) {
-            nextPositionY = position.y - (dt * this.dropSpeed);
-            if (nextPositionY >= this.getContentSize().height/2)
-                position.y = nextPositionY;
+            if (this.currentState != 0) {
+                nextPositionY = position.y - (dt * this.dropSpeed);
+                if (nextPositionY >= this.getContentSize().height/2)
+                    position.y = nextPositionY;
+            }
         }
 
         this.setPosition(position);

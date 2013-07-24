@@ -133,7 +133,34 @@ var GameLayer = cc.Layer.extend({
             this._player = new Player();
             this._player.setPosition(0 - this._player.getContentSize().width / 2, winSize.height / 2);
             this.addChild(this._player, this._player.tag);
-            this._player.runAction(cc.Sequence.create(cc.MoveTo.create(1.5, cc.p(this._player.getContentSize().width / 2 + 30, winSize.height / 2))));
+
+            var boostEffect = cc.Sprite.create(s_boostEffect);
+            boostEffect.setPosition(0 - boostEffect.getContentSize().width/2 + 30, winSize.height / 2);
+            this.addChild(boostEffect);
+
+            var speedEffect = cc.Sprite.create(s_speedEffect);
+            speedEffect.setPosition(winSize.width/2,winSize.height/2);
+            this.addChild(speedEffect);
+
+            this._player.runAction(cc.Sequence.create(
+                cc.MoveTo.create(1.8, cc.p(this._player.getContentSize().width / 2 + 30, winSize.height / 2))
+            ));
+
+            boostEffect.runAction(cc.Sequence.create(
+                cc.MoveTo.create(1.9, cc.p(boostEffect.getContentSize().width + 50, winSize.height / 2)),
+                cc.DelayTime.create(0.25),
+                cc.CallFunc.create(function() {
+                    boostEffect.removeFromParent();
+                }, this)
+            ));
+
+            speedEffect.runAction(cc.Sequence.create(
+                cc.MoveTo.create(1.9, cc.p(winSize.width - 120, winSize.height / 2)),
+                cc.FadeOut.create(0.5),
+                cc.CallFunc.create(function() {
+                    speedEffect.removeFromParent();
+                }, this)
+            ));
         },
 
         initHudLayer: function(scene){
@@ -550,8 +577,7 @@ var GameLayer = cc.Layer.extend({
             if (playerHit) {
                 this._player.hit();
                 this._damageRed = cc.Sprite.create(s_damageRed);
-                this._damageRed.setAnchorPoint(new cc.p(0,0));
-                this._damageRed.setPositionX(this._player.getPositionX() - this._player.getContentSize().width/2 - 30);
+                this._damageRed.setPosition(this._player.getPositionX() - this._player.getContentSize().width/2 - 30 + winSize.width/2, winSize.height/2);
                 this.addChild(this._damageRed);
 
                 this._damageRed.runAction(
