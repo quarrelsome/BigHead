@@ -560,7 +560,7 @@ var GameLayer = cc.Layer.extend({
                             if (this._enemiesHit == 0) {
                                 this._playerHitLocationY = this._player.getPositionY();
                             }
-                            this._isEnemyFireEnabled = false;
+                            //this._isEnemyFireEnabled = false;
 
                             this._enemiesHit++;
                         }
