@@ -66,25 +66,32 @@ var Player = cc.Sprite.extend({
     },
 
     updatePosition: function (dt) {
-        var position = this.getPosition();
-        if (KEYS[cc.KEY.up]) {
-            var nextPositionY = position.y + (dt * this.speed) + (this.speedBoost * this.speed);
-            if (nextPositionY + this.getContentSize().height / 2 <= winSize.height)
-                position.y = nextPositionY;
-        }
-        else if (KEYS[cc.KEY.down]) {
-            nextPositionY = position.y - (dt * this.speed) - (this.speedBoost * this.speed);
-            if (nextPositionY >= this.getContentSize().height / 2)
-                position.y = nextPositionY;
-        } else if (!KEYS[cc.KEY.space]) {
-            if (this.currentState != 0) {
-                nextPositionY = position.y - (dt * this.dropSpeed);
-                if (nextPositionY >= this.getContentSize().height / 2)
+        if (this.currentState != 0) {
+            var position = this.getPosition();
+            var playerBoostPositionY = this._parent._playerBoost.getPositionY();
+            if (KEYS[cc.KEY.up]) {
+                var nextPositionY = position.y + (dt * this.speed) + (this.speedBoost * this.speed);
+                if (nextPositionY + this.getContentSize().height / 2 <= winSize.height) {
                     position.y = nextPositionY;
+                    this._parent._playerBoost.setPositionY(playerBoostPositionY + (dt * this.speed) + (this.speedBoost * this.speed));
+                }
             }
-        }
+            else if (KEYS[cc.KEY.down]) {
+                nextPositionY = position.y - (dt * this.speed) - (this.speedBoost * this.speed);
+                if (nextPositionY >= this.getContentSize().height / 2) {
+                    position.y = nextPositionY;
+                    this._parent._playerBoost.setPositionY(playerBoostPositionY - (dt * this.speed) - (this.speedBoost * this.speed));
+                }
+            } else if (!KEYS[cc.KEY.space]) {
+                nextPositionY = position.y - (dt * this.dropSpeed);
+                if (nextPositionY >= this.getContentSize().height / 2) {
+                    position.y = nextPositionY;
+                    this._parent._playerBoost.setPositionY(playerBoostPositionY - (dt * this.dropSpeed));
+                }
+            }
 
-        this.setPosition(position);
+            this.setPosition(position);
+        }
     },
 
     changeFrame: function () {
@@ -156,26 +163,26 @@ var Player = cc.Sprite.extend({
     },
 
     hit: function () {
-        var blast = cc.ParticleSystem.create(s_explosionFire);
-        blast.setPosition(this.getPosition());
-        this._parent.addChild(blast);
-
-        var smoke = cc.ParticleSystem.create(s_explosionSmoke);
-        smoke.setPosition(this.getPosition());
-        this._parent.addChild(smoke);
-
-        blast.runAction(cc.Sequence.create(cc.DelayTime.create(1.5),
-            cc.CallFunc.create(function (blast) {
-                blast.removeFromParent();
-            }, this)
-        ));
-        smoke.runAction(cc.Sequence.create(cc.DelayTime.create(1.5),
-            cc.CallFunc.create(function (smoke) {
-                smoke.removeFromParent();
-            }, this)
-        ));
-
         if (this.powerUp == null || this.powerUp.type != 3) {
+            var blast = cc.ParticleSystem.create(s_explosionFire);
+            blast.setPosition(this.getPosition());
+            this._parent.addChild(blast);
+
+            var smoke = cc.ParticleSystem.create(s_explosionSmoke);
+            smoke.setPosition(this.getPosition());
+            this._parent.addChild(smoke);
+
+            blast.runAction(cc.Sequence.create(cc.DelayTime.create(1.5),
+                cc.CallFunc.create(function (blast) {
+                    blast.removeFromParent();
+                }, this)
+            ));
+            smoke.runAction(cc.Sequence.create(cc.DelayTime.create(1.5),
+                cc.CallFunc.create(function (smoke) {
+                    smoke.removeFromParent();
+                }, this)
+            ));
+
             this.health = this.health - (this.hitImpact - (this.armour - 1) * 2 + ((Math.floor((this.armour - 1) / 6)) * (this.armour) % 6 * 1.25));
             if (this.health > 0 && this.health <= 20)
                 cc.AudioEngine.getInstance().playEffect(s_playerLowLifeEffect);
