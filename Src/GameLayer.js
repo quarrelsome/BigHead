@@ -60,25 +60,26 @@ var GameLayer = cc.Layer.extend({
         _layerSpeed: 100,
         _layerSpeedIncreaseFactor: 20,
         _location: 0,
+        _isStartAnimationFinished: false,
 
         init: function (scene, game_state) {
             var bRet = false;
             if (this._super()) {
                 this._location = g_locations[PLAYERCURRENTLOCATION];
+                this._gameSate = game_state;
+                this._enemies = [];
                 this.initLocation(scene);
                 this.initCloudLayer(scene);
                 this.initHorizonLayer(scene);
                 this.initBuilding1Layer(scene);
                 this.initBuilding2Layer(scene);
                 this.initPlayer();
+                this.initGameStart();
                 this.initBuildingFrontLayer(scene);
                 this.initRainLayer(scene);
                 this.initHudLayer(scene);
                 this.enableEvents();
                 this.scheduleUpdate();
-                this._gameSate = game_state;
-                this._enemies = [];
-
                 bRet = true;
             }
             sys.dumpRoot();
@@ -130,6 +131,54 @@ var GameLayer = cc.Layer.extend({
             scene.addChild(rainLayer, 60);
         },
 
+        initGameStart: function(){
+            var three = cc.Sprite.create(s_gameStartThree);
+            three.setPosition(winSize.width/2,winSize.height/2);
+            three.setScale(2);
+            this.addChild(three);
+
+            three.runAction(cc.Sequence.create(
+                cc.ScaleTo.create(1,0.1),
+                cc.CallFunc.create(function() {
+                    three.removeFromParent();
+                    var two = cc.Sprite.create(s_gameStartTwo);
+                    two.setPosition(winSize.width/2,winSize.height/2);
+                    two.setScale(2);
+                    this.addChild(two);
+
+                    two.runAction(cc.Sequence.create(
+                        cc.ScaleTo.create(0.5,0.1),
+                        cc.CallFunc.create(function() {
+                            two.removeFromParent();
+                            var one = cc.Sprite.create(s_gameStartOne);
+                            one.setPosition(winSize.width/2,winSize.height/2);
+                            one.setScale(2);
+                            this.addChild(one);
+
+                            one.runAction(cc.Sequence.create(
+                                cc.ScaleTo.create(0.5,0.1),
+                                cc.CallFunc.create(function() {
+                                    one.removeFromParent();
+                                    var ready = cc.Sprite.create(s_gameStartReady);
+                                    ready.setPosition(winSize.width/2,winSize.height/2);
+                                    ready.setScale(2);
+                                    this.addChild(ready);
+
+                                    ready.runAction(cc.Sequence.create(
+                                        cc.ScaleTo.create(0.5,0.1),
+                                        cc.CallFunc.create(function() {
+                                            ready.removeFromParent();
+                                            this._isStartAnimationFinished=true;
+                                        }, this)
+                                    ));
+                                }, this)
+                            ));
+                        }, this)
+                    ));
+                }, this)
+            ));
+        },
+
         initPlayer: function () {
             this._player = new Player();
             this._player.setPosition(0 - this._player.getContentSize().width / 2, winSize.height / 2);
@@ -140,7 +189,7 @@ var GameLayer = cc.Layer.extend({
             this.addChild(this._playerBoost);
 
             var boostEffect = cc.Sprite.create(s_boostEffect);
-            boostEffect.setPosition(0 - boostEffect.getContentSize().width / 2 + 30, winSize.height / 2);
+            boostEffect.setPosition(0 - boostEffect.getContentSize().width / 2 + 20, winSize.height / 2);
             this.addChild(boostEffect);
 
             var speedEffect = cc.Sprite.create(s_speedEffect);
@@ -148,13 +197,13 @@ var GameLayer = cc.Layer.extend({
             this.addChild(speedEffect);
 
             this._player.runAction(cc.Sequence.create(
-                cc.MoveTo.create(1.8, cc.p(this._player.getContentSize().width / 2 + 30, winSize.height / 2))
+                cc.MoveTo.create(2, cc.p(this._player.getContentSize().width / 2 + 30, winSize.height / 2))
             ));
 
             this._playerBoost.runAction(cc.MoveTo.create(1.8, cc.p(-30, winSize.height / 2 - 20)));
 
             boostEffect.runAction(cc.Sequence.create(
-                cc.MoveTo.create(1.9, cc.p(boostEffect.getContentSize().width + 50, winSize.height / 2)),
+                cc.MoveTo.create(1.9, cc.p(boostEffect.getContentSize().width - 160 , winSize.height / 2)),
                 cc.FadeOut.create(0.25),
                 cc.CallFunc.create(function () {
                     boostEffect.removeFromParent();
@@ -204,9 +253,10 @@ var GameLayer = cc.Layer.extend({
                 this._buildingParallax.update(dt * (this._layerSpeed - 30), this._distanceTravelled);
                 this._buildingFrontParallax.update(dt * (this._layerSpeed - 20));
 
-                if (this._enemies.length == 0 && this._player.alive) {
-                    this.addEnemy();
-                }
+                if(this._isStartAnimationFinished){
+                    if (this._enemies.length == 0 && this._player.alive) {
+                        this.addEnemy();
+                    }
 
                 if (this._powerUpDistance == 0 && this._powerUp == null) {
                     this.addPowerUp();
@@ -227,37 +277,38 @@ var GameLayer = cc.Layer.extend({
                     this._player.update(dt, this._gameSate.score);
                     this.detectPlayerCollision(dt);
                 }
-
-                for (var i = 0; i < this._enemies.length; i++) {
-                    this._enemies[i].update(dt);
-                }
-
-                if (this._enemyLifeTime > 9) {
-                    if (this._isEnemyInAttackMode) {
-                        this._isEnemyInAttackMode = false;
-                        this._playerHitLocationY = this._player.getPositionY();
+                  
+                   for (var i=0; i < this._enemies.length; i++) {
+                        this._enemies[i].update(dt);
                     }
-                    this.enemyRun(dt);
-                }
-                else if (this._enemyLifeTime > 8) {
-                    this._isEnemyFireEnabled = false;
-                }
-                else if (this._enemyLifeTime > 6) {
-                    this._isEnemyInAttackMode = true;
-                    this._enemyTotalFireWait = 0.75;
-                    if (this._player.powerUp != null) {
-                        if (this._player.powerUp.type == 1) {
-                            this._enemyTotalFireWait = 1.25;
+
+                    if (this._enemyLifeTime > 9) {
+                        if (this._isEnemyInAttackMode) {
+                            this._isEnemyInAttackMode = false;
+                            this._playerHitLocationY = this._player.getPositionY();
+                        }
+                        this.enemyRun(dt);
+                    }
+                    else if (this._enemyLifeTime > 8) {
+                        this._isEnemyFireEnabled = false;
+                    }
+                    else if (this._enemyLifeTime > 6) {
+                        this._isEnemyInAttackMode = true;
+                        this._enemyTotalFireWait = 0.75;
+                        if (this._player.powerUp != null) {
+                            if (this._player.powerUp.type == 1) {
+                                this._enemyTotalFireWait = 1.25;
+                            }
                         }
                     }
+
+                    this.enemyFire(dt);
+                    this.updateBulletPosition(dt);
+                    this.updateEnemyBulletPosition(dt);
+                    this.detectEnemyCollision(dt);
+
+                    this._distanceTravelled = this._distanceTravelled + Math.round(this._layerSpeed * dt);
                 }
-
-                this.enemyFire(dt);
-                this.updateBulletPosition(dt);
-                this.updateEnemyBulletPosition(dt);
-                this.detectEnemyCollision(dt);
-
-                this._distanceTravelled = this._distanceTravelled + Math.round(this._layerSpeed * dt);
             }
         },
 

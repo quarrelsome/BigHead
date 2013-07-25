@@ -46,7 +46,7 @@ var GameControlMenu = cc.Layer.extend({
 //            this.addChild(this.lbQuestion);
 //            this.lbQuestion.setPosition(487 , winSize.height - 40);
 
-            this._lbQuestionTitle = cc.LabelBMFont.create("0", s_scoreFontHd);
+            this._lbQuestionTitle = cc.LabelBMFont.create("", s_scoreFontHd);
             this._lbQuestionTitle.setScale(2);
             this._lbQuestionTitle.setPosition(winSize.width/2 , winSize.height/2);
             this.addChild(this._lbQuestionTitle);
@@ -133,6 +133,7 @@ var GameControlMenu = cc.Layer.extend({
         this._lbQuestionTitle.setPosition(winSize.width/2 , winSize.height/2);
         this._lbQuestionTitle.setScale(2);
         this._lbQuestionTitle.setString(questionTitle);
+
         this._lbQuestionTitle.runAction(cc.Sequence.create(cc.MoveTo.create(2, cc.p(winSize.width/2+5, winSize.height - 45)),
             cc.CallFunc.create(function() {
                 this._lbQuestionTitle.setScale(1);
