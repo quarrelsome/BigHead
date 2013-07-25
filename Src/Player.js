@@ -192,7 +192,9 @@ var Player = cc.Sprite.extend({
             } else {
                 this.blinkNumber = 16;
             }
+            return true;
         }
+        return false;
     },
 
     die: function () {
@@ -220,6 +222,8 @@ var Player = cc.Sprite.extend({
             }, this)
         ));
 
+        this._parent._playerBoost.removeFromParent();
+        this._parent._playerBoost = null;
     },
 
     getSpriteFileNames: function (armourLevel) {

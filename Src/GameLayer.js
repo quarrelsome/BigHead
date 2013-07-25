@@ -50,16 +50,16 @@ var GameLayer = cc.Layer.extend({
         _playerHitLocationY: 0,
         _cloudParallax: null,
         _interchangeableParallax: null,
-        _horizon1Parallax:null,
-        _building1Parallax:null,
-        _buildingParallax:null,
-        _buildingFrontParallax:null,
-        _distanceTravelled:0,
-        _gameSate:null,
-        _hudLayer:null,
-         _layerSpeed: 100,
-         _layerSpeedIncreaseFactor: 20,
-        _location:0,
+        _horizon1Parallax: null,
+        _building1Parallax: null,
+        _buildingParallax: null,
+        _buildingFrontParallax: null,
+        _distanceTravelled: 0,
+        _gameSate: null,
+        _hudLayer: null,
+        _layerSpeed: 100,
+        _layerSpeedIncreaseFactor: 20,
+        _location: 0,
 
         init: function (scene, game_state) {
             var bRet = false;
@@ -89,7 +89,7 @@ var GameLayer = cc.Layer.extend({
         initLocation: function (scene) {
             var staticParallaxLayer = cc.Layer.create();
             var staticBackground = cc.Sprite.create(this._location.background);
-            staticBackground.setAnchorPoint(cc.p(0,0));
+            staticBackground.setAnchorPoint(cc.p(0, 0));
             staticParallaxLayer.addChild(staticBackground);
             scene.addChild(staticParallaxLayer);
         },
@@ -102,12 +102,12 @@ var GameLayer = cc.Layer.extend({
 
         initHorizonLayer: function (scene) {
             this._horizon1Parallax = CommonParallaxLayer.create(this._location.horizon);
-            this._horizon1Parallax.setAnchorPoint(cc.p(0,0));
+            this._horizon1Parallax.setAnchorPoint(cc.p(0, 0));
             scene.addChild(this._horizon1Parallax);
         },
 
         initBuilding1Layer: function (scene) {
-            this._building1Parallax = Building1ParallaxLayer.create(this._location.building1,0);
+            this._building1Parallax = Building1ParallaxLayer.create(this._location.building1, 0);
             this._building1Parallax.setAnchorPoint(cc.p(0, 0));
             scene.addChild(this._building1Parallax);
         },
@@ -119,15 +119,15 @@ var GameLayer = cc.Layer.extend({
         },
 
         initBuildingFrontLayer: function (scene) {
-            this._buildingFrontParallax = Building1ParallaxLayer.create(this._location.buildingFront,800);
+            this._buildingFrontParallax = Building1ParallaxLayer.create(this._location.buildingFront, 800);
             this._buildingFrontParallax.setAnchorPoint(cc.p(0, 0));
-            scene.addChild(this._buildingFrontParallax,50);
+            scene.addChild(this._buildingFrontParallax, 50);
         },
 
-        initRainLayer: function(scene){
+        initRainLayer: function (scene) {
             var rainLayer = EnvironmentLayer.create(this._location.environment);
-            rainLayer.setAnchorPoint(cc.p(0,0));
-            scene.addChild(rainLayer,60);
+            rainLayer.setAnchorPoint(cc.p(0, 0));
+            scene.addChild(rainLayer, 60);
         },
 
         initPlayer: function () {
@@ -136,27 +136,27 @@ var GameLayer = cc.Layer.extend({
             this.addChild(this._player, this._player.tag);
 
             this._playerBoost = cc.ParticleSystem.create(s_playerBoost);
-            this._playerBoost.setPosition(0 - this._player.getContentSize().width * 2, winSize.height/2 - 20);
+            this._playerBoost.setPosition(0 - this._player.getContentSize().width * 2, winSize.height / 2 - 20);
             this.addChild(this._playerBoost);
 
             var boostEffect = cc.Sprite.create(s_boostEffect);
-            boostEffect.setPosition(0 - boostEffect.getContentSize().width/2 + 30, winSize.height / 2);
+            boostEffect.setPosition(0 - boostEffect.getContentSize().width / 2 + 30, winSize.height / 2);
             this.addChild(boostEffect);
 
             var speedEffect = cc.Sprite.create(s_speedEffect);
-            speedEffect.setPosition(winSize.width/2,winSize.height/2);
+            speedEffect.setPosition(winSize.width / 2, winSize.height / 2);
             this.addChild(speedEffect);
 
             this._player.runAction(cc.Sequence.create(
                 cc.MoveTo.create(1.8, cc.p(this._player.getContentSize().width / 2 + 30, winSize.height / 2))
             ));
 
-            this._playerBoost.runAction(cc.MoveTo.create(1.8, cc.p(-30, winSize.height/2 - 20)));
+            this._playerBoost.runAction(cc.MoveTo.create(1.8, cc.p(-30, winSize.height / 2 - 20)));
 
             boostEffect.runAction(cc.Sequence.create(
                 cc.MoveTo.create(1.9, cc.p(boostEffect.getContentSize().width + 50, winSize.height / 2)),
                 cc.FadeOut.create(0.25),
-                cc.CallFunc.create(function() {
+                cc.CallFunc.create(function () {
                     boostEffect.removeFromParent();
                 }, this)
             ));
@@ -164,16 +164,16 @@ var GameLayer = cc.Layer.extend({
             speedEffect.runAction(cc.Sequence.create(
                 cc.MoveTo.create(1.9, cc.p(winSize.width - 120, winSize.height / 2)),
                 cc.FadeOut.create(0.5),
-                cc.CallFunc.create(function() {
+                cc.CallFunc.create(function () {
                     speedEffect.removeFromParent();
                 }, this)
             ));
         },
 
-        initHudLayer: function(scene){
+        initHudLayer: function (scene) {
             this._hudLayer = GameControlMenu.create(STATE_PLAYING);
-            this._hudLayer.setAnchorPoint(cc.p(0,0));
-            scene.addChild(this._hudLayer,this._hudLayer._tag);
+            this._hudLayer.setAnchorPoint(cc.p(0, 0));
+            scene.addChild(this._hudLayer, this._hudLayer._tag);
         },
 
         update: function (dt) {
@@ -184,25 +184,25 @@ var GameLayer = cc.Layer.extend({
                 cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));
             }
 
-            if(this._player.currentState==3){
+            if (this._player.currentState == 3) {
                 this._gameSate.state = STATE_GAMEOVER;
             }
 
-            if(this._gameSate.state != STATE_GAMEOVER)
-                this._gameSate.state = this._hudLayer.update(dt,{
-                    score:this._gameSate.score,
-                    travelledDistance:this._distanceTravelled,
-                    health:this._player.health
+            if (this._gameSate.state != STATE_GAMEOVER)
+                this._gameSate.state = this._hudLayer.update(dt, {
+                    score: this._gameSate.score,
+                    travelledDistance: this._distanceTravelled,
+                    health: this._player.health
                 });
 
-            if(this._gameSate.state == STATE_PLAYING){
+            if (this._gameSate.state == STATE_PLAYING) {
                 this._time += dt;
                 this._enemyLifeTime += dt;
-                this._cloudParallax.update(dt*(this._layerSpeed-60));
-                this._horizon1Parallax.update(dt*(this._layerSpeed-50));
-                this._building1Parallax.update(dt*(this._layerSpeed-40));
-                this._buildingParallax.update(dt*(this._layerSpeed-30),this._distanceTravelled);
-                this._buildingFrontParallax.update(dt*(this._layerSpeed-20));
+                this._cloudParallax.update(dt * (this._layerSpeed - 60));
+                this._horizon1Parallax.update(dt * (this._layerSpeed - 50));
+                this._building1Parallax.update(dt * (this._layerSpeed - 40));
+                this._buildingParallax.update(dt * (this._layerSpeed - 30), this._distanceTravelled);
+                this._buildingFrontParallax.update(dt * (this._layerSpeed - 20));
 
                 if (this._enemies.length == 0 && this._player.alive) {
                     this.addEnemy();
@@ -215,20 +215,20 @@ var GameLayer = cc.Layer.extend({
                     this._powerUp.update(dt);
                     this.detectPlayerPowerUpCollision();
                     if (this._powerUp != null) {
-                        if (this._powerUp.getPositionX() < this._player.getPositionX() - this._player.getContentSize().width/2 - 30) {
+                        if (this._powerUp.getPositionX() < this._player.getPositionX() - this._player.getContentSize().width / 2 - 30) {
                             this._powerUp.removeFromParent();
                             delete this._powerUp;
                         }
                     }
                 }
 
-                if(this._player.alive){
+                if (this._player.alive) {
                     this.moveLayer(dt);
-                    this._player.update(dt,this._gameSate.score);
+                    this._player.update(dt, this._gameSate.score);
                     this.detectPlayerCollision(dt);
                 }
 
-                for (var i=0; i < this._enemies.length; i++) {
+                for (var i = 0; i < this._enemies.length; i++) {
                     this._enemies[i].update(dt);
                 }
 
@@ -261,7 +261,7 @@ var GameLayer = cc.Layer.extend({
             }
         },
 
-        onEnterTransitionDidFinish:function () {
+        onEnterTransitionDidFinish: function () {
             this._gameSate.state = STATE_PLAYING;
         },
 
@@ -338,10 +338,10 @@ var GameLayer = cc.Layer.extend({
             }
         },
 
-        addPowerUp: function() {
-            var powerType = getRandomInt(1,3);
+        addPowerUp: function () {
+            var powerType = getRandomInt(1, 3);
             this._powerUp = new PowerUp(powerType, 15);
-            this._powerUp.setPosition(this._player.getPositionX() - this._player.getContentSize().width/2 + 1000, getRandomInt(60, 580));
+            this._powerUp.setPosition(this._player.getPositionX() - this._player.getContentSize().width / 2 + 1000, getRandomInt(60, 580));
             this.addChild(this._powerUp);
             this._powerUpDistance--;
         },
@@ -354,7 +354,7 @@ var GameLayer = cc.Layer.extend({
             }
 
             var totalEnemies = getRandomInt(2, 3);
-            var targetEnemy = getRandomInt(0,totalEnemies-1);
+            var targetEnemy = getRandomInt(0, totalEnemies - 1);
             var enemyValues = [];
             var unique = true;
 
@@ -404,7 +404,7 @@ var GameLayer = cc.Layer.extend({
             this._powerUpDistance--;
 
             if (this._powerUpDistance < 0) {
-                this._powerUpDistance = getRandomInt(4,6);
+                this._powerUpDistance = getRandomInt(4, 6);
             }
 
             if (this._player._powerUp != null) {
@@ -442,9 +442,9 @@ var GameLayer = cc.Layer.extend({
                     }
 
                     if (this._isEnemyInAttackMode) {
-                        bullet.setPositionX(bullet.getPositionX() - ((enemy.bulletSpeed + this._layerSpeed/4 * 0.1)* dt * 1.5)/reductionFactor);
+                        bullet.setPositionX(bullet.getPositionX() - ((enemy.bulletSpeed + this._layerSpeed / 4 * 0.1) * dt * 1.5) / reductionFactor);
                     } else {
-                        bullet.setPositionX(bullet.getPositionX() - ((enemy.bulletSpeed + this._layerSpeed/4 * 0.1) * dt)/reductionFactor);
+                        bullet.setPositionX(bullet.getPositionX() - ((enemy.bulletSpeed + this._layerSpeed / 4 * 0.1) * dt) / reductionFactor);
                     }
                 }
             }
@@ -454,14 +454,14 @@ var GameLayer = cc.Layer.extend({
             if (this._isEnemyFireEnabled) {
                 for (var i = 0; i < this._enemies.length; i++) {
                     var enemy = this._enemies[i];
-                        if (enemy.fireWaitCompleted < this._enemyTotalFireWait) {
-                            enemy.fireWaitCompleted += dt;
-                        }
-                        else {
-                            this.addChild(enemy.shoot());
-                            cc.AudioEngine.getInstance().playEffect(s_enemyShootEffect);
-                            enemy.fireWaitCompleted = 0;
-                        }
+                    if (enemy.fireWaitCompleted < this._enemyTotalFireWait) {
+                        enemy.fireWaitCompleted += dt;
+                    }
+                    else {
+                        this.addChild(enemy.shoot());
+                        cc.AudioEngine.getInstance().playEffect(s_enemyShootEffect);
+                        enemy.fireWaitCompleted = 0;
+                    }
                 }
             }
         },
@@ -471,8 +471,8 @@ var GameLayer = cc.Layer.extend({
                 var bullet = this._player.bullets[i];
                 //var bulletRect = bullet.getBoundingBox();
                 var bulletRect = new cc.Rect(
-                    bullet.getPositionX() - bullet.getContentSize().width/2 + 20,
-                    bullet.getPositionY() - bullet.getContentSize().height/2 + 10,
+                    bullet.getPositionX() - bullet.getContentSize().width / 2 + 20,
+                    bullet.getPositionY() - bullet.getContentSize().height / 2 + 10,
                     bullet.getContentSize().width - 40,
                     bullet.getContentSize().height - 20
                 );
@@ -534,11 +534,11 @@ var GameLayer = cc.Layer.extend({
                 }
                 else {
                     if (enemy.getPositionY() >= this._playerHitLocationY) {
-                        enemy.setPositionY(enemy.getPositionY() - (enemy.getPositionY() - this._playerHitLocationY) / (this._enemyRunSpeed * dt)/reductionFactor);
+                        enemy.setPositionY(enemy.getPositionY() - (enemy.getPositionY() - this._playerHitLocationY) / (this._enemyRunSpeed * dt) / reductionFactor);
                     } else {
-                        enemy.setPositionY(enemy.getPositionY() + (this._playerHitLocationY - enemy.getPositionY()) / (this._enemyRunSpeed * dt)/reductionFactor);
+                        enemy.setPositionY(enemy.getPositionY() + (this._playerHitLocationY - enemy.getPositionY()) / (this._enemyRunSpeed * dt) / reductionFactor);
                     }
-                    enemy.setPositionX(enemy.getPositionX() - (this._enemyRunSpeed * dt)/reductionFactor);
+                    enemy.setPositionX(enemy.getPositionX() - (this._enemyRunSpeed * dt) / reductionFactor);
                 }
             }
 
@@ -568,8 +568,8 @@ var GameLayer = cc.Layer.extend({
                     var bullet = enemy.bullets[j];
                     //var bulletRect = bullet.getBoundingBox();
                     var bulletRect = new cc.Rect(
-                        bullet.getPositionX() - bullet.getContentSize().width/2 + 20,
-                        bullet.getPositionY() - bullet.getContentSize().height/2 + 10,
+                        bullet.getPositionX() - bullet.getContentSize().width / 2 + 20,
+                        bullet.getPositionY() - bullet.getContentSize().height / 2 + 10,
                         bullet.getContentSize().width - 40,
                         bullet.getContentSize().height - 20
                     );
@@ -584,25 +584,25 @@ var GameLayer = cc.Layer.extend({
 
             }
             if (playerHit) {
-                this._player.hit();
-                this._damageRed = cc.Sprite.create(s_damageRed);
-                this._damageRed.setPosition(this._player.getPositionX() - this._player.getContentSize().width/2 - 30 + winSize.width/2, winSize.height/2);
-                this.addChild(this._damageRed);
+                if (this._player.hit()) {
+                    this._damageRed = cc.Sprite.create(s_damageRed);
+                    this._damageRed.setPosition(this._player.getPositionX() - this._player.getContentSize().width / 2 - 30 + winSize.width / 2, winSize.height / 2);
+                    this.addChild(this._damageRed);
 
-                this._damageRed.runAction(
-                    cc.Sequence.create(
-                        cc.Blink.create(0.8,5),
-                        cc.CallFunc.create(function() {
-                            this._damageRed.removeFromParent();
-                            this._damageRed = null;
-                        }, this)
-                    )
-                );
-
+                    this._damageRed.runAction(
+                        cc.Sequence.create(
+                            cc.Blink.create(0.8, 5),
+                            cc.CallFunc.create(function () {
+                                this._damageRed.removeFromParent();
+                                this._damageRed = null;
+                            }, this)
+                        )
+                    );
+                }
             }
         },
 
-        detectPlayerPowerUpCollision: function() {
+        detectPlayerPowerUpCollision: function () {
             var playerRect = this._player.getBoundingBox();
             var powerUpRect = this._powerUp.getBoundingBox();
 
