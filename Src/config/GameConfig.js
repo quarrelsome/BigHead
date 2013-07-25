@@ -39,8 +39,12 @@ var PostDataUsingXmlHttpRequest = function(score){
         if (XmlHttp.readyState == 4 && XmlHttp.status == 200) {
         }
         else
-            alert("Unable to update your score");
+            alert("Network Connectivity Issue: Unable to update your score");
 
     };
-    XmlHttp.send(null);
+    try{
+        XmlHttp.send(null);
+    }
+    catch(e){}
+
 }

@@ -24,11 +24,11 @@ var cocos2dApp = cc.Application.extend({
                     userInfo = JSON.parse(XmlHttp.responseText);
                 }
                 catch(e) {
-                    alert("Unable to get your level");
+                    alert("Network Connectivity Issue: Unable to get your level");
                 }
             }
             else
-                alert("Unable to get your level");
+                alert("Network Connectivity Issue: Unable to get your level");
 
             PLAYERLEVEL = userInfo.level;
         })
@@ -48,5 +48,8 @@ function GetDataUsingXmlHttpRequest(url, callbackFunction){
     XmlHttp = new XMLHttpRequest();
     XmlHttp.open("GET", url, false);
     XmlHttp.onreadystatechange=callbackFunction;
-    XmlHttp.send(null);
+    try{
+        XmlHttp.send(null);
+    }
+    catch(e){}
 }
