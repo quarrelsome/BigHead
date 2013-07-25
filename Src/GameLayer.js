@@ -624,7 +624,7 @@ var GameLayer = cc.Layer.extend({
                         bullet.getContentSize().width - 40,
                         bullet.getContentSize().height - 20
                     );
-                    cc.log(this._player.blinkNumber);
+
                     if ((cc.rectIntersectsRect(playerRect, bulletRect)) && (this._player.blinkNumber == 0)) {
                         cc.ArrayRemoveObject(enemy.bullets, bullet);
                         bullet.removeFromParent();
