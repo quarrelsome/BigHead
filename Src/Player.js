@@ -163,26 +163,26 @@ var Player = cc.Sprite.extend({
     },
 
     hit: function () {
-        var blast = cc.ParticleSystem.create(s_explosionFire);
-        blast.setPosition(this.getPosition());
-        this._parent.addChild(blast);
-
-        var smoke = cc.ParticleSystem.create(s_explosionSmoke);
-        smoke.setPosition(this.getPosition());
-        this._parent.addChild(smoke);
-
-        blast.runAction(cc.Sequence.create(cc.DelayTime.create(1.5),
-            cc.CallFunc.create(function (blast) {
-                blast.removeFromParent();
-            }, this)
-        ));
-        smoke.runAction(cc.Sequence.create(cc.DelayTime.create(1.5),
-            cc.CallFunc.create(function (smoke) {
-                smoke.removeFromParent();
-            }, this)
-        ));
-
         if (this.powerUp == null || this.powerUp.type != 3) {
+            var blast = cc.ParticleSystem.create(s_explosionFire);
+            blast.setPosition(this.getPosition());
+            this._parent.addChild(blast);
+
+            var smoke = cc.ParticleSystem.create(s_explosionSmoke);
+            smoke.setPosition(this.getPosition());
+            this._parent.addChild(smoke);
+
+            blast.runAction(cc.Sequence.create(cc.DelayTime.create(1.5),
+                cc.CallFunc.create(function (blast) {
+                    blast.removeFromParent();
+                }, this)
+            ));
+            smoke.runAction(cc.Sequence.create(cc.DelayTime.create(1.5),
+                cc.CallFunc.create(function (smoke) {
+                    smoke.removeFromParent();
+                }, this)
+            ));
+
             this.health = this.health - (this.hitImpact - (this.armour - 1) * 2 + ((Math.floor((this.armour - 1) / 6)) * (this.armour) % 6 * 1.25));
             if (this.health > 0 && this.health <= 20)
                 cc.AudioEngine.getInstance().playEffect(s_playerLowLifeEffect);
