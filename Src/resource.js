@@ -12,7 +12,7 @@ var s_splashBg = dirArt+"splash/Splash-Bg.png";
 var s_splashLogo = dirArt+"splash/BeattheBeads-logo.png";
 var s_splashBigHeadLogo = dirArt+"splash/BigHead-logo.png";
 var s_splashSunburst = dirArt+"splash/sunburst.png";
-var s_splashMusic = dirSounds+"splash-sound.ogg";
+var s_splashMusic = dirSounds+"backgroundMusic.ogg";
 
 //map screen
 var s_mapWindow = dirArt+"map-screen/BH-WM-Window.png";

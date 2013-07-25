@@ -80,10 +80,6 @@ var StagesLayer = cc.Layer.extend({
                 }
             }
 
-
-
-            cc.AudioEngine.getInstance().setMusicVolume(0.5);
-            cc.AudioEngine.getInstance().playMusic(s_mapMusic, true);
             bRet = true;
         }
 
