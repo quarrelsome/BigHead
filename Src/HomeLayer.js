@@ -56,7 +56,7 @@ var HomeLayer = cc.Layer.extend({
             this.schedule(this.update, 0.1);
 
             cc.AudioEngine.getInstance().setMusicVolume(0.5);
-            cc.AudioEngine.getInstance().playMusic(s_mainMainMusic, true);
+//            cc.AudioEngine.getInstance().playMusic(s_mainMainMusic, true);
             bRet = true;
         }
         sys.dumpRoot();
@@ -66,13 +66,6 @@ var HomeLayer = cc.Layer.extend({
 
     onNewGame:function (sender) {
         //load resources
-//        var scene = cc.Scene.create();
-//        var staticParallaxLayer = cc.Layer.create();
-//        var staticBackground = cc.Sprite.create(s_splashScreen);
-//        staticBackground.setPosition(winSize.width/2,winSize.height/2);
-//        staticParallaxLayer.addChild(staticBackground);
-//        scene.addChild(staticParallaxLayer);
-//        cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));
         cc.Loader.preload(g_mapScreen, function () {
             var scene = cc.Scene.create();
             scene.addChild(StagesLayer.create());
