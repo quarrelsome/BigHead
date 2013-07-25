@@ -131,44 +131,44 @@ var GameLayer = cc.Layer.extend({
             scene.addChild(rainLayer, 60);
         },
 
-        initGameStart: function(){
+        initGameStart: function () {
             var three = cc.Sprite.create(s_gameStartThree);
-            three.setPosition(winSize.width/2,winSize.height/2);
+            three.setPosition(winSize.width / 2, winSize.height / 2);
             three.setScale(2);
             this.addChild(three);
 
             three.runAction(cc.Sequence.create(
-                cc.ScaleTo.create(1,0.1),
-                cc.CallFunc.create(function() {
+                cc.ScaleTo.create(1, 0.1),
+                cc.CallFunc.create(function () {
                     three.removeFromParent();
                     var two = cc.Sprite.create(s_gameStartTwo);
-                    two.setPosition(winSize.width/2,winSize.height/2);
+                    two.setPosition(winSize.width / 2, winSize.height / 2);
                     two.setScale(2);
                     this.addChild(two);
 
                     two.runAction(cc.Sequence.create(
-                        cc.ScaleTo.create(0.5,0.1),
-                        cc.CallFunc.create(function() {
+                        cc.ScaleTo.create(0.5, 0.1),
+                        cc.CallFunc.create(function () {
                             two.removeFromParent();
                             var one = cc.Sprite.create(s_gameStartOne);
-                            one.setPosition(winSize.width/2,winSize.height/2);
+                            one.setPosition(winSize.width / 2, winSize.height / 2);
                             one.setScale(2);
                             this.addChild(one);
 
                             one.runAction(cc.Sequence.create(
-                                cc.ScaleTo.create(0.5,0.1),
-                                cc.CallFunc.create(function() {
+                                cc.ScaleTo.create(0.5, 0.1),
+                                cc.CallFunc.create(function () {
                                     one.removeFromParent();
                                     var ready = cc.Sprite.create(s_gameStartReady);
-                                    ready.setPosition(winSize.width/2,winSize.height/2);
+                                    ready.setPosition(winSize.width / 2, winSize.height / 2);
                                     ready.setScale(2);
                                     this.addChild(ready);
 
                                     ready.runAction(cc.Sequence.create(
-                                        cc.ScaleTo.create(0.5,0.1),
-                                        cc.CallFunc.create(function() {
+                                        cc.ScaleTo.create(0.5, 0.1),
+                                        cc.CallFunc.create(function () {
                                             ready.removeFromParent();
-                                            this._isStartAnimationFinished=true;
+                                            this._isStartAnimationFinished = true;
                                         }, this)
                                     ));
                                 }, this)
@@ -203,7 +203,7 @@ var GameLayer = cc.Layer.extend({
             this._playerBoost.runAction(cc.MoveTo.create(1.8, cc.p(-30, winSize.height / 2 - 20)));
 
             boostEffect.runAction(cc.Sequence.create(
-                cc.MoveTo.create(1.9, cc.p(boostEffect.getContentSize().width - 160 , winSize.height / 2)),
+                cc.MoveTo.create(1.9, cc.p(boostEffect.getContentSize().width - 160, winSize.height / 2)),
                 cc.FadeOut.create(0.25),
                 cc.CallFunc.create(function () {
                     boostEffect.removeFromParent();
@@ -253,32 +253,32 @@ var GameLayer = cc.Layer.extend({
                 this._buildingParallax.update(dt * (this._layerSpeed - 30), this._distanceTravelled);
                 this._buildingFrontParallax.update(dt * (this._layerSpeed - 20));
 
-                if(this._isStartAnimationFinished){
+                if (this._isStartAnimationFinished) {
                     if (this._enemies.length == 0 && this._player.alive) {
                         this.addEnemy();
                     }
 
-                if (this._powerUpDistance == 0 && this._powerUp == null) {
-                    this.addPowerUp();
-                }
-                else if (this._powerUp != null) {
-                    this._powerUp.update(dt);
-                    this.detectPlayerPowerUpCollision();
-                    if (this._powerUp != null) {
-                        if (this._powerUp.getPositionX() < this._player.getPositionX() - this._player.getContentSize().width / 2 - 30) {
-                            this._powerUp.removeFromParent();
-                            delete this._powerUp;
+                    if (this._powerUpDistance == 0 && this._powerUp == null) {
+                        this.addPowerUp();
+                    }
+                    else if (this._powerUp != null) {
+                        this._powerUp.update(dt);
+                        this.detectPlayerPowerUpCollision();
+                        if (this._powerUp != null) {
+                            if (this._powerUp.getPositionX() < this._player.getPositionX() - this._player.getContentSize().width / 2 - 30) {
+                                this._powerUp.removeFromParent();
+                                delete this._powerUp;
+                            }
                         }
                     }
-                }
 
-                if (this._player.alive) {
-                    this.moveLayer(dt);
-                    this._player.update(dt, this._gameSate.score);
-                    this.detectPlayerCollision(dt);
-                }
-                  
-                   for (var i=0; i < this._enemies.length; i++) {
+                    if (this._player.alive) {
+                        this.moveLayer(dt);
+                        this._player.update(dt, this._gameSate.score);
+                        this.detectPlayerCollision(dt);
+                    }
+
+                    for (var i = 0; i < this._enemies.length; i++) {
                         this._enemies[i].update(dt);
                     }
 
@@ -560,7 +560,7 @@ var GameLayer = cc.Layer.extend({
                             if (this._enemiesHit == 0) {
                                 this._playerHitLocationY = this._player.getPositionY();
                             }
-                            this._isEnemyFireEnabled = false;
+                            //this._isEnemyFireEnabled = false;
 
                             this._enemiesHit++;
                         }
@@ -636,19 +636,21 @@ var GameLayer = cc.Layer.extend({
             }
             if (playerHit) {
                 if (this._player.hit()) {
-                    this._damageRed = cc.Sprite.create(s_damageRed);
-                    this._damageRed.setPosition(this._player.getPositionX() - this._player.getContentSize().width / 2 - 30 + winSize.width / 2, winSize.height / 2);
-                    this.addChild(this._damageRed);
+                    if (this._damageRed == null) {
+                        this._damageRed = cc.Sprite.create(s_damageRed);
+                        this._damageRed.setPosition(this._player.getPositionX() - this._player.getContentSize().width / 2 - 30 + winSize.width / 2, winSize.height / 2);
+                        this.addChild(this._damageRed);
 
-                    this._damageRed.runAction(
-                        cc.Sequence.create(
-                            cc.Blink.create(0.8, 5),
-                            cc.CallFunc.create(function () {
-                                this._damageRed.removeFromParent();
-                                this._damageRed = null;
-                            }, this)
-                        )
-                    );
+                        this._damageRed.runAction(
+                            cc.Sequence.create(
+                                cc.Blink.create(0.8, 5),
+                                cc.CallFunc.create(function () {
+                                    this._damageRed.removeFromParent();
+                                    this._damageRed = null;
+                                }, this)
+                            )
+                        );
+                    }
                 }
             }
         },
