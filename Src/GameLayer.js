@@ -21,6 +21,7 @@ GameState.prototype.reset = function () {
 
 var GameLayer = cc.Layer.extend({
         _player: null,
+        _playerBoost: null,
         _damageRed: null,
         _time: 0,
         _enemies: [],
@@ -134,6 +135,10 @@ var GameLayer = cc.Layer.extend({
             this._player.setPosition(0 - this._player.getContentSize().width / 2, winSize.height / 2);
             this.addChild(this._player, this._player.tag);
 
+            this._playerBoost = cc.ParticleSystem.create(s_playerBoost);
+            this._playerBoost.setPosition(0 - this._player.getContentSize().width * 2, winSize.height/2 - 20);
+            this.addChild(this._playerBoost);
+
             var boostEffect = cc.Sprite.create(s_boostEffect);
             boostEffect.setPosition(0 - boostEffect.getContentSize().width/2 + 30, winSize.height / 2);
             this.addChild(boostEffect);
@@ -145,6 +150,8 @@ var GameLayer = cc.Layer.extend({
             this._player.runAction(cc.Sequence.create(
                 cc.MoveTo.create(1.8, cc.p(this._player.getContentSize().width / 2 + 30, winSize.height / 2))
             ));
+
+            this._playerBoost.runAction(cc.MoveTo.create(1.8, cc.p(-30, winSize.height/2 - 20)));
 
             boostEffect.runAction(cc.Sequence.create(
                 cc.MoveTo.create(1.9, cc.p(boostEffect.getContentSize().width + 50, winSize.height / 2)),
@@ -315,6 +322,8 @@ var GameLayer = cc.Layer.extend({
             if (this._player.getPositionX() - this._player.getContentSize().width / 2 + winSize.width - 30 <= enemyLocation) {
                 this.setPositionX(this.getPositionX() - (this._layerSpeed * dt));
                 this._player.setPositionX(this._player.getPositionX() + (this._layerSpeed * dt));
+                this._playerBoost.setPositionX(this._playerBoost.getPositionX() + (this._layerSpeed * dt));
+
                 if (this._damageRed)
                     this._damageRed.setPositionX(this._damageRed.getPositionX() + (this._layerSpeed * dt));
                 if (this._enemiesHit == 0) {

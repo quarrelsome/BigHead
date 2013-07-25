@@ -73,6 +73,7 @@ var s_mainMainMusic = dirSounds + "backgroundMusic.ogg";
 //plist
 var s_player_plist = dirArt +  dirPlayer + "player.plist";
 var s_player2_plist = dirArt +  dirPlayer + "player2.plist";
+var s_playerBoost = dirArt + dirPlayer + "playerBoost.plist";
 
 var s_enemy_plist = dirArt +  dirEnemy + "enemy.plist";
 var s_explosionFire = dirArt + dirEnemy + "explosionFire.plist";
@@ -183,6 +184,7 @@ var g_ressources = [
     {src:s_damageRed},
     {src:s_boostEffect},
     {src:s_speedEffect},
+    {src:s_playerBoost},
 	{src:s_explosion},
     {src:s_explosionSmoke},
     {src:s_sloMo},

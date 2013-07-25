@@ -66,25 +66,32 @@ var Player = cc.Sprite.extend({
     },
 
     updatePosition: function (dt) {
-        var position = this.getPosition();
-        if (KEYS[cc.KEY.up]) {
-            var nextPositionY = position.y + (dt * this.speed) + (this.speedBoost * this.speed);
-            if (nextPositionY + this.getContentSize().height / 2 <= winSize.height)
-                position.y = nextPositionY;
-        }
-        else if (KEYS[cc.KEY.down]) {
-            nextPositionY = position.y - (dt * this.speed) - (this.speedBoost * this.speed);
-            if (nextPositionY >= this.getContentSize().height / 2)
-                position.y = nextPositionY;
-        } else if (!KEYS[cc.KEY.space]) {
-            if (this.currentState != 0) {
-                nextPositionY = position.y - (dt * this.dropSpeed);
-                if (nextPositionY >= this.getContentSize().height / 2)
+        if (this.currentState != 0) {
+            var position = this.getPosition();
+            var playerBoostPositionY = this._parent._playerBoost.getPositionY();
+            if (KEYS[cc.KEY.up]) {
+                var nextPositionY = position.y + (dt * this.speed) + (this.speedBoost * this.speed);
+                if (nextPositionY + this.getContentSize().height / 2 <= winSize.height) {
                     position.y = nextPositionY;
+                    this._parent._playerBoost.setPositionY(playerBoostPositionY + (dt * this.speed) + (this.speedBoost * this.speed));
+                }
             }
-        }
+            else if (KEYS[cc.KEY.down]) {
+                nextPositionY = position.y - (dt * this.speed) - (this.speedBoost * this.speed);
+                if (nextPositionY >= this.getContentSize().height / 2) {
+                    position.y = nextPositionY;
+                    this._parent._playerBoost.setPositionY(playerBoostPositionY - (dt * this.speed) - (this.speedBoost * this.speed));
+                }
+            } else if (!KEYS[cc.KEY.space]) {
+                nextPositionY = position.y - (dt * this.dropSpeed);
+                if (nextPositionY >= this.getContentSize().height / 2) {
+                    position.y = nextPositionY;
+                    this._parent._playerBoost.setPositionY(playerBoostPositionY - (dt * this.dropSpeed));
+                }
+            }
 
-        this.setPosition(position);
+            this.setPosition(position);
+        }
     },
 
     changeFrame: function () {
