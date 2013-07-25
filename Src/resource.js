@@ -128,6 +128,12 @@ var s_gameOverTitle = dirArt +"game-over/EM-gameover-text.png";
 var s_gameOverWin = dirArt +"game-over/EM-Win-text.png";
 var s_gameOverLost = dirArt +"game-over/EM-Lost-text.png";
 
+//game start
+var s_gameStartOne = dirArt +"game-start/1.png";
+var s_gameStartTwo = dirArt +"game-start/2.png";
+var s_gameStartThree = dirArt +"game-start/3.png";
+var s_gameStartReady = dirArt +"game-start/ready.png";
+
 var g_splashScreen = [
     {src:s_splashBg},
     {src:s_splashLogo},
@@ -225,7 +231,11 @@ var g_ressources = [
     {src:s_pauseScreenMenuBtnPress},
     {src:s_gameOverTitle},
     {src:s_gameOverWin},
-    {src:s_gameOverLost}
+    {src:s_gameOverLost},
+    {src:s_gameStartOne},
+    {src:s_gameStartTwo},
+    {src:s_gameStartThree},
+    {src:s_gameStartReady}
 ];
 
 var g_clouds = [
