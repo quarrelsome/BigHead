@@ -31,6 +31,50 @@ var BarSize = {
 
 DISTANCELIMIT = 10000;
 
+var gameLevels =[
+    {
+        targets:5,
+        bigEnemyArmour:3
+    },
+    {
+        targets:8,
+        bigEnemyArmour:4
+    },
+    {
+        targets:11,
+        bigEnemyArmour:5
+    },
+    {
+        targets:14,
+        bigEnemyArmour:6
+    },
+    {
+        targets:17,
+        bigEnemyArmour:7
+    },
+    {
+        targets:20,
+        bigEnemyArmour:8
+    },
+    {
+        targets:23,
+        bigEnemyArmour:9
+    },
+    {
+        targets:26,
+        bigEnemyArmour:10
+    },
+    {
+        targets:29,
+        bigEnemyArmour:11
+    },
+    {
+        targets:32,
+        bigEnemyArmour:12
+    }
+
+];
+
 function PostDataUsingXmlHttpRequest(url){
     var XmlHttp = new XMLHttpRequest();
     XmlHttp.open("PUT", url, false);
