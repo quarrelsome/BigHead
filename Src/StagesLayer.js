@@ -36,7 +36,7 @@ var StagesLayer = cc.Layer.extend({
 
             for(var i=0;i<GAMEMAXLEVEL;i++){
                 var locationDetails = g_locations[i];
-                if(i<PLAYERCURRENTLOCATION){
+                if(i<(PLAYERCURRENTLOCATION-1)){
                     var locationTexture = cc.TextureCache.getInstance().addImage(s_mapCompletedLevel);
                     var location = cc.Sprite.createWithTexture(locationTexture);
                     location.setPosition(locationDetails.map.position[0],locationDetails.map.position[1]);
@@ -47,7 +47,7 @@ var StagesLayer = cc.Layer.extend({
                     locationName.setPosition(locationDetails.map.position[0]+location.getContentSize().width+35,locationDetails.map.position[1]);
                     this.addChild(locationName)
                 }
-                else if(i==PLAYERCURRENTLOCATION){
+                else if(i==(PLAYERCURRENTLOCATION-1)){
 //                    var newGameNormal = cc.Sprite.create(s_mapCurrentLevel);
 //                    var newGameSelected = cc.Sprite.create(s_mapCurrentLevelPressed);
 //                    var newGameDisabled = cc.Sprite.create(s_mapCurrentLevelPressed);

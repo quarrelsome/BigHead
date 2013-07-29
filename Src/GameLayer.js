@@ -57,7 +57,7 @@ var GameLayer = cc.Layer.extend({
         _distanceTravelled: 0,
         _gameSate: null,
         _hudLayer: null,
-        _layerSpeed: 100,
+        _layerSpeed: 120,
         _layerSpeedIncreaseFactor: 20,
         _location: 0,
         _isStartAnimationFinished: false,
@@ -535,6 +535,7 @@ var GameLayer = cc.Layer.extend({
                             if (enemy.isTarget || this._enemyLifeTime > 8) {
                                 if (!enemy.hitSurvive()) {
                                     if (enemy.isTarget) {
+                                        this._hudLayer.displayAmazing();
                                         this._gameSate.score += 25;
                                         this._isTargetDestroyed = true;
                                         this._enemyLifeTime = 9;

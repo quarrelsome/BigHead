@@ -215,7 +215,8 @@ var Player = cc.Sprite.extend({
         this.runAction(cc.Sequence.create(cc.DelayTime.create(1.15), moveDown,
             cc.CallFunc.create(function () {
                 this.currentState = 3;
-                PostDataUsingXmlHttpRequest(this.score);
+                var url = URL+'api/user/'+PLAYERID+'/score/'+this.score;
+                PostDataUsingXmlHttpRequest(url);
                 var scene = cc.Scene.create();
                 scene.addChild(GameOver.create(false));
                 cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));
