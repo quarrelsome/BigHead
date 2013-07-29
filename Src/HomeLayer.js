@@ -73,7 +73,6 @@ var HomeLayer = cc.Layer.extend({
             cc.Loader.preload(g_ressources, function () {
                 scene = cc.Scene.create();
                 scene.addChild(GameLayer.create(scene));
-                cc.AudioEngine.getInstance().setMusicVolume(0.2);
                 cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1, scene));
             }, this);
         },this);

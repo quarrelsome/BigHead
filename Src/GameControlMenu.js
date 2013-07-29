@@ -118,7 +118,8 @@ var GameControlMenu = cc.Layer.extend({
     },
 
     onRestart:function(sender){
-        PostDataUsingXmlHttpRequest(this.lbScore.getString());
+        var url = URL+'api/user/'+PLAYERID+'/score/'+this.lbScore.getString();
+        PostDataUsingXmlHttpRequest(url);
         var scene = cc.Scene.create();
         scene.addChild(GameLayer.create(scene));
         cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));

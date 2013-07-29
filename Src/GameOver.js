@@ -8,7 +8,7 @@ var GameOver = cc.Layer.extend({
 
             //raheel you can change music from here just replace the file.
             cc.AudioEngine.getInstance().setMusicVolume(0.5);
-            cc.AudioEngine.getInstance().playMusic(s_mainMainMusic, true);
+            //cc.AudioEngine.getInstance().playMusic(s_mainMainMusic, true);
 
             var staticBackground = cc.Sprite.create(s_menuBackground);
             staticBackground.setAnchorPoint(cc.p(0,0));

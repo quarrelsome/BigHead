@@ -65,6 +65,7 @@ var GameLayer = cc.Layer.extend({
         init: function (scene, game_state) {
             var bRet = false;
             if (this._super()) {
+                cc.AudioEngine.getInstance().setMusicVolume(0.2);
                 this._location = g_locations[PLAYERCURRENTLOCATION];
                 this._gameSate = game_state;
                 this._enemies = [];
