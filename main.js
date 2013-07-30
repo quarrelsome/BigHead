@@ -18,7 +18,7 @@ var cocos2dApp = cc.Application.extend({
 
         var url = URL+'api/user/'+PLAYERID+'/details';
         GetDataUsingXmlHttpRequest(url, function(){
-            var userInfo = {level:1};
+            var userInfo = {level:1,game_level:1};
             if (XmlHttp.readyState == 4 && XmlHttp.status == 200) {
                 try{
                     userInfo = JSON.parse(XmlHttp.responseText);
@@ -31,6 +31,7 @@ var cocos2dApp = cc.Application.extend({
                 alert("Network Connectivity Issue: Unable to get your level");
 
             PLAYERLEVEL = userInfo.level;
+            PLAYERCURRENTLOCATION = userInfo.game_level ? userInfo.game_level : 1;
         })
 
         cc.LoaderScene.preload(g_splashScreen, function () {

@@ -60,7 +60,7 @@ var GameLayer = cc.Layer.extend({
         _distanceTravelled: 0,
         _gameSate: null,
         _hudLayer: null,
-        _layerSpeed: 100,
+        _layerSpeed: 120,
         _layerSpeedIncreaseFactor: 20,
         _location: 0,
         _isStartAnimationFinished: false,
@@ -68,6 +68,7 @@ var GameLayer = cc.Layer.extend({
         init: function (scene, game_state) {
             var bRet = false;
             if (this._super()) {
+                cc.AudioEngine.getInstance().setMusicVolume(0.2);
                 this._location = g_locations[PLAYERCURRENTLOCATION];
                 this._gameSate = game_state;
                 this._enemies = [];
@@ -570,6 +571,7 @@ var GameLayer = cc.Layer.extend({
                             if (enemy.isTarget || this._enemyLifeTime > 8) {
                                 if (!enemy.hitSurvive()) {
                                     if (enemy.isTarget) {
+                                        this._hudLayer.displayAmazing();
                                         this._gameSate.score += 25;
                                         this._isTargetDestroyed = true;
                                         this._enemyLifeTime = 9;

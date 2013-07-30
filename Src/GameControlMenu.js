@@ -4,7 +4,7 @@ var GameControlMenu = cc.Layer.extend({
     _tag: 100,
     lbScore: null,
     _healthBar: null,
-    lbQuestion: null,
+    lbQuestionResult: null,
     _pauseLayer: null,
     _lbQuestionTitle: null,
 
@@ -42,9 +42,10 @@ var GameControlMenu = cc.Layer.extend({
             this.addChild(this.lbScore);
             this.lbScore.setPosition(160 , winSize.height - 20);
 
-//            this.lbQuestion = cc.LabelBMFont.create("0", s_scoreFontHd);
-//            this.addChild(this.lbQuestion);
-//            this.lbQuestion.setPosition(487 , winSize.height - 40);
+            this.lbQuestionResult = cc.LabelBMFont.create("", s_scoreFontHd);
+            this.lbQuestionResult.setScale(1.2);
+            this.addChild(this.lbQuestionResult);
+            this.lbQuestionResult.setPosition(720 , winSize.height - 40);
 
             this._lbQuestionTitle = cc.LabelBMFont.create("", s_scoreFontHd);
             this._lbQuestionTitle.setScale(2);
@@ -117,14 +118,16 @@ var GameControlMenu = cc.Layer.extend({
     },
 
     onRestart:function(sender){
-        PostDataUsingXmlHttpRequest(this.lbScore.getString());
+        var url = URL+'api/user/'+PLAYERID+'/score/'+this.lbScore.getString();
+        PostDataUsingXmlHttpRequest(url);
         var scene = cc.Scene.create();
         scene.addChild(GameLayer.create(scene));
         cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));
     },
 
     onMenu:function (pSender) {
-        PostDataUsingXmlHttpRequest(this.lbScore.getString());
+        var url = URL+'api/user/'+PLAYERID+'/score/'+this.lbScore.getString();
+        PostDataUsingXmlHttpRequest(url);
         var scene = cc.Scene.create();
         scene.addChild(HomeLayer.create());
         cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5,scene));
@@ -139,6 +142,14 @@ var GameControlMenu = cc.Layer.extend({
                 this._lbQuestionTitle.setScale(1);
             }, this)
         ));
+    },
+    displayAmazing:function(){
+        this.lbQuestionResult.setString("AWESOME");
+        this.lbQuestionResult.runAction(cc.Sequence.create(cc.Blink.create(1,4),
+            cc.CallFunc.create(function() {
+                this.lbQuestionResult.setString("");
+            }, this)
+        ))
     }
 });
 

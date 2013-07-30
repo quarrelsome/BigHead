@@ -7,9 +7,9 @@ MW.SOUND = true;
 URL = "http://abacus-server.herokuapp.com/";
 
 //
-PLAYERLEVEL = 0;
+PLAYERLEVEL = 1;
 PLAYERID = 1;
-PLAYERCURRENTLOCATION = 0;
+PLAYERCURRENTLOCATION = 1;
 GAMEMAXLEVEL = 10;
 
 var EnemyType = [
@@ -31,8 +31,51 @@ var BarSize = {
 
 DISTANCELIMIT = 10000;
 
-var PostDataUsingXmlHttpRequest = function(score){
-    var url = URL+'api/user/'+PLAYERID+'/score/'+score;
+var gameLevels =[
+    {
+        targets:5,
+        bigEnemyArmour:3
+    },
+    {
+        targets:8,
+        bigEnemyArmour:4
+    },
+    {
+        targets:11,
+        bigEnemyArmour:5
+    },
+    {
+        targets:14,
+        bigEnemyArmour:6
+    },
+    {
+        targets:17,
+        bigEnemyArmour:7
+    },
+    {
+        targets:20,
+        bigEnemyArmour:8
+    },
+    {
+        targets:23,
+        bigEnemyArmour:9
+    },
+    {
+        targets:26,
+        bigEnemyArmour:10
+    },
+    {
+        targets:29,
+        bigEnemyArmour:11
+    },
+    {
+        targets:32,
+        bigEnemyArmour:12
+    }
+
+];
+
+function PostDataUsingXmlHttpRequest(url){
     var XmlHttp = new XMLHttpRequest();
     XmlHttp.open("PUT", url, false);
     XmlHttp.onreadystatechange=function(){
