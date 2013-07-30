@@ -57,8 +57,8 @@ var GameLayer = cc.Layer.extend({
         _distanceTravelled: 0,
         _gameSate: null,
         _hudLayer: null,
-        _layerSpeed: 120,
-        _layerSpeedIncreaseFactor: 20,
+        _layerSpeed: 600,
+        _layerSpeedIncreaseFactor:10,
         _location: 0,
         _isStartAnimationFinished: false,
 
@@ -170,6 +170,7 @@ var GameLayer = cc.Layer.extend({
                                         cc.CallFunc.create(function () {
                                             ready.removeFromParent();
                                             this._isStartAnimationFinished = true;
+                                            this._layerSpeed = 140;
                                         }, this)
                                     ));
                                 }, this)
@@ -227,12 +228,12 @@ var GameLayer = cc.Layer.extend({
         },
 
         update: function (dt) {
-            if (this._distanceTravelled >= 29000) {
-                this._gameSate.state = STATE_GAMEOVER;
-                var scene = cc.Scene.create();
-                scene.addChild(GameOver.create(true));
-                cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));
-            }
+//            if (this._distanceTravelled >= 29000) {
+//                this._gameSate.state = STATE_GAMEOVER;
+//                var scene = cc.Scene.create();
+//                scene.addChild(GameOver.create(true));
+//                cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));
+//            }
 
             if (this._player.currentState == 3) {
                 this._gameSate.state = STATE_GAMEOVER;
