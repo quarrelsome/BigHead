@@ -205,7 +205,7 @@ var GameLayer = cc.Layer.extend({
                 cc.MoveTo.create(2, cc.p(this._player.getContentSize().width / 2 + 30, winSize.height / 2))
             ));
 
-            this._playerBoost.runAction(cc.MoveTo.create(1.8, cc.p(-30, winSize.height / 2 - 20)));
+            this._playerBoost.runAction(cc.MoveTo.create(1.8, cc.p(-15, winSize.height / 2 - 20)));
 
             boostEffect.runAction(cc.Sequence.create(
                 cc.MoveTo.create(1.9, cc.p(boostEffect.getContentSize().width - 160, winSize.height / 2)),
@@ -231,13 +231,6 @@ var GameLayer = cc.Layer.extend({
         },
 
         update: function (dt) {
-//            if (this._distanceTravelled >= 29000) {
-//                this._gameSate.state = STATE_GAMEOVER;
-//                var scene = cc.Scene.create();
-//                scene.addChild(GameOver.create(true));
-//                cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));
-//            }
-
             if (this._player.currentState == 3) {
                 this._gameSate.state = STATE_GAMEOVER;
             }
@@ -729,6 +722,8 @@ var GameLayer = cc.Layer.extend({
                             this._boss = null;
                             PLAYERCURRENTLOCATION++;
                             this._gameSate.state = STATE_GAMEOVER;
+                            var url = URL+'api/user/'+PLAYERID+'/level/'+PLAYERCURRENTLOCATION+'/score/'+this._gameSate.score;
+                            PostDataUsingXmlHttpRequest(url);
                             var scene = cc.Scene.create();
                             scene.addChild(GameOver.create(true));
                             cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));
