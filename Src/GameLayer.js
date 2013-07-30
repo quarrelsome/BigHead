@@ -262,7 +262,6 @@ var GameLayer = cc.Layer.extend({
 
                 if (this._isStartAnimationFinished) {
                     if (this._enemies.length == 0 && this._player.alive && this._boss == null) {
-                        cc.log(this._targetsDestroyed + " " + gameLevels[PLAYERCURRENTLOCATION-1].targets);
                         if (this._targetsDestroyed < gameLevels[PLAYERCURRENTLOCATION-1].targets)
                             this.addEnemy();
                         else {
