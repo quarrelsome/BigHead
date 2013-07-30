@@ -7,6 +7,7 @@ var GameControlMenu = cc.Layer.extend({
     lbQuestionResult: null,
     _pauseLayer: null,
     _lbQuestionTitle: null,
+    questionTime: null,
 
     init:function (gameState) {
         var bRet = false;
@@ -52,6 +53,11 @@ var GameControlMenu = cc.Layer.extend({
             this._lbQuestionTitle.setPosition(winSize.width/2 , winSize.height/2);
             this.addChild(this._lbQuestionTitle);
 
+            this.questionTime = cc.LabelBMFont.create("", s_scoreFontHd);
+            this.questionTime.setScale(0.5);
+            this.questionTime.setPosition(winSize.width/4 + 90, winSize.height - 30);
+            this.addChild(this.questionTime);
+
             bRet = true;
         }
         sys.dumpRoot();
@@ -61,6 +67,7 @@ var GameControlMenu = cc.Layer.extend({
     update: function(dt, gameUpdates){
         //cc.log("hud layer");
         this.lbScore.setString(gameUpdates.score);
+        this.questionTime.setString(gameUpdates.questionTime);
         this._healthBar.setScaleX(gameUpdates.health/100);
         return this._gameSate;
     },

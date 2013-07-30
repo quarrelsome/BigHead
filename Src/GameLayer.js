@@ -37,6 +37,7 @@ var GameLayer = cc.Layer.extend({
         _targetsDestroyed: 0,
         _totalEnemiesDestroyed: 0,
         _fireCount: 0,
+        _questionTime: 0,
 
         _enemyTotalFireWait: 2,
         _enemyLifeTime: 0,
@@ -246,7 +247,8 @@ var GameLayer = cc.Layer.extend({
                 this._gameSate.state = this._hudLayer.update(dt, {
                     score: this._gameSate.score,
                     travelledDistance: this._distanceTravelled,
-                    health: this._player.health
+                    health: this._player.health,
+                    questionTime: (this._questionTime == 0) ? "" : (this._questionTime).toFixed(2) + " seconds"
                 });
 
             if (this._gameSate.state == STATE_PLAYING) {
@@ -402,9 +404,13 @@ var GameLayer = cc.Layer.extend({
                 if (this._enemiesHit == 0) {
                     this._enemyLifeTime = 0;
                 }
+
+                this._questionTime = 0;
             } else {
-                if (!this._isTargetDestroyed)
+                if (!this._isTargetDestroyed) {
+                    this._questionTime += dt;
                     this._isEnemyFireEnabled = true;
+                }
 
                 if (this._powerUp != null)
                     this._powerUp.setPositionX(this._powerUp.getPositionX() - this._layerSpeed * dt);
@@ -475,6 +481,7 @@ var GameLayer = cc.Layer.extend({
             this._isEnemyFireEnabled = false;
             this._enemyBulletSpeed = getRandomInt(300,400);
             this._enemiesHit = 0;
+            this._isTargetDestroyed = false;
             this._enemyTotalFireWait = 2;
             this._layerSpeed += this._layerSpeedIncreaseFactor;
             this._enemyVerticalSpeed += this._enemyVerticalSpeedIncreaseFactor;
