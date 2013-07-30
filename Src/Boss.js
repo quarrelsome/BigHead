@@ -12,6 +12,7 @@ var Boss = cc.LayerColor.extend({
 
     ctor: function () {
         this._super();
+        this.life = gameLevels[PLAYERCURRENTLOCATION-1].bigEnemyArmour;
 
         this.ship = cc.Sprite.create(s_enemy1);
         this.ship.setAnchorPoint(this.getAnchorPoint());

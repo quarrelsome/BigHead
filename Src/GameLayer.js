@@ -259,7 +259,8 @@ var GameLayer = cc.Layer.extend({
 
                 if (this._isStartAnimationFinished) {
                     if (this._enemies.length == 0 && this._player.alive && this._boss == null) {
-                        if (this._targetsDestroyed < 1 + (1-1)*3) //change after debug
+                        cc.log(this._targetsDestroyed + " " + gameLevels[PLAYERCURRENTLOCATION-1].targets);
+                        if (this._targetsDestroyed < gameLevels[PLAYERCURRENTLOCATION-1].targets)
                             this.addEnemy();
                         else {
                             this._player.powerUp = null;
@@ -726,6 +727,7 @@ var GameLayer = cc.Layer.extend({
                             this._boss.removeFromParent();
                             this._boss = null;
                             PLAYERCURRENTLOCATION++;
+                            this._gameSate.state = STATE_GAMEOVER;
                             var scene = cc.Scene.create();
                             scene.addChild(GameOver.create(true));
                             cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));
