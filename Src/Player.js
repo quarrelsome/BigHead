@@ -51,6 +51,7 @@ var Player = cc.Sprite.extend({
         if (this.fireWait > 0) {
             this.fireWait -= dt;
         }
+
         if (this.blinkNumber > 0) {
             this.blink();
         }

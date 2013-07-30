@@ -5,25 +5,25 @@ var Enemy = cc.LayerColor.extend({
     stick2: null,
     life: 1,
     value: -1,
+    enemyIndex: -1,
 	speed: 100,
-	bulletSpeed: 500,
 	tag: 3,
     isTarget: false,
 	runMoveRatioY: 0,
     fireWaitCompleted: 0,
-    bullets: [],
     displacementTop: 0,
     displacementBottom: 0,
     displacementDirection: 0,
     blinkNumber: 0,
     isHit: false,
 
-	ctor: function (enemyValue, enemyLife) {
+	ctor: function (enemyValue, enemyLife, enemyIndex) {
         this._super();
 
         this.setTag(this.tag);
         this.value = enemyValue;
         this.life = enemyLife;
+        this.enemyIndex = enemyIndex;
 
         cc.SpriteFrameCache.getInstance().addSpriteFrames(s_enemy_plist, s_enemy);
 
@@ -65,8 +65,6 @@ var Enemy = cc.LayerColor.extend({
 
         this.setContentSize(cc.size(this.ship.getContentSize().width, this.ship.getContentSize().height));
         this.fireWaitCompleted = 0;
-        this.bulletSpeed = getRandomInt(200, 300);
-
     },
 
     configure: function() {
@@ -124,7 +122,7 @@ var Enemy = cc.LayerColor.extend({
         var bullet = cc.Sprite.create(s_enemy_bullet);
         bullet.setPosition(this.getPositionX() - 15, this.getPositionY() + this.getContentSize().height/2);
         bullet.setTag(4);
-        this.bullets.push(bullet);
+        this._parent._enemyBullets.push(bullet);
         return bullet;
     },
 

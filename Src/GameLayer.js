@@ -25,6 +25,9 @@ var GameLayer = cc.Layer.extend({
         _damageRed: null,
         _time: 0,
         _enemies: [],
+        _enemyBullets: [],
+        _enemyBulletSpeed: 0,
+        _boss: null,
         _blasts: [],
         _currentQuestion: 0,
         _powerUp: null,
@@ -256,8 +259,14 @@ var GameLayer = cc.Layer.extend({
                 this._buildingFrontParallax.update(dt * (this._layerSpeed - 20));
 
                 if (this._isStartAnimationFinished) {
-                    if (this._enemies.length == 0 && this._player.alive) {
-                        this.addEnemy();
+                    if (this._enemies.length == 0 && this._player.alive && this._boss == null) {
+                        cc.log(this._targetsDestroyed + " " + gameLevels[PLAYERCURRENTLOCATION-1].targets);
+                        if (this._targetsDestroyed < gameLevels[PLAYERCURRENTLOCATION-1].targets)
+                            this.addEnemy();
+                        else {
+                            this._player.powerUp = null;
+                            this.addBoss();
+                        }
                     }
 
                     if (this._powerUpDistance == 0 && this._powerUp == null) {
@@ -280,34 +289,40 @@ var GameLayer = cc.Layer.extend({
                         this.detectPlayerCollision(dt);
                     }
 
-                    for (var i = 0; i < this._enemies.length; i++) {
-                        this._enemies[i].update(dt);
-                    }
-
-                    if (this._enemyLifeTime > 9) {
-                        if (this._isEnemyInAttackMode) {
-                            this._isEnemyInAttackMode = false;
-                            this._playerHitLocationY = this._player.getPositionY();
-                        }
-                        this.enemyRun(dt);
-                    }
-                    else if (this._enemyLifeTime > 8) {
-                        this._isEnemyFireEnabled = false;
-                    }
-                    else if (this._enemyLifeTime > 6) {
-                        this._isEnemyInAttackMode = true;
-                        this._enemyTotalFireWait = 0.75;
-                        if (this._player.powerUp != null) {
-                            if (this._player.powerUp.type == 1) {
-                                this._enemyTotalFireWait = 1.25;
-                            }
-                        }
-                    }
-
                     this.enemyFire(dt);
                     this.updateBulletPosition(dt);
                     this.updateEnemyBulletPosition(dt);
-                    this.detectEnemyCollision(dt);
+
+                    if (this._boss == null) {
+                        for (var i = 0; i < this._enemies.length; i++) {
+                            this._enemies[i].update(dt);
+                        }
+
+                        if (this._enemyLifeTime > 9) {
+                            if (this._isEnemyInAttackMode) {
+                                this._isEnemyInAttackMode = false;
+                                this._playerHitLocationY = this._player.getPositionY();
+                            }
+                            this.enemyRun(dt);
+                        }
+                        else if (this._enemyLifeTime > 8) {
+                            this._isEnemyFireEnabled = false;
+                        }
+                        else if (this._enemyLifeTime > 6) {
+                            this._isEnemyInAttackMode = true;
+                            this._enemyTotalFireWait = 0.75;
+                            if (this._player.powerUp != null) {
+                                if (this._player.powerUp.type == 1) {
+                                    this._enemyTotalFireWait = 1.25;
+                                }
+                            }
+                        }
+                        this.detectEnemyCollision(dt);
+                    }
+                    else {
+                        this._boss.update(dt);
+                        this.detectBossCollision(dt);
+                    }
 
                     this._distanceTravelled = this._distanceTravelled + Math.round(this._layerSpeed * dt);
                 }
@@ -363,15 +378,20 @@ var GameLayer = cc.Layer.extend({
         },
 
         moveLayer: function (dt) {
-            var enemyLocation = this._enemies[0].getPositionX() + this._enemies[0].getContentSize().width;
+            if (this._boss == null) {
+                var enemyLocation = this._enemies[0].getPositionX() + this._enemies[0].getContentSize().width;
 
-            if (this._enemies.length > 1) {
-                for (var i = 1; i < this._enemies.length; i++) {
-                    var otherEnemyLocation = this._enemies[i].getPositionX() + this._enemies[i].getContentSize().width;
-                    if (otherEnemyLocation > enemyLocation)
-                        enemyLocation = otherEnemyLocation;
+                if (this._enemies.length > 1) {
+                    for (var i = 1; i < this._enemies.length; i++) {
+                        var otherEnemyLocation = this._enemies[i].getPositionX() + this._enemies[i].getContentSize().width;
+                        if (otherEnemyLocation > enemyLocation)
+                            enemyLocation = otherEnemyLocation;
+                    }
                 }
+            } else {
+                enemyLocation = this._boss.getPositionX() + this._boss.getContentSize().width;
             }
+
             if (this._player.getPositionX() - this._player.getContentSize().width / 2 + winSize.width - 30 <= enemyLocation) {
                 this.setPositionX(this.getPositionX() - (this._layerSpeed * dt));
                 this._player.setPositionX(this._player.getPositionX() + (this._layerSpeed * dt));
@@ -388,6 +408,11 @@ var GameLayer = cc.Layer.extend({
 
                 if (this._powerUp != null)
                     this._powerUp.setPositionX(this._powerUp.getPositionX() - this._layerSpeed * dt);
+
+                if (this._boss != null) {
+                    if (this._boss.state == 0)
+                        this._boss.state = 1;
+                }
             }
         },
 
@@ -432,7 +457,7 @@ var GameLayer = cc.Layer.extend({
                 while (!unique);
 
                 enemyValues.push(enemyValue);
-                var enemy = new Enemy(enemyValue, enemyLife);
+                var enemy = new Enemy(enemyValue, enemyLife, i);
 
                 var minY = ((winSize.height / totalEnemies) * i) + 30;
                 var maxY = ((winSize.height / totalEnemies) * (i + 1)) - enemy.getContentSize().height - 30;
@@ -448,6 +473,7 @@ var GameLayer = cc.Layer.extend({
             }
 
             this._isEnemyFireEnabled = false;
+            this._enemyBulletSpeed = getRandomInt(300,400);
             this._enemiesHit = 0;
             this._enemyTotalFireWait = 2;
             this._layerSpeed += this._layerSpeedIncreaseFactor;
@@ -465,6 +491,18 @@ var GameLayer = cc.Layer.extend({
                     this._enemyTotalFireWait = 3;
                 }
             }
+        },
+
+        addBoss: function () {
+            this._boss = new Boss();
+            var minY = 30;
+            var maxY = winSize.height - this._boss.getContentSize().height - 30;
+            var actualY = getRandomInt(minY, maxY);
+            this._boss.setPosition(this._player.getPositionX() + (winSize.width * 1.25) + this._boss.getContentSize().width, actualY);
+            this._boss.configure();
+            this._enemyBulletSpeed = getRandomInt(400,500);
+            this.addChild(this._boss);
+            this._hudLayer.setQuestionTitle("BOSS");
         },
 
         updateBulletPosition: function (dt) {
@@ -485,20 +523,18 @@ var GameLayer = cc.Layer.extend({
                     reductionFactor = 4;
                 }
             }
-            for (var i = 0; i < this._enemies.length; i++) {
-                var enemy = this._enemies[i];
-                for (var j = 0; j < enemy.bullets.length; j++) {
-                    var bullet = enemy.bullets[j];
-                    if (bullet.getPositionX() - this._player.getPositionX() + this._player.getContentSize().width < 0) {
-                        cc.ArrayRemoveObject(enemy.bullets, bullet);
-                        bullet.removeFromParent();
-                    }
 
-                    if (this._isEnemyInAttackMode) {
-                        bullet.setPositionX(bullet.getPositionX() - ((enemy.bulletSpeed + this._layerSpeed / 4 * 0.1) * dt * 1.5) / reductionFactor);
-                    } else {
-                        bullet.setPositionX(bullet.getPositionX() - ((enemy.bulletSpeed + this._layerSpeed / 4 * 0.1) * dt) / reductionFactor);
-                    }
+            for (var j = 0; j < this._enemyBullets.length; j++) {
+                var bullet = this._enemyBullets[j];
+                if (bullet.getPositionX() - this._player.getPositionX() + this._player.getContentSize().width < 0) {
+                    cc.ArrayRemoveObject(this._enemyBullets, bullet);
+                    bullet.removeFromParent();
+                }
+
+                if (this._isEnemyInAttackMode) {
+                    bullet.setPositionX(bullet.getPositionX() - ((this._enemyBulletSpeed + this._layerSpeed / 4 * 0.1) * dt * 1.5) / reductionFactor);
+                } else {
+                    bullet.setPositionX(bullet.getPositionX() - ((this._enemyBulletSpeed + this._layerSpeed / 4 * 0.1) * dt) / reductionFactor);
                 }
             }
         },
@@ -617,26 +653,25 @@ var GameLayer = cc.Layer.extend({
                     }
                     playerHit = true;
                 }
-
-                for (var j = 0; j < enemy.bullets.length; j++) {
-                    var bullet = enemy.bullets[j];
-                    //var bulletRect = bullet.getBoundingBox();
-                    var bulletRect = new cc.Rect(
-                        bullet.getPositionX() - bullet.getContentSize().width / 2 + 20,
-                        bullet.getPositionY() - bullet.getContentSize().height / 2 + 10,
-                        bullet.getContentSize().width - 40,
-                        bullet.getContentSize().height - 20
-                    );
-
-                    if ((cc.rectIntersectsRect(playerRect, bulletRect)) && (this._player.blinkNumber == 0)) {
-                        cc.ArrayRemoveObject(enemy.bullets, bullet);
-                        bullet.removeFromParent();
-                        cc.AudioEngine.getInstance().playEffect(s_playerGetsHitEffect);
-                        playerHit = true;
-                    }
-                }
-
             }
+            for (var j = 0; j < this._enemyBullets.length; j++) {
+                var bullet = this._enemyBullets[j];
+                //var bulletRect = bullet.getBoundingBox();
+                var bulletRect = new cc.Rect(
+                    bullet.getPositionX() - bullet.getContentSize().width / 2 + 20,
+                    bullet.getPositionY() - bullet.getContentSize().height / 2 + 10,
+                    bullet.getContentSize().width - 40,
+                    bullet.getContentSize().height - 20
+                );
+
+                if ((cc.rectIntersectsRect(playerRect, bulletRect)) && (this._player.blinkNumber == 0)) {
+                    cc.ArrayRemoveObject(this._enemyBullets, bullet);
+                    bullet.removeFromParent();
+                    cc.AudioEngine.getInstance().playEffect(s_playerGetsHitEffect);
+                    playerHit = true;
+                }
+            }
+
             if (playerHit) {
                 if (this._player.hit()) {
                     if (this._damageRed == null) {
@@ -667,6 +702,39 @@ var GameLayer = cc.Layer.extend({
                 this._player.consumePowerUp(this._powerUp);
                 this._powerUp.removeFromParent();
                 delete this._powerUp;
+            }
+        },
+
+        detectBossCollision: function (dt) {
+            for (var i = 0; i < this._player.bullets.length; i++) {
+                var bullet = this._player.bullets[i];
+                var bulletRect = new cc.Rect(
+                    bullet.getPositionX() - bullet.getContentSize().width / 2 + 20,
+                    bullet.getPositionY() - bullet.getContentSize().height / 2 + 10,
+                    bullet.getContentSize().width - 40,
+                    bullet.getContentSize().height - 20
+                );
+
+                var bossRect = this._boss.getBoundingBox();
+                if (this._player.getPositionX() - this._player.getContentSize().width / 2 + winSize.width > this._boss.getPositionX()) {
+                    if (cc.rectIntersectsRect(bulletRect, bossRect)) {
+                        cc.ArrayRemoveObject(this._player.bullets, bullet);
+                        bullet.removeFromParent();
+
+                        if (!this._boss.hitSurvive()) {
+                            this._boss.die();
+                            cc.AudioEngine.getInstance().playEffect(s_wildLaughEffect);
+                            this._gameSate.score += 100;
+                            this._boss.removeFromParent();
+                            this._boss = null;
+                            PLAYERCURRENTLOCATION++;
+                            this._gameSate.state = STATE_GAMEOVER;
+                            var scene = cc.Scene.create();
+                            scene.addChild(GameOver.create(true));
+                            cc.Director.getInstance().replaceScene(cc.TransitionFade.create(0.5, scene));
+                        }
+                    }
+                }
             }
         }
     }
