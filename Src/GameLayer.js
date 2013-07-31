@@ -412,7 +412,7 @@ var GameLayer = cc.Layer.extend({
                 }
 
                 if (this._powerUp != null)
-                    this._powerUp.setPositionX(this._powerUp.getPositionX() - (this._layerSpeed * dt)*boost);
+                    this._powerUp.setPositionX(this._powerUp.getPositionX() - (this._layerSpeed * dt));
 
                 if (this._boss != null) {
                     if (this._boss.state == 0)
@@ -704,6 +704,7 @@ var GameLayer = cc.Layer.extend({
             var powerUpRect = this._powerUp.getBoundingBox();
 
             if (cc.rectIntersectsRect(playerRect, powerUpRect)) {
+                cc.log('player power');
                 this._player.powerUp = this._powerUp;
                 this._player.consumePowerUp(this._powerUp);
                 this._powerUp.removeFromParent();
