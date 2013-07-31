@@ -13,6 +13,7 @@ var Player = cc.Sprite.extend({
     fireWait: 2.25,
     currentState: 0,
     powerUp: null,
+    shield: null,
     alive: true,
     score: 0,
 
@@ -46,7 +47,19 @@ var Player = cc.Sprite.extend({
                 this.changeFrame();
         }
 
-        this.updatePosition(dt, score);
+        this.updatePosition(dt);
+        if (KEYS[cc.KEY.left]) {
+            if (this.shield == null) {
+                this.shield = cc.Sprite.create(s_boostEffect);
+                this.shield.setPosition(this.getPositionX(), this.getPositionY());
+                this._parent.addChild(this.shield);
+            }
+        } else {
+            if (this.shield) {
+                this.shield.removeFromParent();
+                this.shield = null;
+            }
+        }
 
         if (this.fireWait > 0) {
             this.fireWait -= dt;
@@ -70,11 +83,15 @@ var Player = cc.Sprite.extend({
         if (this.currentState != 0) {
             var position = this.getPosition();
             var playerBoostPositionY = this._parent._playerBoost.getPositionY();
+            if (this.shield)
+                var shieldPositionY = this.shield.getPositionY();
             if (KEYS[cc.KEY.up]) {
                 var nextPositionY = position.y + (dt * this.speed) + (this.speedBoost * this.speed);
                 if (nextPositionY + this.getContentSize().height / 2 <= winSize.height) {
                     position.y = nextPositionY;
                     this._parent._playerBoost.setPositionY(playerBoostPositionY + (dt * this.speed) + (this.speedBoost * this.speed));
+                    if (this.shield)
+                        this.shield.setPositionY(shieldPositionY + (dt * this.speed) + (this.speedBoost * this.speed));
                 }
             }
             else if (KEYS[cc.KEY.down]) {
@@ -82,12 +99,16 @@ var Player = cc.Sprite.extend({
                 if (nextPositionY >= this.getContentSize().height / 2) {
                     position.y = nextPositionY;
                     this._parent._playerBoost.setPositionY(playerBoostPositionY - (dt * this.speed) - (this.speedBoost * this.speed));
+                    if (this.shield)
+                        this.shield.setPositionY(shieldPositionY - (dt * this.speed) - (this.speedBoost * this.speed));
                 }
             } else if (!KEYS[cc.KEY.space]) {
                 nextPositionY = position.y - (dt * this.dropSpeed);
                 if (nextPositionY >= this.getContentSize().height / 2) {
                     position.y = nextPositionY;
                     this._parent._playerBoost.setPositionY(playerBoostPositionY - (dt * this.dropSpeed));
+                    if (this.shield)
+                        this.shield.setPositionY(shieldPositionY - (dt * this.dropSpeed));
                 }
             }
 
@@ -164,7 +185,7 @@ var Player = cc.Sprite.extend({
     },
 
     hit: function () {
-        if (this.powerUp == null || this.powerUp.type != 3) {
+        if ((this.shield == null) && (this.powerUp == null || this.powerUp.type != 3)) {
             var blast = cc.ParticleSystem.create(s_explosionFire);
             blast.setPosition(this.getPosition());
             this._parent.addChild(blast);

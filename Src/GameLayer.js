@@ -307,7 +307,7 @@ var GameLayer = cc.Layer.extend({
                             this._enemyTotalFireWait = 0.75;
                             if (this._player.powerUp != null) {
                                 if (this._player.powerUp.type == 1) {
-                                    this._enemyTotalFireWait = 1.25;
+                                    this._enemyTotalFireWait = 2;
                                 }
                             }
                         }
@@ -347,7 +347,7 @@ var GameLayer = cc.Layer.extend({
                     this._player.fireWait = 0.3;
                 }
             }
-            else if (e == cc.KEY.right) {
+            else if ((e == cc.KEY.left) || (e == cc.KEY.right)) {
                 KEYS[e] = true;
             }
         },
@@ -361,10 +361,7 @@ var GameLayer = cc.Layer.extend({
                 this._player.speedBoost = 0;
                 KEYS[e] = false;
             }
-            else if (e == cc.KEY.space) {
-                KEYS[e] = false;
-            }
-            else if (e == cc.KEY.right) {
+            else if ((e == cc.KEY.space) || (e == cc.KEY.left) || (e == cc.KEY.right)) {
                 KEYS[e] = false;
             }
         },
@@ -396,6 +393,8 @@ var GameLayer = cc.Layer.extend({
                 var boost = (KEYS[cc.KEY.right] == true) ? 0.5 : 1;
                 this.setPositionX(this.getPositionX() - (this._layerSpeed * dt)*boost);
                 this._player.setPositionX(this._player.getPositionX() + (this._layerSpeed * dt)*boost);
+                if (this._player.shield != null)
+                    this._player.shield.setPositionX(this._player.shield.getPositionX() + (this._layerSpeed * dt)*boost);
                 this._playerBoost.setPositionX(this._playerBoost.getPositionX() + (this._layerSpeed * dt)*boost);
 
                 if (this._damageRed)
@@ -704,7 +703,6 @@ var GameLayer = cc.Layer.extend({
             var powerUpRect = this._powerUp.getBoundingBox();
 
             if (cc.rectIntersectsRect(playerRect, powerUpRect)) {
-                cc.log('player power');
                 this._player.powerUp = this._powerUp;
                 this._player.consumePowerUp(this._powerUp);
                 this._powerUp.removeFromParent();
