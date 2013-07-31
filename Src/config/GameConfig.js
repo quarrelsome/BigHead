@@ -34,43 +34,43 @@ DISTANCELIMIT = 10000;
 var gameLevels =[
     {
         targets:5,
-        bigEnemyArmour:3
+        bigEnemyArmour:12
     },
     {
         targets:8,
-        bigEnemyArmour:4
+        bigEnemyArmour:16
     },
     {
         targets:11,
-        bigEnemyArmour:5
+        bigEnemyArmour:20
     },
     {
         targets:14,
-        bigEnemyArmour:6
+        bigEnemyArmour:22
     },
     {
         targets:17,
-        bigEnemyArmour:7
+        bigEnemyArmour:24
     },
     {
         targets:20,
-        bigEnemyArmour:8
+        bigEnemyArmour:26
     },
     {
         targets:23,
-        bigEnemyArmour:9
+        bigEnemyArmour:28
     },
     {
         targets:26,
-        bigEnemyArmour:10
+        bigEnemyArmour:30
     },
     {
         targets:29,
-        bigEnemyArmour:11
+        bigEnemyArmour:32
     },
     {
         targets:32,
-        bigEnemyArmour:12
+        bigEnemyArmour:34
     }
 
 ];
