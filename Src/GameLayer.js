@@ -333,12 +333,12 @@ var GameLayer = cc.Layer.extend({
                     this._player.speedBoost += 0.05;
                 KEYS[e] = true;
             }
-            if (e == cc.KEY.up) {
+            else if (e == cc.KEY.up) {
                 if (this._player.speedBoost < 0.15)
                     this._player.speedBoost += 0.05;
                 KEYS[e] = true;
             }
-            if (e == cc.KEY.space) {
+            else if (e == cc.KEY.space) {
                 KEYS[e] = true;
                 if (this._player.fireWait <= 0) {
                     this._player.shoot();
@@ -347,6 +347,9 @@ var GameLayer = cc.Layer.extend({
                     this._player.fireWait = 0.3;
                 }
             }
+            else if (e == cc.KEY.right) {
+                KEYS[e] = true;
+            }
         },
 
         onKeyUp: function (e) {
@@ -354,11 +357,14 @@ var GameLayer = cc.Layer.extend({
                 this._player.speedBoost = 0;
                 KEYS[e] = false;
             }
-            if (e == cc.KEY.up) {
+            else if (e == cc.KEY.up) {
                 this._player.speedBoost = 0;
                 KEYS[e] = false;
             }
-            if (e == cc.KEY.space) {
+            else if (e == cc.KEY.space) {
+                KEYS[e] = false;
+            }
+            else if (e == cc.KEY.right) {
                 KEYS[e] = false;
             }
         },
@@ -387,12 +393,13 @@ var GameLayer = cc.Layer.extend({
             }
 
             if (this._player.getPositionX() - this._player.getContentSize().width / 2 + winSize.width - 30 <= enemyLocation) {
-                this.setPositionX(this.getPositionX() - (this._layerSpeed * dt));
-                this._player.setPositionX(this._player.getPositionX() + (this._layerSpeed * dt));
-                this._playerBoost.setPositionX(this._playerBoost.getPositionX() + (this._layerSpeed * dt));
+                var boost = (KEYS[cc.KEY.right] == true) ? 0.5 : 1;
+                this.setPositionX(this.getPositionX() - (this._layerSpeed * dt)*boost);
+                this._player.setPositionX(this._player.getPositionX() + (this._layerSpeed * dt)*boost);
+                this._playerBoost.setPositionX(this._playerBoost.getPositionX() + (this._layerSpeed * dt)*boost);
 
                 if (this._damageRed)
-                    this._damageRed.setPositionX(this._damageRed.getPositionX() + (this._layerSpeed * dt));
+                    this._damageRed.setPositionX(this._damageRed.getPositionX() + (this._layerSpeed * dt)*boost);
                 if (this._enemiesHit == 0) {
                     this._enemyLifeTime = 0;
                 }
@@ -405,7 +412,7 @@ var GameLayer = cc.Layer.extend({
                 }
 
                 if (this._powerUp != null)
-                    this._powerUp.setPositionX(this._powerUp.getPositionX() - this._layerSpeed * dt);
+                    this._powerUp.setPositionX(this._powerUp.getPositionX() - (this._layerSpeed * dt)*boost);
 
                 if (this._boss != null) {
                     if (this._boss.state == 0)
