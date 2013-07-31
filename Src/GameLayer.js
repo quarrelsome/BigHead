@@ -174,7 +174,7 @@ var GameLayer = cc.Layer.extend({
                                         cc.CallFunc.create(function () {
                                             ready.removeFromParent();
                                             this._isStartAnimationFinished = true;
-                                            this._layerSpeed = 140;
+                                            this._layerSpeed = 200;
                                         }, this)
                                     ));
                                 }, this)
